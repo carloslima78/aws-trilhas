@@ -55,6 +55,7 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Paga-se pela utilização do **software** de um provedor como serviço.
 - Marketplaces, ERP, CRM, editores, etc.
 
+<br><br>
 
 | On Site | IaaS | PaaS | SaaS | 
 | ---- | ----- | ---- | ----- |
@@ -89,3 +90,27 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Permite que uma organização mantenha algumas cargas de trabalho em sua nuvem privada e outras em nuvem pública.
 - Útil para organizações que desejam aproveitar os benefícios de ambas as nuvens e, ao mesmo tempo, manter o controle sobre dados sensíveis.
 - **Caso de Uso**: Uma organização deseja manter as páginas Web em cloud pública e o banco de dados em cloud privada.
+
+<br><br>
+
+## Shared Responsability Model (Modelo de Responsabilidade Compartilhada)
+
+Determina quais são as responsabilidades da AWS e quais são do Cliente referente a uma infraestrutura de recursos.
+
+Trata-se de um termo que o cliente aceita no momento da criação de uma conta, onde é demonstrado que AWS que não garante toda a segurança de um ambiente, pois existem etapas que dependem do cliente. 
+
+### Responsabilidades da AWS
+
+- Garantir a segurança **DA** Cloud e o que o cliente não tem acesso nem autonomia.
+- Software (Computação, armazenamento, banco de dados, rede, etc.).
+- Hardware (Regiões, zonas de disponibilidade, edge locations, etc.).
+
+### Responsabilidades do Cliente
+
+- Garantir a segurança **NA** Cloud e o que o cliente tem acesso e autonomia.
+- Plataformas, aplicações, identidade, gerenciamento de acesso, etc.
+- Configurações de sistemas operacionais, redes, firewall, etc.
+
+### Controles Compartilhados
+
+- Geranciamento de patches, configurações, conscientização, treinamentos, etc.
