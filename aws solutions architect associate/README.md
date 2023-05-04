@@ -35,7 +35,7 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Atualizações de softwares automáticas e sem interrupção de serviços.
 - Otimização de custo ao poder prever e provisionar a utilização de recursos (3 anos = 75% de desconto).
 - Segurança de dados (Sistema de backup integrado).
-- Escalabilidade **automática** ou **manual em segundoe e com poucos cliques** de recursos conforme demanda.
+- Escalabilidade **automática** ou **manual em segundos e com poucos cliques** de recursos conforme demanda.
 
 ### Tipos de Cloud
 
@@ -132,3 +132,36 @@ Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo d
 - Planos de Economia.
 
 <br>
+
+## Infraestrutura Global
+
+### Regions (Regiões)
+
+- São locais físicos distribuídos pelo mundo onde localizam-se os Datacenters da AWS.
+
+### Availability Zones (Zonas de Disponiblidade)
+
+- São Datacenters dentro de uma região AWS com links de conexão entre elas com alta velocidade para manter baixa latência.
+- Um o mais Datacenters distintos com energia, rede e conectividade redundantes em uma região.
+- São separadas fisicamente por uma distância significativa (até 100 KMs).
+- A separação ocorre para que mantenham **backpus** seguros umas das outras e a segurança contra desastres.
+
+### Local Zones (Zonas Local)
+
+- São Datacenters menores que ficam entre as zonas de disponibilidade.
+- Possuem conexão direta com as zonas de disponibilidade.
+- Seu propósito é a redução de latência entre as zonas de disponbilidade para serviços de stream por exemplo.
+
+### Wavelength
+
+- É uma infraestrutura que a AWS implanta nas provedoras de telecomunicação (Vivo, Claro, etd.), para que se conectem aos serviços da AWS com alta velocidade.
+- Otimiza a comunicação entre os serviços disponíveis em celulares e os serviços AWS.
+- Melhora jogos, stream, etc.
+- Não há encargos pelo uso.
+
+### Outspots
+
+- A AWS leva e implanta serviços e infraestrutura em qualquer Datacenter local.
+- O cliente pode aproveitar os serviços AWS em seu próprio Datacenter.
+- O cliente será responsável pela segurança, pois a infraestrutura está em seu Datacenter.
+- Voltado para clietnes de grande porte que já possuem seus próprios Datacenters, ou não possuem regiões AWS disponíveis.
