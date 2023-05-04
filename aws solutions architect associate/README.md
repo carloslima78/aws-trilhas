@@ -4,6 +4,8 @@ Esta trilha tem o propósito de fornecer pílulas de conhecimento para direciona
 
 A certificação **Solutions Architect Associate** está posicionada entre a certificação **AWS Practitioner** e a **Solutions Architect Professional**.
 
+<br>
+
 ## Conceitos de Cloud Computing
 
 ### Histórico
@@ -55,7 +57,7 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Paga-se pela utilização do **software** de um provedor como serviço.
 - Marketplaces, ERP, CRM, editores, etc.
 
-<br><br>
+<br>
 
 | On Site | IaaS | PaaS | SaaS | 
 | ---- | ----- | ---- | ----- |
@@ -91,13 +93,15 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Útil para organizações que desejam aproveitar os benefícios de ambas as nuvens e, ao mesmo tempo, manter o controle sobre dados sensíveis.
 - **Caso de Uso**: Uma organização deseja manter as páginas Web em cloud pública e o banco de dados em cloud privada.
 
-<br><br>
+<br>
 
 ## Shared Responsability Model (Modelo de Responsabilidade Compartilhada)
 
 Determina quais são as responsabilidades da AWS e quais são do Cliente referente a uma infraestrutura de recursos.
 
 Trata-se de um termo que o cliente aceita no momento da criação de uma conta, onde é demonstrado que AWS que não garante toda a segurança de um ambiente, pois existem etapas que dependem do cliente. 
+
+**Documentação Oficial:** (https://aws.amazon.com/pt/compliance/shared-responsibility-model/)
 
 ### Responsabilidades da AWS
 
@@ -114,3 +118,17 @@ Trata-se de um termo que o cliente aceita no momento da criação de uma conta, 
 ### Controles Compartilhados
 
 - Geranciamento de patches, configurações, conscientização, treinamentos, etc.
+
+<br>
+
+## Billing
+
+### Alerta de Billing
+
+Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo de recursos que podem ser por:
+
+- Custo (Valor monetário).
+- Utilização.
+- Planos de Economia.
+
+<br>
