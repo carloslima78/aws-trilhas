@@ -33,7 +33,7 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Atualizações de softwares automáticas e sem interrupção de serviços.
 - Otimização de custo ao poder prever e provisionar a utilização de recursos (3 anos = 75% de desconto).
 - Segurança de dados (Sistema de backup integrado).
-- Escalabilidade **automática** ou **manual em segundo e poucos cliques** de recursos conforme demanda.
+- Escalabilidade **automática** ou **manual em segundoe e com poucos cliques** de recursos conforme demanda.
 
 ### Tipos de Cloud
 
@@ -55,6 +55,7 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Paga-se pela utilização do **software** de um provedor como serviço.
 - Marketplaces, ERP, CRM, editores, etc.
 
+
 | On Site | IaaS | PaaS | SaaS | 
 | ---- | ----- | ---- | ----- |
 | Applications | Applications | Applications | **Applications** |
@@ -67,10 +68,24 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 | Storage | **Storage** | **Storage** | **Storage** |
 | Networking | **Networking** | **Networking** | **Networking** |
 
+
 ### Tipos de Rede
 
 #### Public Cloud
 
+- Trata-se de um ambiente Cloud compartilhado e disponível ao público.
+- A infraestrutura de uma Cloud pública é gerenciada pelo provedor do serviço.
+- **Importante**: Public Cloud não significa que os recursos utilizados em ambiente Cloud são públicos, significa que os provedores ofertam os recursos Cloud ao público.
+
 #### Private Cloud
 
+- Trata-se de um ambiente Cloud dedicado exclusivamente a uma determinada organização (Cliente).
+- A infraestrutura de uma Cloud privada pode ser gerenciada pela própria organização.
+- A Cloud privada oferece maior controle, privacidade e segurança em relação as outras opções.
+
 #### Hybrid Cloud
+
+- Trata-se da combinação entre Public Cloud e Private Cloud.
+- Permite que uma organização mantenha algumas cargas de trabalho em sua nuvem privada e outras em nuvem pública.
+- Útil para organizações que desejam aproveitar os benefícios de ambas as nuvens e, ao mesmo tempo, manter o controle sobre dados sensíveis.
+- **Caso de Uso**: Uma organização deseja manter as páginas Web em cloud pública e o banco de dados em cloud privada.
