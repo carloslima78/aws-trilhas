@@ -272,7 +272,7 @@ sudo ./aws/install
 aws --version
 ```
 
-Fonte: (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+Fonte Oficial: (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 - Comandos para acessar uma conta AWS via CLI após criar a **Access Key** associada ao usuário:
 - **Observação**: Os dados de acesso que devem ser fornecidos abaixo, são as credenciais presentes na **Access Key**, que é um requisito **obrigatório** para essa ação. Portanto, não deixe de criar a sua **Access Key**!
@@ -310,9 +310,15 @@ aws iam list-users
 ## EC2
 
 - São máquinas virtuais mantidas pela AWS (Virtualização).
-- São instâncias Linux, Windows, Mac dentro da plataforma EC2 que substituem servidores físicos (IBM, Dell, etc.).
+- São instâncias **Linux**, **Windows** ou **Mac OS** dentro da plataforma EC2 que substituem servidores físicos (IBM, Dell, etc.).
 - É um serviço **regional**, portanto, é possível criar instâncias EC2 em diversas regiões AWS.
 - É cobrado por **segundo** de uso.
+
+- Consiste nas capacidades:
+  - Lançar máquinas virtuais (**EC2**).
+  - Armazenar dados em drivers virtuais (**EBS**).
+  - Distribuir carga entre máquinas (**ELB**).
+  - Escalar serviços usando grupo de auto scaling (**ASG**).
 
 ### Acesso a Instâncias EC2
 
@@ -323,3 +329,41 @@ aws iam list-users
 - IAM Role
   - Acesso por funções contendo as políticas necessárias para que a instância EC2 acesse os demais recursos AWS desejados.
   - **Recomendado**, pois a instância estará associada a funções e não terá acesso as credenciais.
+
+  ### Tipos de Instâncias EC2
+
+  - Uso geral.
+  - Otimizada para computação.
+  - Otimizada para memória.
+  - Computação acelerada.
+  - Otimizadas para armazenamento.
+  - Otimizadas para HPC.
+  - Recursos das instâncias.
+  - Medir performance das instâncias.
+  
+    - Fonte Oficial: (https://aws.amazon.com/pt/ec2/instance-types/).
+
+    - Demonstra e compara os tipos de instâncias: (https://instances.vantage.sh/)
+
+  ### Convenção de Nomes de Instâncias EC2
+
+  Para a instância do tipo **t2.micro**:
+
+  - **t**: Família de instâncias, o prefixo **t** identifica a classe ou tipo de instância.
+  - **2**: Indica a geração da família de instâncias. 
+  - **micro**: Tamanho dentro da classe da instância, indica a quantidade de recursos de computação (vCPU), memória RAM e armazenamento disponíveis.
+
+  ### Security Groups
+
+  - É o firewall para as instâncias EC2.
+  - É um serviço de escopo **regional**.
+  - Controlam a entrada (Inbound) e saída (Outbound) de dados, portas e range de IPs.
+  - Por padrão, a entrada é bloqueada e a saída é liberada.
+  - É possível criar uma composição de security groups, onde um autoriza o outro.
+  - Pode estar associado a várias instâncias EC2 e uma instância pode ter vários security groups associados.
+  - Portas comuns:
+    - **22 SSH**
+    - **21 FTP**
+    - **80 HTTP**
+    - **443 HTTPS**
+    - **3389 RDP**
