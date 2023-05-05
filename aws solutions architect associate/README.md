@@ -165,8 +165,132 @@ Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo d
 - O cliente será responsável pela segurança, pois a infraestrutura está em seu Datacenter.
 - Voltado para clientes de grande porte que já possuem seus próprios Datacenters, ou aqueles que não contam com regiões AWS disponíveis.
 
-## CLI
+## IAM (Identity and Accesss Management)
 
--
+- Serviço **global** da AWS para gerenciamento de identidade e acesso.
+- É composto por **Users (Usuários)**, **Groups (Grupos)**, **Policies (Políticas)** e **Roles (Functions)**.
 
-## IAM
+### Users (Usuários)
+
+Representa um usuário físico (pessoa física) que possui credenciais de acesso a conta AWS.
+
+### Policies (Políticas)
+
+- Usuários e grupos podem pertencer a a documentos JSON chamados **Policies (Políticas)**.
+- As políticas definem um conjunto de permissões para os usuários, como lançar e configurar serviços por exemplo.
+- O **Princípio do Menor Privilégio** é uma boa prática na AWS, onde um usuário terá somente as permissões que precisa. 
+- É possível criar as próprias políticas especificando determinadas permissões.
+
+#### Estrutura JSON
+
+```hcl
+
+ {
+   "Version": "2012-10-17", // Versão da política de acesso
+   "Statement": [ // Declaração de permissões
+      {
+         "Effect": "Allow", // Efeito das permissões (Permitir ou Negar)
+         "Action": [ // Ação permitida na permissão
+            "s3:ListBucket", // Listar o conteúdo do bucket
+            "s3:GetBucketLocation" // Obter a localização do bucket
+         ],
+         "Resource": "arn:aws:s3:::NOME_DO_BUCKET" // ARN (Amazon Resource Name) do bucket
+      },
+      {
+         "Effect": "Allow", // Efeito das permissões (Permitir ou Negar)
+         "Action": [ // Ação permitida na permissão
+            "s3:PutObject", // Enviar (upload) objetos para o bucket
+            "s3:GetObject", // Obter (download) objetos do bucket
+            "s3:DeleteObject" // Remover objetos do bucket
+         ],
+         "Resource": "arn:aws:s3:::NOME_DO_BUCKET/*" // ARN (Amazon Resource Name) do bucket para permitir acesso a todos os objetos.
+      }
+   ]
+}
+
+```
+
+### MFA (Multi-Factor Authentication ou Autenticação de Múltiplos Fatores)
+
+Trata-se de um mecanismo de segurança que exige que o usuário forneça mais de uma forma de autenticação para ter acesso a uma conta ou sistema.
+
+Ao usar o MFA, mesmo que um atacante possua a senha de um usuário, ele ainda precisaria de um segundo fator de autenticação para acessar a conta AWS. 
+
+### Roles (Funções)
+
+Tratam-se de permissões atribuídas a recursos e serviços da AWS para que executem determinadas ações em outros serviços da AWS.
+
+#### Funções Comuns
+
+- EC2 Instance Roles
+- Lambda Function Roles
+- Cloud Formation Roles
+- etc...
+
+
+### Formas de Acesso a Conta AWS
+
+- **AWS Management Console**: Protegido por Senha + MFA.
+- **AWS Comand Line Interface (CLI)**: Protegido por chaves de acesso (Access Key).
+- **AWS Software Developer Kit (SKD)**: Acesso por código de programação protegido por chaves de acesso (Access Key). Composto por **Access Key ID (Usuário)** e **Secret Access Key (Senha)** que não devem ser compartilhados com outras pessoas.
+
+### Access Advisor (Consultor de Acesso)
+
+Na área de usuários, é possível utilizar o **Access Advisor** para auditar as permissões que foram utilizadas.
+
+### CLI
+
+- Ferramenta que permite a interação com a AWS por meio de linhas de comando.
+- Permite acesso direto as APIs públicas da AWS.
+- É um Open Source disponível em (https://github.com/aws/aws-cli).
+
+#### Instalação no Linux
+
+- Comandos para instalação:
+
+```hcl
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
+- Comando para verificar se a instalação foi bem sucedida:
+
+```hcl
+aws --version
+```
+
+Fonte: (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+- Comandos para acessar uma conta AWS via CLI após criar a "Access Key" associada ao usuário:
+- **Observação**: Os dados fornecidos são as credenciais presentes na **Access Key" que é requisito para essa ação.
+
+```hcl
+aws configure
+AWS Access Key ID [None]: [sua_access_key_id]
+AWS Secret Access Key [None]: [sua_secret_access_key]
+Default region name [None]: [sua_região_preferida]
+```
+
+- Comando para verificar se a autenticação foi bem sucessida:
+
+```hcl
+aws sts get-caller-identity
+```
+
+- O comando acima deve apresentar os dados da conta e usuário:
+
+```hcl
+{
+    "UserId": "ID_DO_USUARIO",
+    "Account": "ID_DA_CONTA_AWS",
+    "Arn": "arn:aws:iam::ID_DA_CONTA_AWS:user/NOME_DO_USUARIO"
+}
+```
+
+- Comando para listar os usuários IAM existentes em uma conta AWS.
+- **Observação**: Este comando funcionará para usuários que possuam as devidas permissões (Policies)!
+
+```hcl
+aws iam list-users
+```
