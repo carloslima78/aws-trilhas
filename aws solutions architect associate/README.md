@@ -317,9 +317,9 @@ aws iam list-users
 ### Acesso a Instâncias EC2
 
 * IAM User
-** Acesso por CLI utilizando as chaves de acesso (Access Key e Secret Key) associadas a um usuário.
-** **Não recomentado**, pois a instância EC2 terá acesso as credenciais gerando vulnerabilidades de segurança.
+ ** Acesso por CLI utilizando as chaves de acesso (Access Key e Secret Key) associadas a um usuário.
+ ** **Não recomentado**, pois a instância EC2 terá acesso as credenciais gerando vulnerabilidades de segurança.
 
 * IAM Role
-** Acesso por funções contendo as políticas necessárias para que a instância EC2 acesse os demais recursos AWS desejados.
-** **Recomendado**, pois a instância estará associada a funções e não terá acesso as credenciais.
+ ** Acesso por funções contendo as políticas necessárias para que a instância EC2 acesse os demais recursos AWS desejados.
+ ** **Recomendado**, pois a instância estará associada a funções e não terá acesso as credenciais.
