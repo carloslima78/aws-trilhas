@@ -4,8 +4,6 @@ Esta trilha tem o propósito de fornecer pílulas de conhecimento para direciona
 
 A certificação **Solutions Architect Associate** está posicionada entre a certificação **AWS Practitioner** e a **Solutions Architect Professional**.
 
-<br>
-
 ## Conceitos de Cloud Computing
 
 ### Histórico
@@ -93,7 +91,6 @@ Atualmente a AWS assim como outros provedores de serviços em Cloud (Microsoft A
 - Útil para organizações que desejam aproveitar os benefícios de ambas as nuvens e, ao mesmo tempo, manter o controle sobre dados sensíveis.
 - **Caso de Uso**: Uma organização deseja manter as páginas Web em cloud pública e o banco de dados em cloud privada.
 
-<br>
 
 ## Shared Responsability Model (Modelo de Responsabilidade Compartilhada)
 
@@ -119,8 +116,6 @@ Trata-se de um termo que o cliente aceita no momento da criação de uma conta, 
 
 - Geranciamento de patches, configurações, conscientização, treinamentos, etc.
 
-<br>
-
 ## Billing
 
 ### Alerta de Billing
@@ -131,7 +126,6 @@ Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo d
 - Utilização.
 - Planos de Economia.
 
-<br>
 
 ## Infraestrutura Global
 
@@ -171,10 +165,8 @@ Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo d
 - O cliente será responsável pela segurança, pois a infraestrutura está em seu Datacenter.
 - Voltado para clientes de grande porte que já possuem seus próprios Datacenters, ou aqueles que não contam com regiões AWS disponíveis.
 
-<br>
-
 ## CLI
 
-<br>
+-
 
 ## IAM
