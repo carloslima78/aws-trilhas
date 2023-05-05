@@ -172,11 +172,19 @@ Trata-se de alertas para monitoramento e notificação (por e-mail) de consumo d
 
 ### Users (Usuários)
 
-Representa um usuário físico (pessoa física) que possui credenciais de acesso a conta AWS.
+- Trata-se de uma identidade da AWS que pode-se criar para conceder acesso a serviços e recursos da AWS. 
+- Os usuários são autenticados com suas credenciais exclusivas e podem ter permissões e políticas de acesso definidas para controlar o que eles podem e não podem fazer na conta da AWS.
+
+### Groups (Grupos)
+
+- Trata-se de um grupo de usuários da AWS que podem ser gerenciados coletivamente, definindo permissões e políticas de acesso.
+- Um usuário pode pertencer a um ou mais grupos.
+- **Observação**: Grupos contém apenas usuários e não outros grupos.
 
 ### Policies (Políticas)
 
-- Usuários e grupos podem pertencer a a documentos JSON chamados **Policies (Políticas)**.
+- Tratam-se de documentos JSON ou YAML que definem as permissões de acesso para usuários, grupos e roles na AWS. 
+- Podem ser anexadas diretamente a um usuário ou grupo ou associadas a um IAM role.
 - As políticas definem um conjunto de permissões para os usuários, como lançar e configurar serviços por exemplo.
 - O **Princípio do Menor Privilégio** é uma boa prática na AWS, onde um usuário terá somente as permissões que precisa. 
 - É possível criar as próprias políticas especificando determinadas permissões.
@@ -234,9 +242,13 @@ Tratam-se de permissões atribuídas a recursos e serviços da AWS para que exec
 - **AWS Comand Line Interface (CLI)**: Protegido por chaves de acesso (Access Key).
 - **AWS Software Developer Kit (SKD)**: Acesso por código de programação protegido por chaves de acesso (Access Key). Composto por **Access Key ID (Usuário)** e **Secret Access Key (Senha)** que não devem ser compartilhados com outras pessoas.
 
-### Access Advisor (Consultor de Acesso)
+### IAM Access Advisor (Consultor de Acesso)
 
 Na área de usuários, é possível utilizar o **Access Advisor** para auditar as permissões que foram utilizadas.
+
+### IAM Credentials Report
+
+Lista todos os usuários IAM de uma conta da AWS e o status de suas várias credenciais.
 
 ### CLI
 
@@ -262,8 +274,8 @@ aws --version
 
 Fonte: (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
-- Comandos para acessar uma conta AWS via CLI após criar a "Access Key" associada ao usuário:
-- **Observação**: Os dados fornecidos são as credenciais presentes na **Access Key" que é requisito para essa ação.
+- Comandos para acessar uma conta AWS via CLI após criar a **Access Key** associada ao usuário:
+- **Observação**: Os dados de acesso que devem ser fornecidos abaixo, são as credenciais presentes na **Access Key**, que é um requisito **obrigatório** para essa ação. Portanto, não deixe de criar a sua **Access Key**!
 
 ```hcl
 aws configure
