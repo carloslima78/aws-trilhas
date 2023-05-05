@@ -306,3 +306,20 @@ aws sts get-caller-identity
 ```hcl
 aws iam list-users
 ```
+
+## EC2
+
+- São máquinas virtuais mantidas pela AWS (Virtualização).
+- São instâncias Linux, Windows, Mac dentro da plataforma EC2 que substituem servidores físicos (IBM, Dell, etc.).
+- É um serviço **regional**, portanto, é possível criar instâncias EC2 em diversas regiões AWS.
+- É cobrado por **segundo** de uso.
+
+### Acesso a Instâncias EC2
+
+* IAM User
+** Acesso por CLI utilizando as chaves de acesso (Access Key e Secret Key) associadas a um usuário.
+** **Não recomentado**, pois a instância EC2 terá acesso as credenciais gerando vulnerabilidades de segurança.
+
+* IAM Role
+** Acesso por funções contendo as políticas necessárias para que a instância EC2 acesse os demais recursos AWS desejados.
+** **Recomendado**, pois a instância estará associada a funções e não terá acesso as credenciais.
