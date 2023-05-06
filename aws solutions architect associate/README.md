@@ -602,6 +602,52 @@ Trata-se de um grupo de recursos **alvo** que serão balanceados pelo ALB que po
 
 Um ALB é capaz de gerenciar o balanceamento de um ou mais target groups além de monitorar a saúde das aplicações alvo presentes no grupo.
 
+## Auto Scaling Group (ASG)
+
+- Escala automática de recursos conforme picos de demanda.
+- Aumenta capacidade de uma instância ou a quantidade de instâncias conforme demanda de carga.
+- Define-se o mínimo e o máximo de instâncias por configuração.
+- Termina instâncias extras conforma a carga é reduzida.
+- Capaz de identificar instâncias não saudáveis, terminá-las e iniciar uma nova instância para substituição.
+- Recomendado para aplicativos que usam recursos escaláveis que estão sujeitos a cargas variáveis.
+
+### Auto Scaling Rules
+
+As regras de escala são configuradas no CloudWatch:
+
+- **Scaling Up (Vertical)**
+  - Adiciona recursos (CPU, RAM, etc.) em uma instância.
+
+- **Scaling Out (Horizontal)**
+  - Adiciona instâncias conforme aumento de carga fomentando a redundância.
+
+- **Scaling In (Horizontal)**
+  - Remove instâncias quando reduz a carga.
+ 
+### Auto Scaling Strategies
+
+- **Manual Scaling**
+  - Atualize o tamanho do ASG manualmente.
+
+- **Dynamic Scaling**
+  - Atualize o tamanho do ASG por demanda e automaticamente.
+
+- **Simple Scaling**
+  - Quando um alarme do CloudWatch é acionado (por exemplo, CPU > 70%), adicione 2 unidades.
+  - Quando um alarme do CloudWatch é acionado (por exemplo, CPU < 30%), remova 1.
+
+- **Target Tracking**
+  - Exemplo: Eu quero que a CPU ASG média fique em torno de 40%
+
+- **Step Scaling**    
+  - Antecipar um dimensionamento com base em padrões de uso conhecidos.
+  - **Exemplo**: Aumentar a capacidade às 17h todas as sextas-feiras.  
+
+- **Predictive Scalling**
+  - Usa Machine Learning para prever o tráfego futuro antes do tempo.
+  - Automaticamente prevê o número correto de instâncias com antecedência.        
+
+
 ## Network
 
 ### ENI (Elastic Network Interface)
