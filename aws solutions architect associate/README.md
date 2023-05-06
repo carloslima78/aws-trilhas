@@ -290,7 +290,7 @@ Default region name [None]: [sua_região_preferida]
 aws sts get-caller-identity
 ```
 
-- O comando acima deve apresentar os dados da conta e usuário:
+- O comando acima deve apresentar os dados da conta e usuário no formato JSON conforme abaixo:
 
 ```hcl
 {
@@ -362,8 +362,38 @@ aws iam list-users
   - É possível criar uma composição de security groups, onde um autoriza o outro.
   - Pode estar associado a várias instâncias EC2 e uma instância pode ter vários security groups associados.
   - Portas comuns:
-    - **22 SSH**
-    - **21 FTP**
-    - **80 HTTP**
-    - **443 HTTPS**
-    - **3389 RDP**
+    - **Porta 22 SSH**
+    - **Porta 21 FTP**
+    - **Porta 80 HTTP**
+    - **Porta 443 HTTPS**
+    - **Porta 3389 RDP**
+
+     ### Tipos de Planos
+
+     **TO-DO**
+
+    ### Placement Groups
+
+    Permite que as instâncias EC2 sejam agrupadas logicamente para melhorar o desempenho, a segurança e a disponibilidade.
+
+    Seguem os tipos de Placement Groups abaixo:
+
+     - **Cluster**
+       - Usado para hospedar instâncias EC2 em um **rack** único dentro de uma única zona de disponibilidade.
+       - Se um rack falhar, todas as instâncias EC2 falham.
+       - As instâncias do EC2 ficam próximas umas das outras oferecendo computação e rede de alto desempenho.
+
+     - **Spread**
+       - Usado para distribuir instâncias EC2 em diferentes racks, diferentes datacenters em uma única zona de disponibilidade.
+       - Possui o limite de 7 instâncias por zona de disponibilidade.
+       - Possui redundância e evita que todas as instâncias sejam afetadas por um único ponto de falha.
+
+     - **Partition**
+       - Usado para distribuir as instâncias EC2 em partições lógicas, de forma que sejam colocadas em uma máquina distinta em uma zona de disponibilidade. 
+       - Aumenta a disponibilidade e tolerância a falhas de aplicações
+
+    ### Hibernate
+
+## Network
+
+### ENI (Elastic Network Interface)
