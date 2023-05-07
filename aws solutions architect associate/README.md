@@ -563,6 +563,34 @@ Significa que a aplicação precisa estar sempre disponível.
 
 - O **Auto Scalling** complementa o trabalho do Elastic Load Balancer em momentos de falhas, onde é capaz de provisionar novas instâncias caso uma instância falhe.
 
+### Target Groups
+
+Trata-se do grupo de recursos **alvo** que serão balanceados pelo ALB. 
+São capazes de monitorar a saúde dos recursos alvo presentes no target group.
+
+Um target group pode ser composto por:
+
+- Instâncias EC2.
+- Tarefas ECS (Tasks).
+- Funções Lambda.
+- Endereços IP.
+
+**Importante**: Um ALB é capaz de gerenciar o balanceamento de um ou mais target groups.
+
+### Stickness Sessions
+
+É uma configuração do target group onde o ELB associa a sessão de um usuário a um destino específico, ou seja, será redirecionado para uma mesma instância enquanto a sua sessão estiver ativa. 
+
+Uma vez que o stickness está habilitado, o ELB armazena um cookie no navegador do usuário para identificar a instância a qual ele foi direcionado. Esse cookie é enviado a cada requisição subsequente do usuário, permitindo que o ELB o direcione para a mesma instância.
+
+Os cookies podem ser de dois tipos:
+
+- **Application-based Cookies**
+  - É baseado em cookies gerados pelo aplicativo.
+
+- **Duration-based Cookies**
+  - É baseado em cookies gerados pelo ELB.
+
 ### Tipos de ELB
 
 - **Classic Load Balancer - (CLB - 2009)**
@@ -580,27 +608,48 @@ Significa que a aplicação precisa estar sempre disponível.
   - Recomendado para micro services e containers (Docker, ECS)
     
 - **Network Load Balancer (NLB - 2017)**
-  - Aplicado para os protocolos **TCP**, **TLS (Secure TCP)**, **UDP*** atuando nas camadas 3 e 4 do modelo OSI.
-  - É o Load Balance mais rápido e com baixa latência.
-  - Toma decisões através dos protocolos TCP e UDP.
+  - Aplicado para os protocolos **TCP**, **TLS (Secure TCP)**, **UDP** atuando nas camadas 3 e 4 do modelo OSI.
+  - É o Load Balance mais rápido, com baixa latência e pode lidar com milhões de requisições por segundo.
+  - **Possui latência de 100 MS contra 400 MS do ALB**.
   - Focado no tráfego de rede, baseado em roteamento IP.
-  - Interessante para jogos onde pecisa lidar com milhões de requisições por segundo.
+  - ***Possui apenas 1 IP estático por AZ**.
   - Distribui percentualmente o tráfego de rede.
+  - Interessante para jogos onde pecisa lidar com milhões de requisições por segundo.
+  - Pode atuar no balanceamento de carga de:
+   - Instâncias EC2.
+   - IPs (*Devem ser privados*).
+   - Application Load Balancers (ALB) - *Válida combinação do balanceamento de Rede TCP com o balanceamento HTTP de aplicação*.
 
 - **Gateway Load Balancer - (GWLB - 2020)**
-  - Atua na camada 3 de rede do modelo OSI para o protocolo IP.
-  - Aplicado para segurança, compliance, detecção de intrusão, firewall, etc.
+  - Atua como um ***Gateway de Rede** na camada 3 de rede do modelo OSI para o protocolo IP.
+  - Aplicado para segurança, compliance, detecção de intrusão, atuando como um firewall.
+  - Controla o tráfego baseando-se em IPs inseridos em Route Tables.
+  - Utiliza o protocolo **GENEVE** na porta **6081**.
 
-### ALB Target Groups
+### ELB Cross Zone
 
-Trata-se de um grupo de recursos **alvo** que serão balanceados pelo ALB que pode ser composto por:
+Permite que o ELB disbribua o tráfego de entrada **igualmente e uniformemente entre todas as instâncias em todas as zonas de disponibilidade em que estão implantadas**.
 
-- Instâncias EC2.
-- Tarefas ECS (Tasks).
-- Funções Lambda.
-- Endereços IP.
+Com o Cross Zone desabilitado, o ELB distribuirá o tráfego de entrada percentualmente considerando a quantidade de instâncias dentro de cada zona de disponibilidade.
 
-Um ALB é capaz de gerenciar o balanceamento de um ou mais target groups além de monitorar a saúde das aplicações alvo presentes no grupo.
+- ***Application Load Balancer (ALB)**
+  - Habilitado por padrão.
+  - Não é cobrado por inter AZ.
+
+- **Network Load Balancer (NLB)**
+  - Desabilitado por padrão.
+  - É cobrado por inter AZ se for habilitado.
+
+- **Classic Load Balancer (NLB)**
+  - Desabilitado por padrão.
+  - Não é cobrado por inter AZ.
+
+### Connection Draining
+
+Permite que as instâncias em execução terminem as conexões existentes antes de serem desativadas, garantindo que as solicitações em andamento sejam concluídas com êxito e que os usuários não sejam impactados pela interrupção de uma instância. 
+
+A configuração do tempo de conexão para o Connection Draining pode ser personalizada para atender às necessidades específicas da aplicação.
+
 
 ## Auto Scaling Group (ASG)
 
