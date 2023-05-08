@@ -563,6 +563,8 @@ Significa que a aplicação precisa estar sempre disponível.
 
 - O **Auto Scalling** complementa o trabalho do Elastic Load Balancer em momentos de falhas, onde é capaz de provisionar novas instâncias caso uma instância falhe.
 
+- Para obter o endereço IP do cliente, o ALB adiciona um cabeçalho adicional chamado **X-Forwarded-For** que contém o endereço IP do cliente.
+
 ### Target Groups
 
 Trata-se do grupo de recursos **alvo** que serão balanceados pelo ALB. 
@@ -632,7 +634,7 @@ Permite que o ELB disbribua o tráfego de entrada **igualmente e uniformemente e
 
 Com o Cross Zone desabilitado, o ELB distribuirá o tráfego de entrada percentualmente considerando a quantidade de instâncias dentro de cada zona de disponibilidade.
 
-- ***Application Load Balancer (ALB)**
+- **Application Load Balancer (ALB)**
   - Habilitado por padrão.
   - Não é cobrado por inter AZ.
 
@@ -650,53 +652,104 @@ Permite que as instâncias em execução terminem as conexões existentes antes 
 
 A configuração do tempo de conexão para o Connection Draining pode ser personalizada para atender às necessidades específicas da aplicação.
 
-
 ## Auto Scaling Group (ASG)
 
-- Escala automática de recursos conforme picos de demanda.
-- Aumenta capacidade de uma instância ou a quantidade de instâncias conforme demanda de carga.
+- Escala automática de instâncias conforme picos de tráfego ou outras métricas definidas pelo usuário.
+- Aumenta capacidade de uma instância ou a quantidade de instâncias conforme carga.
 - Define-se o mínimo e o máximo de instâncias por configuração.
-- Termina instâncias extras conforma a carga é reduzida.
+- Termina instâncias extras conforme a carga é reduzida.
 - Capaz de identificar instâncias não saudáveis, terminá-las e iniciar uma nova instância para substituição.
-- Recomendado para aplicativos que usam recursos escaláveis que estão sujeitos a cargas variáveis.
+- Não é cobrado, paga-se pelas instâncias provisionadas.
 
-### Auto Scaling Rules
+### ASG Template
 
-As regras de escala são configuradas no CloudWatch:
+Trata-se de um modelo que define as configurações e recursos de uma instância ou grupo de instâncias gerenciado por um **Auto Scaling Group**. 
 
-- **Scaling Up (Vertical)**
-  - Adiciona recursos (CPU, RAM, etc.) em uma instância.
+É composto por informações tais como o tipo de instância, o tamanho da instância, a imagem da AMI, as configurações de segurança, as opções de monitoramento e escalabilidade, entre outros. 
 
-- **Scaling Out (Horizontal)**
-  - Adiciona instâncias conforme aumento de carga fomentando a redundância.
+### CloudWatch Alarms (CloudWatch)
 
-- **Scaling In (Horizontal)**
-  - Remove instâncias quando reduz a carga.
- 
-### Auto Scaling Strategies
+É possível escalar o ASG baseado em alarmes do CloudWatch, e as regras de escalabilidade são configuradas por métricas.
+
+#### Métricas para escalabilidade
+
+- **CPUUtilization**
+  - Média de uso de CPU entre as instâncias.
+
+- **RequestCountPerTarget**
+  - Número de requisições por instância.
+
+- **Average Network in/out**
+  - Média de tráfego de rede de entrada e saída de uma instância.
+
+- **Custom Metric**
+  - Métrica personalizada definida pelo usuário.
+
+### Policies
 
 - **Manual Scaling**
-  - Atualize o tamanho do ASG manualmente.
-
-- **Dynamic Scaling**
-  - Atualize o tamanho do ASG por demanda e automaticamente.
-
-- **Simple Scaling**
-  - Quando um alarme do CloudWatch é acionado (por exemplo, CPU > 70%), adicione 2 unidades.
-  - Quando um alarme do CloudWatch é acionado (por exemplo, CPU < 30%), remova 1.
+  - O dimensionamento é feito manualmente pelo usuário sem a ajuda do Auto Scaling.
 
 - **Target Tracking**
-  - Exemplo: Eu quero que a CPU ASG média fique em torno de 40%
+  - Ajusta o tamanho do Auto Scaling Group com base em uma métrica.
 
-- **Step Scaling**    
-  - Antecipar um dimensionamento com base em padrões de uso conhecidos.
-  - **Exemplo**: Aumentar a capacidade às 17h todas as sextas-feiras.  
+- **Simple/Step Scaling**
+  - Aumenta ou diminui o tamanho do Auto Scaling Group em incrementos fixos com base em uma métrica personalizada.
+  - **Exemplo**: 
+    - CPU > 70%, adicione 2 instâncias.
+    - CPU < 30%, remova 1 instância.
+  
+- **Schedule Actions**
+  - Permite que se programe alterações no tamanho do Auto Scaling Group com antecedência com base em padrões conhecidos.
+    - **Exemplo**: Aumentar a quantidade de instâncias todas as sextas-feiras às 17h. 
 
 - **Predictive Scalling**
-  - Usa Machine Learning para prever o tráfego futuro antes do tempo.
-  - Automaticamente prevê o número correto de instâncias com antecedência.        
+  - Usa Machine Learning para prever necessidades de tráfego futuro com base em histórico.       
 
+### ASG Cooldowns
+
+Tratam-se de períodos de tempo em que o ASG evita ações de dimensionamento automático, como adicionar ou remover instâncias após uma alteração de escala.
+
+O cooldown padrão é de 300 segundos (5 minutos), que é o período mínimo recomendado para permitir que as instâncias sejam iniciadas ou desligadas, configuradas e testadas antes de iniciar uma nova alteração de escala.
+
+## Banco de Dados
+
+### RDS
 
 ## Network
 
 ### ENI (Elastic Network Interface)
+
+
+# Computação em Núvem (Cloud Computing)
+
+- Trata-se da entrega de recursos computacionais que serão cobrados pelo uso.
+
+- Analogia: Abertura de uma Academia
+
+  - Desafio
+    - Qual imóvel utilizar
+    - Quanto investir no espaço
+    - Quanto investir em equipamentos
+    - Quanto investir em locomoção e alimentação
+
+  - Proposta: Serviços contratados
+    - Imóvel alugado
+    - Equipamentos alugados
+    - Uber para locomoção
+    - IFood para alimentação
+
+  - Principais Serviços Ofertados pela Núvem
+    - Computação
+    - Armazenamento
+    - Rede
+
+  - Modelos de Serviços em Núvem
+    - IaaS (Hospedagem)
+    - PaaS (Desenvolvimento)
+    - SaaS (Consumo)
+
+  - Tipos de Núvem
+    - Pública
+    - Privada
+    - Híbrida
