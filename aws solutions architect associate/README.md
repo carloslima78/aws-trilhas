@@ -721,8 +721,7 @@ O cooldown padrão é de 300 segundos (5 minutos), que é o período mínimo rec
 
 ### ENI (Elastic Network Interface)
 
-
-
+<br><br>
 
 # Computação em Núvem (Cloud Computing)
 
