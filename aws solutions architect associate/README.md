@@ -716,40 +716,55 @@ O cooldown padrão é de 300 segundos (5 minutos), que é o período mínimo rec
 
 ### RDS
 
+
 ## Network
 
 ### ENI (Elastic Network Interface)
 
 
+
+
 # Computação em Núvem (Cloud Computing)
 
-- Trata-se da entrega de recursos computacionais que serão cobrados pelo uso.
+Trata-se da entrega de recursos computacionais que serão cobrados pelo uso.
 
-- Analogia: Abertura de uma Academia
+## Histórico
 
-  - Desafio
-    - Qual imóvel utilizar
-    - Quanto investir no espaço
-    - Quanto investir em equipamentos
-    - Quanto investir em locomoção e alimentação
+Antigamente as empresas contratavam salas com servidores físicos conectados via rede com switches, roteadores e firewalls. Cada servidor tinha um objetivo específico como AD, FTP, aplicação, banco de dados etc.
 
-  - Proposta: Serviços contratados
-    - Imóvel alugado
-    - Equipamentos alugados
-    - Uber para locomoção
-    - IFood para alimentação
+- **Pontos Negativos**
+  - Alto custo.
+  - Tempo de preapração.
+  - Atualizações de softwares.
+  - Extração de backups.
 
-  - Principais Serviços Ofertados pela Núvem
-    - Computação
-    - Armazenamento
-    - Rede
+## Analogia: Abertura de uma Academia
 
-  - Modelos de Serviços em Núvem
-    - IaaS (Hospedagem)
-    - PaaS (Desenvolvimento)
-    - SaaS (Consumo)
+- **Desafio**
+  - Qual imóvel utilizar
+  - Quanto investir no espaço
+  - Quanto investir em equipamentos
+  - Quanto investir em locomoção e alimentação
 
-  - Tipos de Núvem
-    - Pública
-    - Privada
-    - Híbrida
+- **Proposta: Serviços Contratados**
+  - Imóvel alugado
+  - Equipamentos alugados
+  - Uber para locomoção
+  - IFood para alimentação
+
+## A Computação em Núvem
+
+- **Principais Serviços Ofertados pela Núvem**
+  - Computação
+  - Armazenamento
+  - Rede
+
+- **Modelos de Serviços em Núvem**
+  - IaaS (Hospedagem)
+  - PaaS (Desenvolvimento)
+  - SaaS (Consumo)
+
+- **Tipos de Núvem**
+  - Pública
+  - Privada
+  - Híbrida
