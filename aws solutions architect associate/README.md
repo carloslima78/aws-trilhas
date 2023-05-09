@@ -712,10 +712,127 @@ Tratam-se de períodos de tempo em que o ASG evita ações de dimensionamento au
 
 O cooldown padrão é de 300 segundos (5 minutos), que é o período mínimo recomendado para permitir que as instâncias sejam iniciadas ou desligadas, configuradas e testadas antes de iniciar uma nova alteração de escala.
 
-## Banco de Dados
 
-### RDS
+## RDS (Relational Database Service)
 
+É um serviço de banco de dados relacional gerenciado pela AWS (**PaaS**), que suporta as *engines*:
+- Postgres
+- MySQL
+- MariaDB
+- Oracle
+- Microsoft SQL Server
+- Aurora (Banco de dados próprio da AWS)
+
+O RDS inclui:
+- Provisionamento automatizado e atualização de patches do sistema operacional.
+- Backups contínuos e restauração em um *timestamp* específico.
+- Painéis de monitoramento.
+- Réplicas de leitura para otimizar o desempenho de leitura.
+- Configuração Multi-AZ para recuperação de desastres (DR).
+- Janelas de manutenção para atualizações.
+- Capacidade de dimensionamento (vertical e horizontal).
+- Armazenamento suportado pelo **EBS** (gp2 ou io1).
+
+**Importante**: O RDS não suporta conexão SSH em suas instâncias.
+
+### Storage Auto Scaling
+
+- Capaz de aumentar o armazenamento das instâncias de banco de dados RDS dinamicamente.
+- Ao detectar que está ficando sem armazenamento gratuito, o RDS escala automaticamente.
+- Aconselhavel evitar o dimensionamento manual do armazenamento do banco de dados.
+- Definir o limite máximo de armazenamento de banco de dados.
+- Modifique automaticamente o armazenamento se:
+  - O armazenamento livre for inferior a 10% do armazenamento alocado.
+  - Se passaram 6 horas desde a última modificação.
+- Útil para aplicações com cargas de trabalho imprevisíveis.
+
+### Read Replicas
+
+- Permite a escalabilidade de leitura segregando réplicas de uma instância de banco de dados.
+- Suporta até 15 réplicas em uma AZ, Cross AZ ou Cross Region.
+- A replicação entre a instância Master e as Réplicas, são assíncronas, gerando **Inconsistência Eventual**.
+
+**Importante**: Read Replicas não suportam instruções de *INSERT, DELETE, UPDATE*, aceitam somente instruções de leitura, neste caso *SELECT*.
+
+#### Read Replicas - Network Cost
+
+- Para Read Replicas dentro de uma AZ ou AZs diferentes, porém, na mesma Region, não será cobrado pela taxa de transferência da replicação.
+- Para Read Replicas em Regions diferentes (Cross Region), será cobrada pela taxa de transferência da replicação.
+
+#### Multi-AZ (Disaster Recovery)
+
+Trata-se de uma configuração que fornece resiliência em caso de falhas em uma AZ da AWS e consequentemente onde a instância RDS pode estar alocada.
+
+- Ao habilitar o **Multi-AZ**, a AWS provisiona e mantém automaticamente e continuamente uma réplica da instância **Master** chamada **Stand By**, que será sincronizada em uma AZ secundária.
+- Também utilizada para realização de manutenções programadas, atualizações de software e atualizações de patches de segurança. 
+- A réplica **Stand By** pode ser promovida automaticamente a **Master** se houver uma interrupção na AZ primária, permitindo que as operações do banco de dados continuem sem interrupção.
+- É uma opção para atender aos requisitos de recuperação de desastres, permitindo a recuperação de um banco de dados em outra região da AWS em caso de falha da região principal.
+- Quando a promoção para **Master** é concluída, o DNS do banco de dados é atualizado para apontar para o novo endereço IP primário.
+- A antiga instância **Master** é convertida em uma réplica para permitir que a recuperação e a reparação dela, caso necessário.
+
+### RDS Custom
+
+Trata-se do recurso do RDS que permite a execução de instâncias de banco de dados em uma instância EC2 permitindo ao usuário flexibilidade e controle, como por exemplo acesso SSH, instalação de bibliotecas, etc. 
+
+#### RDS vs RDS Custom
+
+- **RDS**: O banco de dados e o sistema operacional serão gerenciados pela AWS.
+- **RDS Custom**: Acesso administrativo total ao sistema operacional e ao banco de dados.
+
+**Porém, o gerenciamento automático ofertado pelo RDS (PaaS) é desabilitado**, de forma que o usuário terá toda autonomia de gerenciamento do banco de dados sobe RDS Custom.
+
+### Aurora
+
+Trata-se de uma tecnologia proprietária da AWS (Não é Open Source), e foi criado para ser compatível com MySQL e Postgres, ou seja, podemos nos conectar em um banco de dados Aurora como se fosse MySQL ou Postgres.
+
+- Possui **5 vezes mais desempenho em relação ao RDS MySQL** e **3 vezes mais desempenho em relação ao RDS Postgres**.
+- O armazenamento cresce automaticamente, iniciando com 10GB e pode subir até 128TB conforme o inclusão de dados.
+- Suporta 15 Read Replicas com um atraso inferior a 10 ms.
+- Seu custo é cerca de 20% maior, porém, muito mais eficiênte.
+- 6 cópias dos dados em 3 AZ:
+  - 4 cópias de 6 necessárias para gravações.
+  - 3 cópias de 6 necessárias para leituras.
+  - O armazenamento é dividido em centenas de volumes.
+
+#### Custom Endpoints
+
+Tratam-se de Read Repĺicas que possuem DNS exclusivos e que permitem associação a instâncias com maior poder computacional para que possam receber maiores cargas de trabalho, como por exemplo consultas complexas.
+
+#### Aurora Serverless
+
+Trata-se da modalidade sem servidor do Aurora, e permite o dimensionamento automático de computação e armazenamento do banco de dados de acordo com a demanda.
+
+- Diferente do Aurora padrão, não há necessidade de provisionar instâncias de banco de dados. 
+- O Aurora Serverless é uma opção econômica para cargas de trabalho com picos de tráfego imprevisíveis.
+- Gerencia automaticamente a escalabilidade, o desempenho, a disponibilidade, a segurança e as tarefas administrativas, permitindo que os desenvolvedores se concentrem na construção de aplicações.
+- É capaz de desligar o banco de dados quando não está sendo usado, reduzindo significativamente os custos.
+- É cobrado por segundo de uso.
+
+**Observação do Autor**: Podemos fazer um paralelo com o **Fargate** para o ECS, onde não é necessário o provisionamento de instâncias EC2 para gestão dos containers.
+
+#### Aurora Multi-Master
+
+Trata-se de uma configuração que permite a criação de diversos bancos de dados **Master** em uma única instância do Aurora, permitindo a criação de várias cópias que podem receber gravações.
+
+- Os clientes podem realizar gravações em qualquer um dos bancos de dados Master sem conflitos, o que ajuda a escalar aplicações críticas em termos de leitura/gravação.
+- Aumenta a disponibilidade, pois, em caso de falha em um dos bancos de dados Master, outros bancos de dados Master podem assumir a carga de trabalho imediatamente.
+
+#### Global Aurora 
+
+Permite que o banco de dados esteja disponível em várias regiões geográficas (**Regions**) aumentando a disponibilidade.
+
+- É possível criar uma réplica primária em uma região primária e réplicas secundárias em outras regiões secundárias. 
+- As réplicas secundárias são sincronizadas continuamente com a réplica primária, e as gravações de leitura e gravação podem ser roteadas para qualquer réplica global, independentemente de sua localização geográfica.
+
+#### Aurora Machine Learning
+
+Permite a utilização de modelos de aprendizado de máquina (machine learning) para melhorar o desempenho e a disponibilidade do seu banco de dados.
+
+Suporta os serviços:
+- AWS SageMaker.
+- AWS Comprehend.
+
+**Casos de uso**: Detecção de fraude, segmentação de anúncios, análise de sentimentos, recomendações de produtos, etc.
 
 ## Network
 
