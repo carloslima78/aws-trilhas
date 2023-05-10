@@ -834,6 +834,159 @@ Suporta os serviços:
 
 **Casos de uso**: Detecção de fraude, segmentação de anúncios, análise de sentimentos, recomendações de produtos, etc.
 
+### Backup e Restore
+
+#### RDS Backup 
+
+- **Backup Automatizado**
+  - Realiza backup diário do banco de dados (durante a janela de backup).
+  - Os logs de transações são copiados pelo RDS a cada 5 minutos.
+  - Capaz de restaurar a qualquer ponto no tempo (do backup mais antigo até 5 minutos atrás).
+  - Possui de 1 a 35 dias de retenção (*Para desabilitar os backups automáticos defina 0 dias*).
+  - Os backups automáticos expiram.
+
+- **Backup Manual - Snapshots**
+  - É acionado manualmente pelo usuário.
+  - Retenção de backup pelo tempo que se desejar.
+  - Os backups manuais não expiram.
+
+#### Aurora Backup
+
+- **Backup Automatizado**
+  - Possui retenção de 1 a 35 dias (*Não pode ser desativado*). 
+  - Possibilita recuperação pontual durante o período de retenção.
+
+- **Backup Manual - Snapshots**
+  - É acionado manualmente pelo usuário.
+  - Retenção de backup pelo tempo que se desejar.
+  - Os backups manuais não expiram.
+
+### Restore (RDS & Aurora)
+
+- Resturação de backup RDS, Aurora ou um Snapshot:
+  - É possível a restauração de um backup automatizado ou snapshot criando um novo banco de dados a partir deste backup.
+
+- Resturação de um banco de dados RDS a partir do S3.
+  1. Cria-se um backup do banco de dados.
+  2. Armazena-se o backup como um objeto em um bucket S3.
+  3. Restaura-se o backup em uma nova instância RDS a partir do objeto no bucket S3.
+
+- Resturação de um banco de dados Aurora a partir do S3.
+  1. Cria-se um backup do banco de dados usando o **Percona XtraBackup**.
+  2. Armazena-se o backup como um objeto em um bucket S3.
+  3. Restaura-se o backup em um novo cluster Autora a partir do objeto no bucket S3.
+
+### Aurora Cloning
+
+Trata-se do recurso capaz de criar um novo cluster Aurora a partir de um cluster existente.
+
+- Mais rápido que Restore e Snapshot.
+- Utiliza o protocolo **copy-on-write**.
+  - O novo cluster utiliza o mesmo volume de dados do cluster original. 
+  - Quando o novo cluster sofre autalizações, o armazenamento adicional e os dados são copiados para que estejam separados.
+- Recomendado para criar bancos de dados de desenvolvimento ou testes a partir de um banco de dados de produção sem gerar impactos no ambiente produtivo.
+  
+### Security (RDS & Aurora)
+
+É possível criptografar os dados no RDS e Aurora, isso significa que os dados armazenados estarão criptografados nos volumes.
+
+- **Criptografia em Repouso**
+  - Os bancos de dados (*Master e Replicas*) são criptografados utilizando o AWS KMS, e a criptografia deve ser habilitada no momento do lançamento da instância.
+  - Se o banco de dados *Master* não for definido para utilizar a critografia, as *Replicas* não serão criptografadas.
+  - Para criptografar um banco de dados que não está criptografado, será necessário criar um snapshot deste banco, e criar uma nova instância a partir desse snapshot habilitando a criptografia.
+
+- **Criptografia em Trânsito**
+  - Deve-se ter comunicação segura entre cliente e servidor utilizando certificado TLS.
+
+- **IAM Role**
+  - Utilização de Roles do IAM para conectar a um banco de dados como camada de segurança adicional.
+
+- **Security Groups**
+  - Controle de acesso de rede para canectar a um banco de dados (Entradas e saídas nas portas).
+
+- **CloudWatch Logs**
+  - Os logs podem ser habilitados e enviados para o CloudWatch e ter uma retenção mais longa.
+
+### RDS Proxy
+
+É possível reforçar a segurança das instâncias RDS utilizando o RDS Proxy, que é um proxy de banco de dados totalmente gerenciado para RDS. As aplicações não se conectam diretamente ao banco de dados, e sim ao proxy para que este se conecte ao banco de dados.
+
+Otimiza a eficiência caso a instância possua muitas conexões abertas, o RDS Proxy pode agrupá-las minimizando a sobrecarga.
+
+- Reduz a sobrecarga nos recursos do banco de dados (*CPU, RAM*) e minimiza as conexões abertas (*timeouts*).
+- Serverless, autoescalável e altamente disponível (multi-AZ).
+- Reduz o tempo de failover do RDS e Aurora em até 66%.
+- Suporta RDS (MySQL, PostgreSQL, MariaDB, MS SQL Server) e Aurora (MySQL, PostgreSQL).
+- Aplica autenticação IAM para o banco de dados e armazena as credenciais no AWS Secrets Manager.
+- Não é acessível publicamente (deve ser acessado a partir da VPC).
+
+## Elastic Cache
+
+Trata-se de um serviço gerenciado pela AWS de banco de dados em memória que oferece suporte ao **Redis** e ao **Memcached**, abstraindo e simplificando as configurações, escalabilidade e gerenciamento de um cluster de cache, além de ter alto desempenho e baixa latência.
+
+**Redis**: Banco de dados em memória de código aberto (*Open Source*) que suporta armazenamento em disco.
+- Multi AZ com failover automático.
+- Réplicas de leitura para dimensionar leituras e tem alta disponibilidade.
+- Recursos de backup e restauração.
+
+**Memcached**: Sistema de cache em memória de código aberto (*Open Source*) com recursos limitados como suporte a strings e cache distribuído.
+- Multi-node para particionamento de dados (*sharding*).
+- Arquitetura multi thread.
+- Não possui alta disponibilidade (*replicação*).
+- Não possui persistência.
+- Não possui backup e restore.
+
+- Colabora para reduzir a carga do bancos de dados em operações de leitura intensas.
+- Torna a aplicação **Stateless**.
+- AWS se responsabiliza pela manutenção, otimizações, configuração, monitoramento, recuperação de falhas e backups.
+
+### Elastic Cache Security 
+
+- Oferece suporte à autenticação IAM para Redis.
+- As políticas IAM no ElastiCache são usadas apenas para Segurança no nível da API da AWS.
+- Redis AUTH:
+  - É possível definir uma senha/token ao criar um cluster Redis.
+  - É um nível adicional de segurança para o cache.
+  - Suporte SSL para criptografia de trânsito.
+- Memcached
+  - Suporta autenticação baseada em SASL.
+
+### Elastic Patterns
+
+- **Lazy Loading**
+ - Os dados são carregados do banco de dados para o cache somente quando são solicitados pela aplicação (*sob demanda*), podendo ficar obsoletos.
+- Evita a sobrecarga da aplicação e banco de dados, e otimiza o uso do cache.
+
+- **Write Through**
+  - Insere ou atutaliza os dados no cache no mesmo momento em que ocorre uma inclusão ou atualização no banco de dados.
+  - Garante que os dados mais recentes estejam sempre disponíveis em cache.
+  - Os dados não ficam obsoletos.
+
+- **Session Store**
+  - Os dados são temporariamente armazenados no cache para reduzir o tempo de resposta da aplicação e melhorar a experiência do usuário (*TTL*).
+  - Usado para armazenar dados da sessão de um usuário, como informações de login, carrinho de compras, preferências, etc.
+  - Evita a necessidade de acessar o banco de dados a todo momento.
+
+### Lista de Portas 
+
+#### Comuns
+
+- FTP: 21
+- SSH: 22
+- SFTP: 22 (mesma da SSH)
+- HTTP: 80
+- HTTPS: 443
+
+#### Banco de Dados
+
+- PostgreSQL: 5432
+- MySQL: 3306
+- Oracle RDS: 1521
+- Microsoft SQL Server: 1433
+- MariaDB: 3306 (same as MySQL)
+- Aurora: 5432 (if PostgreSQL compatible) or 3306 (if MySQL compatible)
+
+
 ## Network
 
 ### ENI (Elastic Network Interface)
