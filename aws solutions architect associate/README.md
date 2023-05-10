@@ -768,7 +768,8 @@ Trata-se de uma configuração que fornece resiliência em caso de falhas em uma
 - A réplica **Stand By** pode ser promovida automaticamente a **Master** se houver uma interrupção na AZ primária, permitindo que as operações do banco de dados continuem sem interrupção.
 - É uma opção para atender aos requisitos de recuperação de desastres, permitindo a recuperação de um banco de dados em outra região da AWS em caso de falha da região principal.
 - Quando a promoção para **Master** é concluída, o DNS do banco de dados é atualizado para apontar para o novo endereço IP primário.
-- A antiga instância **Master** é convertida em uma réplica para permitir que a recuperação e a reparação dela, caso necessário.
+- A antiga instância **Master** é convertida em uma réplica para permitir a recuperação e a reparação dela, caso necessário.
+- Multi-AZ mantém a mesma string de conexão independentemente de qual banco de dados está ativo.
 
 ### RDS Custom
 
@@ -779,14 +780,14 @@ Trata-se do recurso do RDS que permite a execução de instâncias de banco de d
 - **RDS**: O banco de dados e o sistema operacional serão gerenciados pela AWS.
 - **RDS Custom**: Acesso administrativo total ao sistema operacional e ao banco de dados.
 
-**Porém, o gerenciamento automático ofertado pelo RDS (PaaS) é desabilitado**, de forma que o usuário terá toda autonomia de gerenciamento do banco de dados sobe RDS Custom.
+**Porém, o gerenciamento automático ofertado pelo RDS (PaaS) é desabilitado**, de forma que o usuário terá toda autonomia de gerenciamento do banco de dados sob o RDS Custom.
 
 ### Aurora
 
 Trata-se de uma tecnologia proprietária da AWS (Não é Open Source), e foi criado para ser compatível com MySQL e Postgres, ou seja, podemos nos conectar em um banco de dados Aurora como se fosse MySQL ou Postgres.
 
 - Possui **5 vezes mais desempenho em relação ao RDS MySQL** e **3 vezes mais desempenho em relação ao RDS Postgres**.
-- O armazenamento cresce automaticamente, iniciando com 10GB e pode subir até 128TB conforme o inclusão de dados.
+- O armazenamento cresce automaticamente, iniciando com 10GB e pode subir até 128TB conforme a inclusão de dados.
 - Suporta 15 Read Replicas com um atraso inferior a 10 ms.
 - Seu custo é cerca de 20% maior, porém, muito mais eficiênte.
 - 6 cópias dos dados em 3 AZ:
@@ -802,7 +803,7 @@ Tratam-se de Read Repĺicas que possuem DNS exclusivos e que permitem associaç�
 
 Trata-se da modalidade sem servidor do Aurora, e permite o dimensionamento automático de computação e armazenamento do banco de dados de acordo com a demanda.
 
-- Diferente do Aurora padrão, não há necessidade de provisionar instâncias de banco de dados. 
+- Diferente do Aurora RDS, não há necessidade de provisionar instâncias de banco de dados. 
 - O Aurora Serverless é uma opção econômica para cargas de trabalho com picos de tráfego imprevisíveis.
 - Gerencia automaticamente a escalabilidade, o desempenho, a disponibilidade, a segurança e as tarefas administrativas, permitindo que os desenvolvedores se concentrem na construção de aplicações.
 - É capaz de desligar o banco de dados quando não está sendo usado, reduzindo significativamente os custos.
@@ -822,11 +823,11 @@ Trata-se de uma configuração que permite a criação de diversos bancos de dad
 Permite que o banco de dados esteja disponível em várias regiões geográficas (**Regions**) aumentando a disponibilidade.
 
 - É possível criar uma réplica primária em uma região primária e réplicas secundárias em outras regiões secundárias. 
-- As réplicas secundárias são sincronizadas continuamente com a réplica primária, e as gravações de leitura e gravação podem ser roteadas para qualquer réplica global, independentemente de sua localização geográfica.
+- As réplicas secundárias são sincronizadas continuamente com a réplica primária, leitura e gravação podem ser roteadas para qualquer réplica global, independentemente de sua localização geográfica.
 
 #### Aurora Machine Learning
 
-Permite a utilização de modelos de aprendizado de máquina (machine learning) para melhorar o desempenho e a disponibilidade do seu banco de dados.
+Permite a utilização de modelos de aprendizado de máquina (*Machine Learning*) para melhorar o desempenho e a disponibilidade do banco de dados.
 
 Suporta os serviços:
 - AWS SageMaker.
@@ -864,7 +865,7 @@ Suporta os serviços:
 ### Restore (RDS & Aurora)
 
 - Resturação de backup RDS, Aurora ou um Snapshot:
-  - É possível a restauração de um backup automatizado ou snapshot criando um novo banco de dados a partir deste backup.
+  - É possível a restauração de um backup automatizado ou snapshot criando um novo banco de dados a partir deste backup ou snapshot.
 
 - Resturação de um banco de dados RDS a partir do S3.
   1. Cria-se um backup do banco de dados.
@@ -894,6 +895,7 @@ Trata-se do recurso capaz de criar um novo cluster Aurora a partir de um cluster
   - Os bancos de dados (*Master e Replicas*) são criptografados utilizando o AWS KMS, e a criptografia deve ser habilitada no momento do lançamento da instância.
   - Se o banco de dados *Master* não for definido para utilizar a critografia, as *Replicas* não serão criptografadas.
   - Para criptografar um banco de dados que não está criptografado, será necessário criar um snapshot deste banco, e criar uma nova instância a partir desse snapshot habilitando a criptografia.
+  - O banco de dados Oracle não suporta *IAM Database Authentication*.
 
 - **Criptografia em Trânsito**
   - Deve-se ter comunicação segura entre cliente e servidor utilizando certificado TLS.
@@ -924,6 +926,10 @@ Otimiza a eficiência caso a instância possua muitas conexões abertas, o RDS P
 
 Trata-se de um serviço gerenciado pela AWS de banco de dados em memória que oferece suporte ao **Redis** e ao **Memcached**, abstraindo e simplificando as configurações, escalabilidade e gerenciamento de um cluster de cache, além de ter alto desempenho e baixa latência.
 
+- Colabora para reduzir a carga do bancos de dados em operações de leitura intensas.
+- Torna a aplicação **Stateless**.
+- AWS se responsabiliza pela manutenção, otimizações, configuração, monitoramento, recuperação de falhas e backups.
+
 **Redis**: Banco de dados em memória de código aberto (*Open Source*) que suporta armazenamento em disco.
 - Multi AZ com failover automático.
 - Réplicas de leitura para dimensionar leituras e tem alta disponibilidade.
@@ -936,26 +942,22 @@ Trata-se de um serviço gerenciado pela AWS de banco de dados em memória que of
 - Não possui persistência.
 - Não possui backup e restore.
 
-- Colabora para reduzir a carga do bancos de dados em operações de leitura intensas.
-- Torna a aplicação **Stateless**.
-- AWS se responsabiliza pela manutenção, otimizações, configuração, monitoramento, recuperação de falhas e backups.
-
 ### Elastic Cache Security 
 
 - Oferece suporte à autenticação IAM para Redis.
 - As políticas IAM no ElastiCache são usadas apenas para Segurança no nível da API da AWS.
 - Redis AUTH:
-  - É possível definir uma senha/token ao criar um cluster Redis.
+  - É possível definir uma senha/token ao criar um cluster Redis e forçar os usuários se autenticarem com essas credenciais.
   - É um nível adicional de segurança para o cache.
   - Suporte SSL para criptografia de trânsito.
 - Memcached
   - Suporta autenticação baseada em SASL.
 
-### Elastic Patterns
+### Elastic Cache Patterns
 
 - **Lazy Loading**
  - Os dados são carregados do banco de dados para o cache somente quando são solicitados pela aplicação (*sob demanda*), podendo ficar obsoletos.
-- Evita a sobrecarga da aplicação e banco de dados, e otimiza o uso do cache.
+ - Evita a sobrecarga da aplicação e banco de dados, e otimiza o uso do cache.
 
 - **Write Through**
   - Insere ou atutaliza os dados no cache no mesmo momento em que ocorre uma inclusão ou atualização no banco de dados.
@@ -966,6 +968,14 @@ Trata-se de um serviço gerenciado pela AWS de banco de dados em memória que of
   - Os dados são temporariamente armazenados no cache para reduzir o tempo de resposta da aplicação e melhorar a experiência do usuário (*TTL*).
   - Usado para armazenar dados da sessão de um usuário, como informações de login, carrinho de compras, preferências, etc.
   - Evita a necessidade de acessar o banco de dados a todo momento.
+  - Alteranativa ao **ALB Stickness Sessions**.
+
+### Sorted Sets
+
+Trata-se de um tipo de estrutura de dados do Redis que armazena dados em pares chave-valor, com a diferença de que os valores são ordenados com base em uma pontuação (score) atribuída a cada valor.
+
+- **Caso de Uso**
+ - Jogo online, onde é necessário manter uma classificação dos jogadores baseada em pontuações. Nesse caso, é possível usar o Redis Sorted Set para armazenar as pontuações como os valores do conjunto e os nomes dos jogadores como as chaves. 
 
 ### Lista de Portas 
 
