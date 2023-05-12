@@ -994,9 +994,96 @@ Trata-se de um tipo de estrutura de dados do Redis que armazena dados em pares c
 - Oracle RDS: 1521
 - Microsoft SQL Server: 1433
 - MariaDB: 3306 (same as MySQL)
-- Aurora: 5432 (if PostgreSQL compatible) or 3306 (if MySQL compatible)
+- Aurora: 5432 (PostgreSQL) or 3306 (MySQL)
 
+## Desacoplamento - Integração e Mensageria
 
+Comunicação **assíncrona** trata-se da integração entre múltiplas aplicações por meio troca de informações a partir de eventos trafegados em recursos de mensageria.
+
+- SQS: Modelo de filas.
+- SNS: Modelo pub/sub.
+- Kinesis: Modelo de stream em tempo real.
+
+### SQS (Simple Queue Service)
+
+Serviço de filas geranciado pela AWS (**PaaS**) para desacoplamento de aplicações, que fomenta a comunicação assíncrona.
+
+#### SQS Security
+
+- Criptografia
+  - Em trânsito usando API HTTPS.
+  - Em repouso usando AWS KMS.
+  - Criptografia do lado do cliente por conta própria.
+
+- Controle de Acesso
+  - Políticas do IAM para controle de acesso API do SQS.
+
+- Políticas de Acesso
+  - Útilizado para acesso a filas SQS em contas AWS distintas (*Cross Account*).
+
+#### Visibility Timeout
+
+Recurso que garante que uma mensagem se torne invisível para oturos consumidores por um período de tempo definido, enquando outro cosumidor já estiver processando. Após esse *timeout*, a mensagem estará disponível para ser processada pelos demais consumidores.
+	
+- O visibility timeout é ajustável entre 0 e 12 horas (**Por padrão o timeout é ajustado para 30 segundos**).
+- Se uma mensagem não for processada dentro do visibility timeout, ela será processada duas vezes.
+- Se o visibility timeout for alto (horas) e o consumidor demorar a processar a mensagem, o reprocessamento levará bastante tempo.
+- Se o visibility timeout for muito baixo (segundos), pode-se ter mensagens duplicatas.
+- A API **ChangeMessageVisibility** permite que o consumidor obtenha mais tempo para processar a mensagem.
+- A API **DeleteMessage API** notifica o SQS que a mensagem foi processada.
+
+#### Long Polling
+
+Recurso que visa reduzir a quantidade de requisições para uma fila SQS via API, ou seja, ao invés de fazer requisições repetidas para verifificar a existência de novas mensagens na fila, o SQS mantém uma contexão aberta por um período de tempo especificado, e quando a mensagem é recebida, é imediatamente disponibilizada, otimizando latência e custo de chamadas a API.
+
+- Fornece a opção de aguardar pela chegada de novas mensages na fila caso estiver vazia. O SQS mantém a conexão aberta durante o tempo determinado no Long Polling.
+- Reduz o número de requisições na API do SQS, aumentando a eficiência e reduzindo os custos.
+- O tempo de espera (*Wait Time*) pode ser ajustado entre 1 segundo (min) a 20 segundos (max) (recomendado para a maioria dos casos).
+- Pode ser habilitado no nível da fila ou no nível da API usando o parâmetro **WaitTimeSeconds**.
+
+### FIFO Queue (First In / First Out)
+		
+- A primeira mensagem a entrar na fila, será a primeira mensagem a sair (Não disponível em todas as regiões).
+- **As mensagens são processadas em ordem.**
+- Por convenção, o nome da fila deve terminar com **.fifo (Exemplo: **nome-da-fila.fifo)**.
+- **Possui baixo **Throughtput (taxa de transferência)*, 300 mensagens por segundo sem lote e 3000 mensagens por segundo em lote**.
+- Não possui delay por mensagem, somente delay por Queue.
+- Possibilita realizar de-duplication baseado em conteúdo.
+
+### Standard Queue
+		
+- Capaz de escalonar de 1 mensagem por segundo até 10.000 mensagens por segundo.
+- Armazena uma mensagem de 4 a 14 dias **Default Retention of Message**.
+- Não existe limite de quantas mensagens podem ser armazenadas na fila.
+- Capaz de escalonar consumidores horizontalmente.
+- Podem existir mensagens duplicadas.
+- **Não garante ordenação das mensagens (*Best Effort Ordering*)**.
+- Suporta no máximo mensagens de até 256 KB.
+- **Possui **Throughtput (taxa de transferência)* ilimitado**.
+- Baixa latência (menos 10 ms na publicação e recepção de mensagens).
+- Limitação de 256 KB por mensagem enviada.
+- As mensagens podem ser lidas em paralelo por instâncias consumidoras.
+- É possível escalar instâncias em ASG a partir do tamanho da fila, por meio de alarmes no CloudWatch com a métrica disponível no SQS **ApproximateNumberOfMessages**.
+
+### SNS (Simple Notification Service)
+
+#### Mailinator
+
+ Serviço de e-mails descartáveis, gratuito e sem necessidade de registro, aderente a testes no SNS e SES.
+
+- https://www.mailinator.com/
+
+#### Fun-Ont
+
+### Kinesis
+
+Recurso para coleta, processamento e análise de *stream* de dados em tempo real. Fomenta a ingestão de dados como logs de aplicação, métricas, cliques de sites, dados de IoT, vídeos, etc.
+
+### Kinesis Data Stream
+
+- On Demand
+  - Há um nível gratuíto.
+  
 ## Network
 
 ### ENI (Elastic Network Interface)
