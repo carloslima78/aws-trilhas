@@ -1028,13 +1028,13 @@ Recurso que garante que uma mensagem se torne invisível para oturos consumidore
 - O visibility timeout é ajustável entre 0 e 12 horas (**Por padrão o timeout é ajustado para 30 segundos**).
 - Se uma mensagem não for processada dentro do visibility timeout, ela será processada duas vezes.
 - Se o visibility timeout for alto (horas) e o consumidor demorar a processar a mensagem, o reprocessamento levará bastante tempo.
-- Se o visibility timeout for muito baixo (segundos), pode-se ter mensagens duplicatas.
+- Se o visibility timeout for muito baixo (segundos), pode existir mensagens duplicadas.
 - A API **ChangeMessageVisibility** permite que o consumidor obtenha mais tempo para processar a mensagem.
 - A API **DeleteMessage API** notifica o SQS que a mensagem foi processada.
 
 #### Long Polling
 
-Recurso que visa reduzir a quantidade de requisições para uma fila SQS via API, ou seja, ao invés de fazer requisições repetidas para verifificar a existência de novas mensagens na fila, o SQS mantém uma contexão aberta por um período de tempo especificado, e quando a mensagem é recebida, é imediatamente disponibilizada, otimizando latência e custo de chamadas a API.
+Recurso que visa reduzir a quantidade de requisições para uma fila SQS via API, ou seja, ao invés de fazer requisições repetidas para verifificar a existência de novas mensagens na fila, o SQS mantém uma conexão aberta por um período de tempo préviamente especificado, e quando a mensagem é recebida, é imediatamente disponibilizada otimizando latência e custo de chamadas a API.
 
 - Fornece a opção de aguardar pela chegada de novas mensages na fila caso estiver vazia. O SQS mantém a conexão aberta durante o tempo determinado no Long Polling.
 - Reduz o número de requisições na API do SQS, aumentando a eficiência e reduzindo os custos.
@@ -1043,16 +1043,16 @@ Recurso que visa reduzir a quantidade de requisições para uma fila SQS via API
 
 ### FIFO Queue (First In / First Out)
 		
-- A primeira mensagem a entrar na fila, será a primeira mensagem a sair (Não disponível em todas as regiões).
+- A primeira mensagem a entrar na fila, será a primeira mensagem a sair.
 - **As mensagens são processadas em ordem.**
 - Por convenção, o nome da fila deve terminar com **.fifo (Exemplo: **nome-da-fila.fifo)**.
 - **Possui baixo **Throughtput (taxa de transferência)*, 300 mensagens por segundo sem lote e 3000 mensagens por segundo em lote**.
-- Não possui delay por mensagem, somente delay por Queue.
-- Possibilita realizar de-duplication baseado em conteúdo.
+- Não possui delay por mensagem, somente delay por fila.
+- Garante que uma mensagem não seja entregue duas vezes para um mesmo consumidor dentro de um intervalo de tempo especificado.
 
 ### Standard Queue
 		
-- Capaz de escalonar de 1 mensagem por segundo até 10.000 mensagens por segundo.
+- Capaz de escalonar de 1 até 10.000 mensagens por segundo.
 - Armazena uma mensagem de 4 a 14 dias **Default Retention of Message**.
 - Não existe limite de quantas mensagens podem ser armazenadas na fila.
 - Capaz de escalonar consumidores horizontalmente.
@@ -1067,11 +1067,36 @@ Recurso que visa reduzir a quantidade de requisições para uma fila SQS via API
 
 ### SNS (Simple Notification Service)
 
+Recurso para notificações de mensagens de um assinante para um ou mais destinatários (**Pub Sub**).
+
+- Funciona na abordagem *Publish/ Topic / Subscriber*.
+- Um produtor de eventos (**Producer**) envia mensagens somente para um tópico SNS *(1 : N)*.
+- Suporta até **100.000** tópicos SNS como limite.
+- Suporta até **12.500.000** de assinantes (**Subscribers**) por tópico SNS.
+- Cada assinante receberá todas as mensagens enviadas.
+- Possui o recurso para filtro de mensagens *(documentos JSON dentro das configurações do tópico)*.
+
+#### SNS Security
+
+- Criptografia
+  - Em trânsito usando API HTTPS.
+  - Em repouso usando AWS KMS.
+  - Criptografia do lado do cliente por conta própria.
+
+- Controle de Acesso
+  - Políticas do IAM para controle de acesso API do SQS.
+
+- Políticas de Acesso
+  - Útilizado para acesso a tópicos SNS em contas AWS distintas (*Cross Account*).
+  - Útil para permitir que outros serviços AWS produzam mensagens em um tópico do SNS.
+
 #### Mailinator
 
  Serviço de e-mails descartáveis, gratuito e sem necessidade de registro, aderente a testes no SNS e SES.
 
 - https://www.mailinator.com/
+
+**Observação**: O Kinesis Data Streams não é compatível com o SNS, o Kinesis Firehouse sim.
 
 #### Fun-Ont
 
@@ -1083,7 +1108,7 @@ Recurso para coleta, processamento e análise de *stream* de dados em tempo real
 
 - On Demand
   - Há um nível gratuíto.
-  
+
 ## Network
 
 ### ENI (Elastic Network Interface)

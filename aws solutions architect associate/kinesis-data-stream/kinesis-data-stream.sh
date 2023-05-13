@@ -34,4 +34,4 @@ aws kinesis get-shard-iterator --stream-name meu-stream --shard-id shardId-00000
 
 # Consome os dados do Stream com base no ShardIterator retornado na chamada a API "get-shard-iterator"
 # Use o "https://www.base64decode.org/" para decodificar o dado do Stream no campo "Data" que estará criptografado
-aws kinesis get-records --shard-iterator chave-shard-iterator
+aws kinesis get-records --shard-iterator "chave-shard-iterator"
