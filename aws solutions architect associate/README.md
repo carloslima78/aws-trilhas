@@ -1109,6 +1109,134 @@ Recurso para coleta, processamento e análise de *stream* de dados em tempo real
 - On Demand
   - Há um nível gratuíto.
 
+## Route 53
+
+Trata-se do serviço da AWS de escopo global para gerenciar DNS (Domain Name System).
+
+- O nome "53" é dado porque funciona na porta 53.
+- Monitora os servidores para roteamento de tráfego.
+- Roteia o tráfego para servidores mais próximos.
+- Capaz de verificar a saúde dos recursos.
+- **Único serviço da AWS que oferece 100% de SLA de disponibilidade**.
+- Resumo: Possui registro de domínios, DNS, Health Checks, Routing Policy.
+
+### DNS
+
+**DNS - Domain Name Service** é o serviço responsável por traduzir endereços IP para nomes amigáveis.
+
+- **Exemplo**: Para o endereço IP *172.217.18.36* temos o DNS *www.google.com*.
+
+### Record (Registro)
+
+Trata-se da configuração responsável por associar um *hostname (nome de domínio)* a um recurso como um IP ou um CNAME. Ou seja, direciona o tráfego DNS para o local correto de acordo com a requisição do usuário.
+
+#### Record Types
+
+- **A**: Mapeia um *hostname* para um endereço IP IPv4.
+- **AAAA**: Mapeia um *hostname* para um endereço IP IPv6.
+- **CNAME**: Mapeia um *hostname* para um outro nome de domínio.
+  - O destino é um hostname que deve ter um registro A ou AAAA.
+  - Não é possível criar um registro CNAME para o nó superior de um namespace DNS (zona
+Apex).
+  - Exemplo: Não é possível criar para *exemplo.com*, mas é possível de criar para *www.example.com*.
+- **NS**: Servidores de nome para Hosted Zone.
+  - Controla como o tráfego é roteado para um domínio.
+
+### Hosted Zones
+
+Tratam-se de um conteiner para manter informações sobre registros de DNS para um domínio específico. Permite o gerenciamento das configurações de DNS para os domínios. 
+
+- **Public Hosted Zone**
+  - Responsável por rotear solicitações para DNS públicos na internet.
+  - **Exemplo**: aplicacao.dominiopublico.com
+
+- **Private Hosted Zone**
+  - Responsável por rotear solicitações para DNS privados dentro uma rede privada como por exemplo uma VPC.
+  - **Exemplo**: aplicacao.empresa.interno
+
+### TTL (Time to Live)
+
+Define por quanto tempo um registro DNS deve ser armazenado em cache antes de ser atualizado. 
+
+- **High TTL** (Exemplo: 24 horas)
+  - Menor tráfego no Route 53.
+  - Risco de registros desatualizados.
+
+- **Low TTL** (Exemplo: 60 segundos)
+  - Maior tráfego no Route 53, isso significa maior custo também.
+  - Registros desatualizados por menos tempo.
+  - Simples para atualizar registros.
+
+Para registros de Alias, o TTL é obrigatório para cada registro de DNS.
+
+### CNAME vs Alias
+
+- **CNAME**
+  - Usado para criar um apelido ou alias para um domínio ou subdomínio, e direciona as consultas de DNS para o nome de destino.
+  - Apenas para domínios que não são raís.
+
+- **Alias**
+  - Tipo de registro *(Record)* exclusivo no Route 53.
+  - Usado para mapear um nome de domínio para recursos AWS *(ELB, CloudFront, S3 Website, Beanstalk, VPC Interface Endpoint, Global Accelerator)*.
+  - Não funciona para DNS de instâncias EC2.
+  - Funciona para domínios que são raíz e para os que não são.
+  - Não é cobrado.
+  - Possui *Health Check* nativo.
+
+### Health Check
+
+Recurso que permite o monitoramento da saúde e disponitilidade de um endpoint, como um servidor web, instâncias EC2, Load Balancers, etc.
+
+- **Monitor an Endpoint**: Verifica a disponibilidade de um endpoint específico.
+- **Calculated Health Checks**: Verifica a disponibilidade de um conjunto de endpoints.
+- **Private Hosted Zones**: Verifica a disponiblidade de endpoints internos em uma VPC em uma infraestrutura privada.
+
+### Políticas de Roteamento (Routing Policies)
+
+Tratam-se de regras utilizadas pelo Route 53 para determianr como as aplicações serão distribuídas e como vão responder as consultas DNS.
+
+- **Simple**
+  - Fará uma consulta ao servidor DNS e obterá o IPV4 correspondente como resposta.
+  - Roteia o tráfego de requisições para um único recurso.
+  - Suporta várias valores para um mesmo registro.
+  - Única política que não possui Health Check.
+
+- **Wighted**
+  - Distribui percentualmente o tráfego de requisições entre diversos recursos.
+  - Semelhante a um Load Balancer, mas em uma ótica de roteamento de DNS.
+  - Possui Health Check.
+
+- **Latency**
+  - Direciona o tráfego conectando usuários aos servidores mais próximos.
+  - Baseia-se na distância entre usuários e Regions AWS, reduzindo a latência.
+  - Possui Health Check.
+
+- **Failover**
+  - Possui uma instância *primária* e uma instância *failover* evitando desastres *(desaster recover)*.
+  - Verifica a saúde da instância primária, caso falhe, direciona o tráfego para a instância failover.
+  - Possui Health Check. 
+
+  - **Geolocation**
+    - Direciona as requisições para uma localização geográfica específica *(Continente, País, Estado)*.
+    - Diferentemente do *Latency*, se baseia na localização geográfica do usuário.
+    - Possui Health Check. 
+
+  - **Geoproximity**
+    - Direciona as requisições considerando a proximidade geográfica entre o usuário e o endpoints mais próximo.
+    - Visa reduzir a distância entre usuário e recursos AWS basenando-se na localização geográfica dos usuários e recursos AWS e recursos não AWS.
+    - Suporta a transferência de tráfego entre regiões com base no parâmetro **BIAS**, especificando os valores de polarização. *É possível previlegiar determinadas regiões independente de estarem mais próximas ou mais distantes*.
+    - Possui Health Check. 
+
+  - **IP-Based**
+    - Considera o endereço IP do cliente para direionar suas requisições para recursos baseando-se em *ranges* específicos de endereços IP.
+    - Otimiza performance e reduz custos de rede.
+    - Possui Health Check. 
+
+  - **Multi Value**
+    - Permite distribuir o tráfego das requisições entre mútiplos recursos de destino de forma equilibrada.
+    - É semelhante a um Load Balancer, mas seu objetivo é o balanceamento de carga no lado do cliente.
+    - Possui Health Check. 
+
 ## Network
 
 ### ENI (Elastic Network Interface)
