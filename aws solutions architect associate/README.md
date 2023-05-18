@@ -1168,6 +1168,7 @@ Define por quanto tempo um registro DNS deve ser armazenado em cache antes de se
   - Simples para atualizar registros.
 
 Para registros de Alias, o TTL é obrigatório para cada registro de DNS.
+Cada registro DNS tem um TTL que ordena por quanto tempo armazenar os valores em cache esses para não sobrecarregar o DNS.
 
 ### CNAME vs Alias
 
@@ -1236,6 +1237,171 @@ Tratam-se de regras utilizadas pelo Route 53 para determianr como as aplicaçõe
     - Permite distribuir o tráfego das requisições entre mútiplos recursos de destino de forma equilibrada.
     - É semelhante a um Load Balancer, mas seu objetivo é o balanceamento de carga no lado do cliente.
     - Possui Health Check. 
+
+## Elastic Beanstalk
+
+Trata-se de um serviço centralizado para implantar, gerenciar e escalar aplicações Web, simplificando os processos de implantação e provisionamento de recursos de infraestrutura tais como servidores, balanceadores, bancos de dados e tarefas como monitoramento e escalonamento automático.
+
+- Plataforma como serviço (PaaS), gerencia-se somente dados e aplicações.
+- Suporta a implantação de aplicações como *Docker, Go, NodeJs, PHP, Python, .Net (IIS e .Net Core), Apache, NGINX*, etc.
+- Abstrai os serviços como *EC2, ELB, ASG, RDS, Security Group, Elastic IP*, etc, peocupa-se apenas com a codificação das aplicações.
+- Serviço gratuito, paga-se pelas instâncias provisionadas.
+- Suporta monitoramento, envia métricas para o CloudWatch, verifica saúde das aplicações hospedadas.
+- Pode ser usado para monitorar e verificar a integridade de um ambiente.
+- Cria uma stack CloudFormation no momento da criação dos recursos que serão utilizados.
+
+## S3 (Simple Storage Service)
+
+Trata-se de um serviço para armazenamento de objetos seguro, escalável e altamente disponível.
+
+- Possui capacidade **infinita** de armazenamento de objetos em *Buckets*.
+- Possui escopo global.
+
+- **Casos de Uso**
+  - Backup e armazenamento.
+  - Desastres *(Disaster Revovery)*.
+  - Arquivo.
+  - Armazenamento para Cloud Híbrida.
+  - Hospedagem de mídias.
+  - Data Lakes e Big Data.
+  - Entrega de software.
+  - Websites estáticos.
+
+### Buckets
+
+Os objetos *(Arquivos)* são armazenados em diretórios conhecidos como **Buckets**.
+
+- Devem ter **nome único global** para todas as contas e regiões da AWS.
+- Embora o S3 seja um serviço de escopo **global**, os Buckets são criados em nível **regional (AWS Region específica)**.
+- Os Buckets podem ter pastas internas para armazenamento dos objetos conhecidas como **Prefix (Prefixo)**.
+
+- **Convernção para nomear Buckets**:
+    - Não deve conter letras maiúsculas e *Underscore*.
+    - Deve ter entre 3 e 63 caracteres.
+    - Não pode ser um IP.
+    - Deve iniciar com letra minúscula ou um número.
+    - Não deve ter o sufixo *-s3alias*.
+
+  ### Objects 
+
+Trata-se do conteúdo armazenado nos Buckets, podem ser arquivos, vídeos, websites estáticos, imagens, etc.
+
+- O tamanho máximo suportado para um objeto é *5TB (5000 GB)*.
+- Para carregar um arquivo maior que 5GB, considerar o uso do *multi-part Upload*, para que o arquivo seja carregado em pequenas partes.
+
+### Security
+
+- **Used-Based** 
+  - *IAM Policy*: Chamadas de API permitidas a um usuário IAM específico.
+  
+- **Resource-Based**
+  - *Buckets Policies*: Mais comuj, as regras são aplicadas ao Bucket via Console AWS, permite *Cross Accont*.
+  - *Object Access Control List (ACL)*: - granularidade mais fina, pode ser desabilitado.
+  - *Bucket Access Control List (ACL)*: - Menos comum, pode ser desabilitado.
+
+- É possível permitir acesso a um Bucket por usuários de outras contas AWS via Bucket Policy  permitindo *Cross Account*.
+- Objetos em um Bucket podem ser criptografados.
+
+- **Block Public Access** fornece uma camada de segurança adicional para não permitir acesso público ao Bucket, **é habilitado por padrão**.
+
+#### Bucket Policies
+
+Tratam-se de políticas de acesso no formado *JSON* aplicadas a um determinado Bucket. Essas políticas definem permissões granulares para controlar o acesso aos objetos armazenados e especificam quais ações serão permitidas ou negadas para diferentes usuários, grupos de usuários ou até mesmo para todo o público.
+
+- Abaixo segue um exemplo de uma política que permite acesso para que qualquer usuário obtenha os objetos contidos em um Bucket chamado *nome-do-bucket*:
+
+```hcl
+{
+  "Version": "2012-10-17", // Versão da política do IAM
+  "Statement": [ // Lista de declarações (statements) na política.
+    {
+      "Sid": "AllowPublicGetObject", // Identificador único da declaração
+      "Effect": "Allow", // Acesso permitido ou negado, neste caso permitido
+      "Principal": "*", // Conta ou usuário que terá acesso permitido ou negado, neste caso todos terão acesso.
+      "Action": "s3:GetObject", // API com a ação permitida, neste caso obter objetos
+      "Resource": "arn:aws:s3:::nome-do-bucket/*" // Recurso (Resource Name) ao qual a política se aplicará (bucket e objetos)
+    }
+  ]
+}
+```
+
+- **Documentação Oficial da AWS referente a Bucket Policies**:
+  - (https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-iam-policies.html)
+
+
+- **AWS Policy Generator**
+  - Ferramenta que permite criar políticas que controlam o acesso a produtos e recursos da AWS.
+  - (https://awspolicygen.s3.amazonaws.com/policygen.html)
+
+
+### Website Estático
+
+Trata-se do recurso do S3 que permite que hospedar sites estáticos *(HTML, CSS, Javascript, imagens, etc)* em Buckets e torná-los acessíveis na internet.
+
+### Versionamento (Versioning)
+
+Trata-se de uma configuração que permite versionar os objetos armazenados em um Bucket.
+
+- É habilitado a nível de Bucket.
+- Uma vez habilitado não há como desabilitar, é possível suspender.  
+- Recomendado para evitar deleções assidentais de objetos.
+- É possível restarurar versões anteriores de objetos deletados.
+- Cada versão de objeto é uma cópia física do objeto original, portanto, o armazenamento aumenta com as versões e consequentemente o custo.
+  - **Exemplo**: *Para 1 objeto com 2 versões, temos 3 objetos armazenados no Bucket*.           
+- A quantidade de versionamentos de objetos é ilimitada.
+
+### Replicação de Objetos (Replication)
+
+Trata-se do recurso que permite a cópia automática de objetos entre Buckets em regiões diferentes.
+
+- Para utilizar a replicação, os Buckets de origem e destino devem ter o versionamento habilitado.
+
+- **Cross Region Replication (CRR)**
+  - Replicação de objetos entre buckets em regiões diferentes, garantindo a durabilidade dos dados em diferentes localizações geográficas.
+
+- **Same Region Replication (SRR)**
+  - Replicação de objetos entre buckets na mesma região, fornecendo redundância de dados dentro da mesma área geográfica para fins de alta disponibilidade.
+
+### Storage Classes
+
+- **Standard - General Purpose**
+  - Indicado para *Upload e Download* com frequencia muito alta.
+  - 99,99% disponível.
+  - Baixa latência e altas taxas de transferência.
+  - Envia os objetos para 3 ou mais AZs.
+  - É o mais caro, porém, mais rápido e mais confiável.
+
+- **Standard-Infrequent Access (IA)**
+  - Indicado para *Upload e Download* com baixa frequencia, por exemplo, uma vez por semana.
+  - 99,9% disponível *(Pouco menos disponível que o Standard)*.
+  - Casos de uso: Desastres e backups.
+  - Envia os objetos para 3 ou mais AZs.
+  - Consequentemente, paga-se mais barato que o Satandard.
+
+- **One Zone-Infrequent Access**
+  - Os objetos serão armazenados em uma única AZ *(Zona de Disponibilidade)*.
+  - 99,5% disponível.
+  - 99.999999999% durável.
+  - Indicado se momentos de indisponibilidade *(minutos ou horas)* não for um problema.
+  - Paga-se menos.
+
+- **Glacier** 
+  - Recomendado para backup, quando não precisa de acesso imediato.
+  - Não é disponibilizado para *download* no mesmo momento do *upalod*.
+  - Nessa classe, a AWS envia os objetos para servidores mais lentos, porém com muito mais espaço.
+  - *Seria como colocar os arquivos em uma geladeira*.
+
+- **Glacier Deep Archive**
+  - Recomendado para Backup, e a frequencia de acesso é extremamente baixa.
+  - Classe mais barata de todas.
+  - Após o *uplaod*, o *download* será possível após 12 horas.
+  - *Seria como colocar os arquivos em um freezer*.
+    
+    - Intelligent Tiering
+        - Mantém na classe Standard e de acordo com o uso move os arquivos automaticamente para as classes mais baratas.
+        - Verifica a frequencia de download e upload dos arquivos no Bucket e move para as demais classes de acordo com o uso.
+        - Com isso, automaticamente balanceia os custos.
+        - Envia os objetos para 3 ou mais AZs.
 
 ## Network
 
