@@ -1276,13 +1276,13 @@ Os objetos *(Arquivos)* são armazenados em diretórios conhecidos como **Bucket
 - Os Buckets podem ter pastas internas para armazenamento dos objetos conhecidas como **Prefix (Prefixo)**.
 
 - **Convernção para nomear Buckets**:
-    - Não deve conter letras maiúsculas e *Underscore*.
-    - Deve ter entre 3 e 63 caracteres.
-    - Não pode ser um IP.
-    - Deve iniciar com letra minúscula ou um número.
-    - Não deve ter o sufixo *-s3alias*.
+  - Não deve conter letras maiúsculas e *Underscore*.
+  - Deve ter entre 3 e 63 caracteres.
+  - Não pode ser um IP.
+  - Deve iniciar com letra minúscula ou um número.
+  - Não deve ter o sufixo *-s3alias*.
 
-  ### Objects 
+### Objects 
 
 Trata-se do conteúdo armazenado nos Buckets, podem ser arquivos, vídeos, websites estáticos, imagens, etc.
 
@@ -1389,6 +1389,7 @@ Trata-se do recurso que permite a cópia automática de objetos entre Buckets em
   - Recomendado para backup, quando não precisa de acesso imediato.
   - Não é disponibilizado para *download* no mesmo momento do *upalod*.
   - Nessa classe, a AWS envia os objetos para servidores mais lentos, porém com muito mais espaço.
+  - **É cobrado pelo armazenamento e recuperação do objeto**.
   - *Seria como colocar os arquivos em uma geladeira*.
 
 - **Glacier Deep Archive**
@@ -1396,12 +1397,79 @@ Trata-se do recurso que permite a cópia automática de objetos entre Buckets em
   - Classe mais barata de todas.
   - Após o *uplaod*, o *download* será possível após 12 horas.
   - *Seria como colocar os arquivos em um freezer*.
+
+- **Glacier Instant Retrieval**
+ - Recuperação em milissegundos, indicado para objetos acessados ​​uma vez por trimestre.
+ - Duração mínima de armazenamento de 90 dias.
+
+- **Glacier Flexible Retrieval**
+  - Duração mínima de armazenamento de 90 dias.
     
-    - Intelligent Tiering
-        - Mantém na classe Standard e de acordo com o uso move os arquivos automaticamente para as classes mais baratas.
-        - Verifica a frequencia de download e upload dos arquivos no Bucket e move para as demais classes de acordo com o uso.
-        - Com isso, automaticamente balanceia os custos.
-        - Envia os objetos para 3 ou mais AZs.
+- **Intelligent Tiering**
+  - Mantém na classe Standard e de acordo com a frequencia de uso move os objetos automaticamente para as classes mais baratas.
+  - Balanceia automaticamente os custos.
+  - Envia os objetos para 3 ou mais AZs.
+  - Duração mínima de armazenamento de 180 dias.
+
+### Ciclo de Vida (Lifecicle)
+
+Recurso utilizado para mover objetos entre as classes de armazenamento dos Buckets.
+    
+- Para objetos acessados ​​com pouca frequência, mova-os para o **Standard-Infrequent Access**.
+- Para objetos que não necessitam de acesso rápido, mova-os para **Glacier** ou **Glacier Deep Archive**.
+- Objetos em constante movimento podem ser automatizados usando regras de ciclo de vida.
+
+- **Transition Actions**
+  - Transição de objetos de uma classe de armazenamento para outra.
+  - Move objetos para classe **Standard-Infrequent Access** 60 dias após a criação.
+  - Mover objetos para o **Glacier** para arquivamento após 6 meses.
+
+- **Expiration Actions**
+  - Objetos expiram após algum tempo.
+  - Os arquivos de log de acesso podem ser configurados para serem excluídos após 365 dias.
+  - Pode ser usado para excluir versões antigas de objetos *(se o controle de versão estiver ativado)*.
+  - Pode ser usado para excluir *Multi-Part uploads* incompletos.
+
+### Requester For Pay (Pagamento pelo Solicitante) 
+
+Sabe-se que os proprietários de Buckets S3 pagam pelo armazenamento e pela transferência de dados em rede. O **Requester For Pay** permite que os custos sejam transferidos ao solicitante do *download ou upload* dos objetos. 
+
+### Event Notifications
+
+Tratam-se de notificações de eventos ocorridos em um objeto disparado por um Bucket, por exemplo:
+
+- S3:ObjectCreated
+- S3:ObjectRemoved
+- S3:ObjectRestore
+- S3:ObjectReplication
+- etc.
+
+- As notificações de eventos podem ser enviadas para diversos destinos como *SNS, SQS, Lambda, Event Bridge*.
+  - *A partir do **Event Bridge**, é possível notificar mais 18 serviços AWS como destino dos eventos disparados pelo Bucket*.
+
+- São necessárias permissões *IAM* para que o Bucket seja capaz de notificar os destinos, neste caso não se usa *IAM Roles*, define-se *IAM Policies*.
+
+### S3 Select 
+
+Permite recuperar um subconjunto específico de dados de um objeto armazenado no Bucket, de forma que não necessite recuperar o objeto inteiro. 
+
+Utiliza consultas SQL-like para extrair dados diretamente dos objetos no formato CSV, JSON ou Parquet, reduzindo a quantidade de dados transferidos pela rede.
+
+### S3 Analytics 
+
+Fornece insights detalhados sobre o uso e acesso dos dados armazenados no Bucket, permitindo monitorar métricas de desempenho, como a quantidade de solicitações de acesso, tamanho dos objetos etc, de forma que seja possível otimizar custos.
+
+### S3 Inventory
+
+Fornece uma listagem detalhada de todos os objetos armazenados em um Bucket. Coleta informações sobre os objetos, como nome, tamanho, data de modificação e metadados associados.
+
+### S3 Access Log 
+
+Registra informações sobre as solicitações de acesso feitas aos Buckets como endereço IP do solicitante, ação solicitada, código de status da resposta, etc. Colabora para garantir a visibilidade e a rastreabilidade das operações realizadas.
+
+### S3 Batch Operations 
+
+Permite a execução de operações em lote em grandes conjuntos de objetos armazenados nos Buckets tais como cópia, exclusão, modificação de metadados e restauração de objetos do Amazon S3 Glacier.
 
 ## Network
 
