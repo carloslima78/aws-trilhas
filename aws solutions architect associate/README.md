@@ -1453,7 +1453,7 @@ Tratam-se de notificações de eventos ocorridos em um objeto disparado por um B
 
 Permite recuperar um subconjunto específico de dados de um objeto armazenado no Bucket, de forma que não necessite recuperar o objeto inteiro. 
 
-Utiliza consultas SQL-like para extrair dados diretamente dos objetos no formato CSV, JSON ou Parquet, reduzindo a quantidade de dados transferidos pela rede.
+Utiliza consultas SQL para extrair dados diretamente dos objetos no formato CSV, JSON ou Parquet, reduzindo a quantidade de dados transferidos pela rede.
 
 ### S3 Analytics 
 
@@ -1471,53 +1471,231 @@ Registra informações sobre as solicitações de acesso feitas aos Buckets como
 
 Permite a execução de operações em lote em grandes conjuntos de objetos armazenados nos Buckets tais como cópia, exclusão, modificação de metadados e restauração de objetos do Amazon S3 Glacier.
 
+### Criptografia
+
+Os Buckets S3 permitem criptografia de objetos por meio de 4 métodos:
+
+- **Server-Side Encryption (SSE)**
+
+  - *Server-Side Encryption com Amazon S3-Managed Keys (SSE-S3)* **Habilitado por padrão**.
+    - Criptografia de objetos utilizando chaves gerenciadas pela AWS.
+
+  - *Server-Side Encryption com com KMS Keys armazenadas no AWS KMS (SSE-KMS)*.
+    - Criptografia de objetos utilizando o **AWS KMS** para gerenciamento das chaves.
+    - Controle total sobre a política de rotação da chave de criptografia.
+
+  - *Server-Side Encryption com Customer-Provided Keys (SSE-C)*
+    - Criptografia de objetos utilizando chaves gerenciadas pelo próprio usuário.
+    - HTTPS é obrigatório.
+
+- **Client-Side Encryption**
+  - Criptografia gerenciada pelo usuário e desenvolvida utilizando bibliotecas *(Exemplo: Amazon S3 Client-Side Encryption Library)*.
+
+### Multi-Part upload
+
+Recurso que permite a transmissão de arquivos grandes dividindo-o em partes menores e transmitindo essas partes em paralelo, melhorando a velocidade de upload e a resiliência 
+- Capaz de retomar o upload de onde parou em caso de falhas.
+- Recomenda-se para arquivos maiores que 5GB.
+
+### Transfer Acceleration
+
+Recurso que aumenta a velocidade de transferência de um arquivo para um *Edge Location*, que encaminhará para o Bucket na Region de destino.
+- **Foco na de transferência de dados específicos para o AWS S3**.
+- Compatível com o *Multi-Part Upload*.
+
+### CORS (Cross-Origin Resource Sharing)
+
+Mecanismo que permite que uma URL de destino especifique quais URLs de origem estão autorizadas a fazer requisições para recursos hospedados em um determinado domínio. 
+
+### MFA Delete
+
+Configuração de segurança aplicada nos Buckets que exige autenticação por meio de um dispositivo *MFA (Multi-Factor Authentication)* para excluir objetos, acidionando uma camada extra de proteção para evitar exclusões acidentais ou maliciosas de dados críticos.
+
+### Access Log
+
+Registra as atividades de acesso aos Buckets, fornecendo informações detalhadas sobre operações de leitura, gravação e exclusão de objetos.
+
+- Recomendado para fins de auditoria.
+- Os logs das ações do Bucket principal serão escritos em outro Bucket adicional.
+- Os logs podem ser analisados usando ferramentas de análise de dados.
+- O Bucket de registro de logs deve estar na mesma região da que o Bucket principal.
+
+Formatos de log para o S3 (https://docs.aws.amazon.com/AmazonS3/latest/userguide/LogFormat.html)
+
+### URL Pré Assinada
+
+Recurso que permite a geraçao de uma URL temporária e assinada para permitir que usuários acessem objetos específicos em um Bucket sem a necessidade de autenticação direta.
+
+- Podem ser geradas a partir do Console S3, AWS CLI ou SDK.
+- Expiração de uma URL Pré Assinada:
+  - Console S3: 1 minuto até 720 minutos (12 horas).
+  - AWS CLI: Configure a expiração com o parâmetro --expires-in em segundos (padrão 3.600 segundos, máx. 604.800 segundos ~ 168 horas)
+
+### Glacier Vault 
+
+Recurso que permite o bloqueio de um vault no Amazon S3 Glacier, impedindo alterações ou exclusões de objetos por um período definido.
+
+- Garante a conformidade e a imutabilidade dos objetos armazenados, tornando-os invioláveis durante o período especificado.
+- Colabora para atender a requisitos regulatórios e de governança.
+
+### S3 Object Lock
+
+Recurso que bloqueia a exclusão de versões de objeto por um período de tempo especificado.
+
+- Retention Mode - Compliance
+- Retention Mode - Governance
+- Retention Period
+- Legal Hold
+
+### Access Point
+
+Endpoint personalizado que permite o acesso granular e seguro aos objetos armazenados em um Bucket.
+
+Cada Access Point possui:
+- Seu próprio nome DNS (origem da Internet ou origem da VPC).
+- Acess Point Policy (semelhante à política de Bucket).
+
+### Object Lambda
+
+Recurso que permite processar e transformar objetos no momento em que são solicitados, antes de serem retornados aos usuários. 
+
+- Executa funções Lambda para personalizar e modificar os dados do objeto durante a recuperação, possibilitando a aplicação de lógica de negócios.
+- Simplifica o processamento de objetos no Bucket, evitando a necessidade de pré-processamento externo antes do armazenamento.
+
+## Cloud Front
+
+Trata-se do recurso para entrega de conteúdo na Web via CDN (Content Delivery Network).
+
+- É a versão da AWS de CDN (Content Delivery Network).
+- Armazena conteúdo em cache em todo o mundo.
+- É composto por 216 pontos de presença *(Edge Locations)*.
+- Capaz de solucionar problemas de latência por localização.
+- Faz cópias de um web site para a localização mais próxima ao usuário.
+- Integra-se com WAF e Shield para prevenção de ataques.
+
+### Global Acceleration
+
+melhorar a disponibilidade, a performance e a segurança de aplicações públicas.
+
+Recurso que melhora a disponibilidade e performance global de aplicações usando a rede global da AWS.
+
+- Aproveita a rede interna da AWS para otimizar a rota das aplicações em cerca de 60%.
+- As Edge Locations enviam o tráfego para as aplicações.
+- Diferentemente do CloudFront, não possui armazenamento em cache, e funciona para aplicações executadas em uma ou mais regiões da AWS.
+
+## Snow Family
+
+Tratam-se de dispositivos *offline* **físicos, portáteis e altamente seguros** para coletar, processar e migrar dados para dentro e fora da AWS.
+
+- **Snowball Edge**
+  - Solução física para transporte e migração de dados.
+  - Move a importância de *TBs ou PBs* de dados para dentro ou para fora da AWS.
+  - Recomendado para grandes migrações de dados, desaster recovery.
+        
+  - **Snowball Edge Storage Optimized**
+    - **80TB** de capacidade de HDD para volume de bloco e objeto compatível com S3.
+
+  - **Snowball Edge Compute Optimized**   
+    - **42TB** de capacidade de HDD para volume de bloco e objeto compatível com S3.
+
+- **Snowcone**
+  - Pequeno e portátil, robusto e seguro, resiste a ambientes agressivos.
+  - **8TB** de capacidade para uso.
+        
+- **Snowmobile**
+  - Transfere exabytes de dados (1EB = 1.000PB = 1.000.000TBs).
+  - Cada Snowmobile tem 100 PB de capacidade (use vários em paralelo).
+  - Alta segurança: temperatura controlada, GPS, vigilância por vídeo 24 horas por dia, 7 dias por semana.
+  - Superior ao Snowball se transferir mais de **10PB**.
+
+### Transferindo do Snowball para Glacier
+
+Não é possível transferir dados diretamente do Snowball para o Glacier, a estratégia é transferir os dados do Snowball para um Bucket S3, e via *Lifecycle*, transferir do Bucket para o Glacier.
+
+## FSx (Fast Storage File system)
+
+Trata-se do sistema de arquivos de alta performance gerenciado pela AWS.
+
+- É uma alternativa ao EFS e ao S3.
+- É o mesmo que RDS para banco de dados, mas para arquivos.
+- Pode reduzir os custos de armazenamento em 50 a 60%.
+
+- **Fsx for Windows** 
+  - Sistema de arquivos para cargas de trabalho corporativas.
+  - Sistema de compartilhamento nativo do Windows.
+  - Suporta os protocolos SMB (Server Message Block) e Windows NTFS.
+  - Integra-se com Microsoft Active Directory.
+  - Pode ser acessado da AWS ou da infraestrutura local *(on-premise)*.
+
+- **FSx for Lustre (Linux Cluster)**
+  - Sistema de arquivos para cargas de trabalho de alto desempenho (HPC).
+  - Recomendado para Machine Learning, análise, processamento de vídeo, modelagem financeira, etc.
+
+- **FSx for NetApp ONTAP**
+  - Sistema de arquivos *NetApp ONTAP* gerenciado na AWS.
+
+- **FSx for OpenZFS**
+  - Sistema de arquivos *OpenZFS* gerenciado na AWS.
+
+## Storage Gateway
+
+Trata-se do sistema híbrido de armazenamento, que estabelece uma conexão segura entre o os ambientes local (on-premise) e a cloud ou vice versa.
+  
+- Utilizado para backup ou transição de arquivos de on-premise para cloud.
+- Pode conectar o ambiente on-premise ao EBS, S3 e FSx.
+
+- Tipos de Gateway:
+
+  - File Gateway 
+  - FSx File Gateway
+  - Volume Gateway 
+  - Backup Gateway 
+  
+## Transfer Family
+
+Trata-se do serviço que permite a transferência de arquivos para **S3 e EFS** por meio do protocolo FTP.
+
+Suporta os protocolos:
+
+- FTP (File Transfer Protocol (FTP))
+- FTPS (File Transfer Protocol over SSL (FTPS))
+- SFTP (Secure File Transfer Protocol (SFTP))
+
+## Data Synk
+
+Trata-se do um serviço online que automatiza e acelera a movimentação de dados entre serviços de armazenamento em ambientes on-premises e AWS.
+
+Pode sincronizar para:
+- S3 **(qualquer classe de armazenamento, incluindo Glacier)**
+- EFS.
+- FSx **(Windows, Lustre, NetApp, OpenZFS)**.
+
+- Não é contínuo, as transferenicas podem ser agendadas por hora, por dia, por semana.
+- **Única opção de armazenamento que mantém as permissões de arquivos e os metadados**.
+
+## Comparação entre os Recursos de Armazenamento (Storage)
+
+| **Recurso** | **Objetivo** | 
+| ---- | ----- | 
+| S3 | Armazenamento de objetos |
+| S3 Glacier | Arquivamento de objetos |
+| EBS | Armazenamento de bloco para uma instância EC2 |
+| Instance Store | Armazenamento de bloco **temporário** para uma instância EC2 |
+| EFS | Sistema de arquivos em rede (Network File System) |
+| FSx for Windows | Sistema de arquivos em rede para servidores Windows |
+| FSx for Lustre  | Sistema de arquivos em rede de alta performance para servidores Linux |
+| FSx for NetApp ONTAP | Sistema de arquivos compatível com *NetApp ONTAP* | 
+| FSx for OpenZFS | Sistema de arquivos compatível com *OpenZFS* | 
+| Storage Gateway | Sistema híbrido de arquivos | 
+| Transfer Family | Interface FTP, FTPS, SFTP com S3 e EFS | 
+| DataSync | Sincronismo de dados agendados do local para a AWS ou da AWS para a AWS | 
+| Snowcone / Snowball / Snowmobile | Move uma grande quantidade de dados fisicamente para a AWS | 
+
+
 ## Network
 
 ### ENI (Elastic Network Interface)
 
-<br><br>
 
-# Computação em Núvem (Cloud Computing)
 
-Trata-se da entrega de recursos computacionais que serão cobrados pelo uso.
 
-## Histórico
-
-Antigamente as empresas contratavam salas com servidores físicos conectados via rede com switches, roteadores e firewalls. Cada servidor tinha um objetivo específico como AD, FTP, aplicação, banco de dados etc.
-
-- **Pontos Negativos**
-  - Alto custo.
-  - Tempo de preapração.
-  - Atualizações de softwares.
-  - Extração de backups.
-
-## Analogia: Abertura de uma Academia
-
-- **Desafio**
-  - Qual imóvel utilizar
-  - Quanto investir no espaço
-  - Quanto investir em equipamentos
-  - Quanto investir em locomoção e alimentação
-
-- **Proposta: Serviços Contratados**
-  - Imóvel alugado
-  - Equipamentos alugados
-  - Uber para locomoção
-  - IFood para alimentação
-
-## A Computação em Núvem
-
-- **Principais Serviços Ofertados pela Núvem**
-  - Computação
-  - Armazenamento
-  - Rede
-
-- **Modelos de Serviços em Núvem**
-  - IaaS (Hospedagem)
-  - PaaS (Desenvolvimento)
-  - SaaS (Consumo)
-
-- **Tipos de Núvem**
-  - Pública
-  - Privada
-  - Híbrida
