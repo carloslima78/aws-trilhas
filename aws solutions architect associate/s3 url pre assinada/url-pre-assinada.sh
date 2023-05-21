@@ -1,3 +1,4 @@
+
 # Comando para gerar a URL pré assinada
 aws s3 presign s3://meubucket/meuobjeto --region minharegiao
 

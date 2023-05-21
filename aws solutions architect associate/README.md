@@ -1691,6 +1691,37 @@ Pode sincronizar para:
 | DataSync | Sincronismo de dados agendados do local para a AWS ou da AWS para a AWS | 
 | Snowcone / Snowball / Snowmobile | Move uma grande quantidade de dados fisicamente para a AWS | 
 
+## Containers
+
+### ECS (Elastic Container Service)
+
+Serviço de orquestração de contêineres próprio da AWS que permite executar, gerenciar e dimensionar aplicações em contêineres utilizando clusters com instâncias EC2 ou Fargate *(Serveless)*.
+
+- Iniciar contêineres do Docker na AWS é o mesmo que iniciar tasks (Tarefas) nos clusters ECS.
+
+- **Instâncias EC2**
+  - O usuário é responsável por provisionar e gerenciar a infraestrutura das instâcias EC2.
+  - Cada instância EC2 deve executar o *ECS Agent* para se registrar no Cluster ECS.
+
+- **Fargate (Serveless)**
+  - O usuário não provisiona instâncias EC2, somente as Task Definitions.
+  - A AWS executa as Tasks com base na demanda por CPU e RAM.
+  - Para escalar, basta aumentar o número de Tasks, sem necessidade de aumentar instâncias EC2.
+
+### EKS (Elastic Kubernetes Service)
+
+### ECR (Elastic Container Registry)
+
+- As imagens Docker são armazenadas em repositórios.
+
+  - **Docker Hub (https://hub.docker.com)**
+    - Repositório público.
+
+  - **ECR**
+    - Repositório privado.
+    - Repositório público (ECR Public Gallery https://gallery.ecr.aws)
+
+### App Runner
 
 ## Network
 

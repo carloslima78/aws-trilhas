@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Verifica a versão do CLI

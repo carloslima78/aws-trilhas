@@ -1,4 +1,5 @@
 
+
 #!/bin/bash
 # Comandos para instalar um servidor httpd (Linux 2 version)
 yum update -y
