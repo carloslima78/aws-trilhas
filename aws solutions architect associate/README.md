@@ -1699,14 +1699,23 @@ Serviço de orquestração de contêineres próprio da AWS que permite executar,
 
 - Iniciar contêineres do Docker na AWS é o mesmo que iniciar tasks (Tarefas) nos clusters ECS.
 
-- **Instâncias EC2**
+- **Iniciação por Instâncias EC2**
   - O usuário é responsável por provisionar e gerenciar a infraestrutura das instâcias EC2.
   - Cada instância EC2 deve executar o *ECS Agent* para se registrar no Cluster ECS.
 
-- **Fargate (Serveless)**
+- **Iniciação por Fargate (Serveless)**
   - O usuário não provisiona instâncias EC2, somente as Task Definitions.
   - A AWS executa as Tasks com base na demanda por CPU e RAM.
   - Para escalar, basta aumentar o número de Tasks, sem necessidade de aumentar instâncias EC2.
+
+#### ECS - IAM Roles
+
+- **EC2 Instance Profile (somente para instâncias EC2)**
+  - Utilizado pelo ECS Agente para fazer chamadas de API ao ECS Service, enviar logs ao CloudWatch Logs, Pull de imagens Docker do ECR, referencia a dados no Secrets Manager.
+
+- **ECS Task Role**
+  - Permite que cada Task tenha uma Role específica.
+  - A Rolet da Task é definida na Task Definition.
 
 ### EKS (Elastic Kubernetes Service)
 
