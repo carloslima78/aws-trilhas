@@ -12,6 +12,12 @@ def lambda_handler(event, context):
     # ARN do tópico do Amazon SNS
     topic_arn = 'ARN do tópico SNS'
 
+     # Cria a mensagem a ser enviada para a fila
+    mensagem = {
+        'nome': nome,
+        'idade': idade
+    }
+
     # Publica a mensagem no tópico do Amazon SNS
     sns_client.publish(
         TopicArn=topic_arn,
