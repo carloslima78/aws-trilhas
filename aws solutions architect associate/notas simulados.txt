@@ -1,0 +1,120 @@
+
+- OU (Organization Unit): Restrição de tipos de EC2 para várias contas membro.
+R: Criar um SCP (Service Control Policy) que negue todos exceto os tipos de EC2 permitidos.
+
+- DataSync
+R: O DataSync com conexão Direct Connect é a solução eficiente, segura, confiável e rárpida para 
+sincronizar os dados do dispositivo NAS diretamente para o Amazon S3.
+
+- EC2: tornar indisponível em horário comercial para otimizar custos.
+R: Hibernar é a melhor solução.
+
+- IAM política de senha.
+R: A forma mais fácil é deinir uma política de senha para a conta inteira.
+
+- SQS com priorização de tipos de mensagem (Imagens gratuítas e pagas).
+R: Filas Standard separadas e a priorização das mensagens fica a cargo da camada da aplicação.
+
+- Instâncias EC2 em subnets privadas que precisam ser disponibilizadas para internet:
+R: Colocar as instancias ec2 atras de um load balancer associado a subnests publicas.
+
+- EC2 de desenvolvimento executada entre 9h e 17h de segunda a sexta-feira e EC2 de produção 
+executada 24 horas por dia, 7 dias por semana. 
+R: 
+    "Desenvovimento": "Rerserva de capacidade sob demanda" - Sem compromisso de prazo, podem ser criadas 
+    e canceladas quando necessário.
+   
+    "Produção": "Instâncias reservadas" - Melhor opção para cargas de tabalho contínuas
+
+- Sistema que analisará dados por horas da noite 5 dias por semana.
+R: "Rerserva de capacidade sob demanda" - Sem compromisso de parazo, permite reserva de capacidade  por 
+qualquer duração.
+
+- Problemas de armazenamento local de blocos e NFS.
+R: 
+    Trocar NFS local por File Storage Gateway.
+    Trocar Bloco local por Volume Storage Gateway. 
+
+19 - Aplicativo que armazena conectado a rede NAS com protocolo NFS deseja backup diário de dados.
+R: Usar o dispositivo hardware do Storage Gateway Appliance como configuração local para replicar os
+dados.
+
+20 - Replica RDS que está sendo separado em nova região e o master não é criptografado e precisa ser.
+R: 
+    Criar snapshot criptografado do mestre, criar nova instância em cima do snapshot criptografado
+    e as replicas criptografadas entre as regiões.
+    "NÃO É POSSÍVEL CRIAR REPLICA CRIPTOGRAFADA DE UM MASTER NÃO CRIPTOGRAFADO"
+    "NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
+
+21 - Trabalho em lote a cada trimestre por 5 horas durante 5 dias em 15 instancias.
+R:
+    Instância sob demanda, pois 5 horas durante 5 dias por trimestre, não é tempo suficiente
+    para grantir instâncias reservadas.
+    "INSTANCIAS RESERVADAS EXIGEM COMPROMISSO DE 1 ANO"
+
+23 - Garantir que uma EC2 possa ser iniciada em outra região em caso de desastre.
+R: 
+    Iniciar nova instancia de uma AMI em uma outra região.
+    Copiar uma AMI de uma instancia ec2 e especificar a segunda regiao par destino.
+
+24 - Aplicação com ELB e ASG protegida por WAF que suspeita de um ataque de um IP malicioso.
+R: Configurar o WAF para adicionar condição de correspondencia de IP para bloquear o IP suspeito.
+
+27 - Aplicativo de alto desempenho (HPC) será migrado para aws, qual melhor adaptador?
+R: EFA (Elastic Data Fabric), que é um tipo de ENA com recursos adicionais para aplicativos HPC 
+fortemente acoplados.
+
+30 - Empresa de ecommerce com site estático que busca solução economica para reduzir latencia nos
+EUA, Canadá e Europa.
+R: 
+    CloudFront e definir classe de preço para usar somente EUA, Canadá e Europa.
+    "O CLOUDFRONT PERMITE DEFINIR CLASSES DE PREÇO PARA DEFINIR EM QUAIS PARTES DO MUNDO VAI 
+    ARMAZENAR CACHE"
+
+32 - Empresa que execurta servidores NFS local e deseja backups periódicos no S3
+R: DataSync para transferência de dados online. Solução mais econômica.
+
+34 - Solução com api gateway para persistência de dados chave valor com dados que podem crescer.
+R: DynamoDB e Lambda
+
+
+37 - Melhor solução é dimensionar as instâncias da camada intermediária com
+ASG conforme profundidade do SQS.
+
+ 40 - Criar um snapshot criptografado, criar uma copia criptografada do snapshot, subir nova instancia
+ criptografada e usar o DMS para migrar dados da antiga base para a nova criptografada.
+
+ 43 - Iniciar instâncias do EC2 em várias regiões atrás de um NLB e usar o AWS Global Accelerator" 
+ é a resposta correta.
+ Global Accelerator usa a vasta rede global da AWS sem congestionamento para rotear o tráfego TCP e UDP
+  para um endpoint de aplicativo íntegro na região da AWS mais próxima do usuário.
+
+45 - Injestão ou processamento de dados em TEMPO REAL, é Kinesis.
+
+46- ASG para escala e resiliência e EFS para resiliência com arquivos compartilhados entre várias
+instâncias EC2, diferentemente do EBS que é 1 : 1.
+
+49: EBS General Purpose SSD gp2, armazenamento econômico com latencia de milessegundos.
+
+50 - AmazonMQ com mensagens ativas e em espera com ASG habilitado para as ec2 consumidora 
+e RDS multi az, é a opção mais disponível e simples.
+
+51 - DataSync é a melhor opção para transferência de grandes quantidades de dados sob o Direct Connect.
+
+56 - Criar Endpoint Gateway para o DynamoDB e criar a entrada na Route Tables para o endpoint
+
+55 - Melhor solução é uma função IAM de acesso ao RDS anexada a EC2.
+
+58 - Ativar o versionamento e o MFA são as melhores opções.
+
+- 60 - O RDS cria um certificado SSL e instala na instância do banco de dados, então fazer o download
+do cerfificado e usar ao se conectar a instância RDS é a melhor opção para criptografia em trânsito.
+"NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
+
+61 - Usar o CloudFront com origem personalizada apontando para servidores locais é a melhor opção.
+O Lambda@Edge não é usado para direcionar o tráfego para origens locais.
+
+64 - Usar o recurso de restrição geográfica do CloudFront é a melhor opção.
+
+65 - Atualizar a politica do SQS sqs:SendMessage a conta AWS do parceiro é a opção correta, usando 
+o conceito do mínimo privilegio.
