@@ -1,4 +1,6 @@
 
+Simulado 01
+
 - OU (Organization Unit): Restrição de tipos de EC2 para várias contas membro.
 R: Criar um SCP (Service Control Policy) que negue todos exceto os tipos de EC2 permitidos.
 
@@ -27,7 +29,7 @@ R:
     "Produção": "Instâncias reservadas" - Melhor opção para cargas de tabalho contínuas
 
 - Sistema que analisará dados por horas da noite 5 dias por semana.
-R: "Rerserva de capacidade sob demanda" - Sem compromisso de parazo, permite reserva de capacidade  por 
+R: "Rerserva de capacidade sob demanda" - Sem compromisso de prazo, permite reserva de capacidade  por 
 qualquer duração.
 
 - Problemas de armazenamento local de blocos e NFS.
@@ -35,86 +37,196 @@ R:
     Trocar NFS local por File Storage Gateway.
     Trocar Bloco local por Volume Storage Gateway. 
 
-19 - Aplicativo que armazena conectado a rede NAS com protocolo NFS deseja backup diário de dados.
+- Aplicativo que armazena conectado a rede NAS com protocolo NFS deseja backup diário de dados.
 R: Usar o dispositivo hardware do Storage Gateway Appliance como configuração local para replicar os
 dados.
 
-20 - Replica RDS que está sendo separado em nova região e o master não é criptografado e precisa ser.
+- Replica RDS que está sendo separado em nova região e o master não é criptografado e precisa ser.
 R: 
     Criar snapshot criptografado do mestre, criar nova instância em cima do snapshot criptografado
     e as replicas criptografadas entre as regiões.
     "NÃO É POSSÍVEL CRIAR REPLICA CRIPTOGRAFADA DE UM MASTER NÃO CRIPTOGRAFADO"
     "NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
 
-21 - Trabalho em lote a cada trimestre por 5 horas durante 5 dias em 15 instancias.
+- Trabalho em lote a cada trimestre por 5 horas durante 5 dias em 15 instancias.
 R:
     Instância sob demanda, pois 5 horas durante 5 dias por trimestre, não é tempo suficiente
     para grantir instâncias reservadas.
     "INSTANCIAS RESERVADAS EXIGEM COMPROMISSO DE 1 ANO"
 
-23 - Garantir que uma EC2 possa ser iniciada em outra região em caso de desastre.
+- Garantir que uma EC2 possa ser iniciada em outra região em caso de desastre.
 R: 
     Iniciar nova instancia de uma AMI em uma outra região.
     Copiar uma AMI de uma instancia ec2 e especificar a segunda regiao par destino.
 
-24 - Aplicação com ELB e ASG protegida por WAF que suspeita de um ataque de um IP malicioso.
+- Aplicação com ELB e ASG protegida por WAF que suspeita de um ataque de um IP malicioso.
 R: Configurar o WAF para adicionar condição de correspondencia de IP para bloquear o IP suspeito.
 
-27 - Aplicativo de alto desempenho (HPC) será migrado para aws, qual melhor adaptador?
+- Aplicativo de alto desempenho (HPC) será migrado para aws, qual melhor adaptador?
 R: EFA (Elastic Data Fabric), que é um tipo de ENA com recursos adicionais para aplicativos HPC 
 fortemente acoplados.
 
-30 - Empresa de ecommerce com site estático que busca solução economica para reduzir latencia nos
+Empresa de ecommerce com site estático que busca solução economica para reduzir latencia nos
 EUA, Canadá e Europa.
 R: 
     CloudFront e definir classe de preço para usar somente EUA, Canadá e Europa.
     "O CLOUDFRONT PERMITE DEFINIR CLASSES DE PREÇO PARA DEFINIR EM QUAIS PARTES DO MUNDO VAI 
     ARMAZENAR CACHE"
 
-32 - Empresa que execurta servidores NFS local e deseja backups periódicos no S3
+- Empresa que execurta servidores NFS local e deseja backups periódicos no S3
 R: DataSync para transferência de dados online. Solução mais econômica.
 
-34 - Solução com api gateway para persistência de dados chave valor com dados que podem crescer.
+- Solução com api gateway para persistência de dados chave valor com dados que podem crescer.
 R: DynamoDB e Lambda
 
 
-37 - Melhor solução é dimensionar as instâncias da camada intermediária com
+- Melhor solução é dimensionar as instâncias da camada intermediária com
 ASG conforme profundidade do SQS.
 
- 40 - Criar um snapshot criptografado, criar uma copia criptografada do snapshot, subir nova instancia
+- Criar um snapshot criptografado, criar uma copia criptografada do snapshot, subir nova instancia
  criptografada e usar o DMS para migrar dados da antiga base para a nova criptografada.
 
- 43 - Iniciar instâncias do EC2 em várias regiões atrás de um NLB e usar o AWS Global Accelerator" 
+- Iniciar instâncias do EC2 em várias regiões atrás de um NLB e usar o AWS Global Accelerator" 
  é a resposta correta.
  Global Accelerator usa a vasta rede global da AWS sem congestionamento para rotear o tráfego TCP e UDP
   para um endpoint de aplicativo íntegro na região da AWS mais próxima do usuário.
 
-45 - Injestão ou processamento de dados em TEMPO REAL, é Kinesis.
+- Injestão ou processamento de dados em TEMPO REAL, é Kinesis.
 
-46- ASG para escala e resiliência e EFS para resiliência com arquivos compartilhados entre várias
+- ASG para escala e resiliência e EFS para resiliência com arquivos compartilhados entre várias
 instâncias EC2, diferentemente do EBS que é 1 : 1.
 
-49: EBS General Purpose SSD gp2, armazenamento econômico com latencia de milessegundos.
+- EBS General Purpose SSD gp2, armazenamento econômico com latencia de milessegundos.
 
-50 - AmazonMQ com mensagens ativas e em espera com ASG habilitado para as ec2 consumidora 
+- AmazonMQ com mensagens ativas e em espera com ASG habilitado para as ec2 consumidora 
 e RDS multi az, é a opção mais disponível e simples.
 
-51 - DataSync é a melhor opção para transferência de grandes quantidades de dados sob o Direct Connect.
+- DataSync é a melhor opção para transferência de grandes quantidades de dados sob o Direct Connect.
 
-56 - Criar Endpoint Gateway para o DynamoDB e criar a entrada na Route Tables para o endpoint
+- Criar Endpoint Gateway para o DynamoDB e criar a entrada na Route Tables para o endpoint
 
-55 - Melhor solução é uma função IAM de acesso ao RDS anexada a EC2.
+- Melhor solução é uma função IAM de acesso ao RDS anexada a EC2.
 
-58 - Ativar o versionamento e o MFA são as melhores opções.
+- Ativar o versionamento e o MFA são as melhores opções.
 
-- 60 - O RDS cria um certificado SSL e instala na instância do banco de dados, então fazer o download
+- O RDS cria um certificado SSL e instala na instância do banco de dados, então fazer o download
 do cerfificado e usar ao se conectar a instância RDS é a melhor opção para criptografia em trânsito.
 "NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
 
-61 - Usar o CloudFront com origem personalizada apontando para servidores locais é a melhor opção.
+- Usar o CloudFront com origem personalizada apontando para servidores locais é a melhor opção.
 O Lambda@Edge não é usado para direcionar o tráfego para origens locais.
 
-64 - Usar o recurso de restrição geográfica do CloudFront é a melhor opção.
+- Usar o recurso de restrição geográfica do CloudFront é a melhor opção.
 
-65 - Atualizar a politica do SQS sqs:SendMessage a conta AWS do parceiro é a opção correta, usando 
+- Atualizar a politica do SQS sqs:SendMessage a conta AWS do parceiro é a opção correta, usando 
 o conceito do mínimo privilegio.
+
+- SQS (Pulling) vs SNS (Push)
+
+    SQS é um serviço de fila de mensagens onde os consumidores (subscribers) "puxam" (pull) 
+    as mensagens da fila quando estão prontos para processá-las.
+    Os consumidores verificam periodicamente a fila para obter mensagens disponíveis.
+
+    SNS é um serviço de notificação onde os produtores (publishers) "empurram" (push) mensagens 
+    para tópicos. As mensagens são enviadas para todos os assinantes (subscribers) do tópico 
+    imediatamente após serem publicadas.
+
+    RESUMO:
+    SQS, os consumidores controlam quando obtêm mensagens da fila
+    SNS, as mensagens são enviadas para os assinantes assim que são publicadas.
+=======================================================================================================
+
+Simulado 2
+
+- Data Warehouse e RedShifit
+Quando se falar em data warehouse e consultas complexas, RedShifit é a melhor opção para todas 
+as situações. 
+Melhora o desemppenho de consultas repetidas armazenando em cache e suporta paineis de consulta BI.
+
+- Métricas CloudWatch em EC2
+NÃO EXISTE MÉTRICAS CLOUDWATCH PARA COLETA EM EC2
+A opção é usar o agente CloudWatch para coletar as métricas do sistema de log da EC2 ou instâncias 
+locais e depois enviadas ao CloudWatch.
+
+- Dados armazenados em EBS (gp2) de 2.000 GB que precisa melhorar o desempenho.
+Migrar os dados no volume EBS para o SSD IOPS provisionado (io1), considerando que os dados já
+estão em um volume SSD (gp2).
+
+- Uma opção melhor para ser mais econômico é usar uma ação de rastreamento de destino que seja 
+acionada em um limite de CPU mais baixo.
+
+- Aplicativo ASG com 20 de dia e 2 de madrugada que é lento no inicio da manhã:
+R: Implementar ação de rastreamento de alvo em limite de CPU mais baixo é a melhor e mais economica 
+opção, pois vai se basear na CPU e não vai lançar as 20 instâncias, somente o necessário.
+
+https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html
+
+- Objetos acessados com frequencia por 30 dias, com menos frequencia até 90 dias e após isso expirar
+R: Transição para ONEZONE_IA após 30 dias e após 90 dias expierar é a opção correta.
+
+- Compartilhar VPC de serviços compartilhados para uso de outras VPC, permitindo acesso a somente uma
+instância específica dentro do VPC compartilhado.
+R: 
+    - Balanceador NLB para expor os serviços compartilhados
+    - Private Link como endpoint e restringir o acesso a uma instância especifica.
+
+- Garantir que usuários não burlem o CloudFront e acessem o ELB diretamente
+R: VPC secuirty group para o elb e lambda para atualizar a lista de Ips do CloudFront é a melhor opção,
+pois o é via SG que se garante verificação de intervalos de IPs.
+
+- Tranferência de arquivos alto desempenho HPC.
+R: "FILE SERVER DE ALTO DESEMPENHO "HPC", SEMPRE PENSAR EM FSx FOR LUSTRE"
+
+- Migração de arquivos em servidores Windows c/ DFSR (Distributed File System Replication) 
+R: "FILE SERVER WINDOWS PARA ARQUIVOS DFSR, PROTOCOLO SMB E CONTROLE DE ACL, PENSAR EM FSx FOR WINDOWS"
+
+- RDS PostgreSQL, dimensionar desempenho de leitura altamente disponível de forma econômica.
+R: Réplica de leitura usando ElasticCache.
+
+- Site estático sem gerenciar infraestrutura com acesso via https e com domínio personalizado
+R: CloudFront com origem em um bucket S3 é a melhor opção, pois o CloudFront vincula o conteúdo
+do site estático ao https.
+"O SITE ESTÁTICO SOMENTE NO S3 OFERECE DOMÍNIO PERSONALIZADO MAS NÃO OFERECE HTTPS, SOMENTE HTTP"
+
+- Aplicativo atras de um elb que precisa de roteamento para a região mais próxima e failover automático
+R: 
+    Configurar o Global Accelerator e os ALBs como destino.
+     
+     O Global Accelerator melhora disponibilidade e desempenhno de aplicativos com usuários locais e 
+     globais. Roteia automaticamente os usuários para o edge location mais próximo.
+
+     "CLOUDFRONT NÃO ATRAVESSA A REDE GLOBAL DA AWS"
+
+- Proteger aplicativo web contra ataques XSS
+R: Criar um ALB na frente da camada web e habilitar o WAF.
+
+    O WAF inspeciona possíveis scripts maliciosos.
+    "O SHIELD NÃO PROTEGE CONTRA ATAQUES XSS, SOMENTE ATAQUES DDOS"
+    Ataque XSS = Insersção de scripts maliciosos executados no navegador.
+    Ataque DDos = Sobrecarga de servidores ou rede com uma quantidade excessiva de tráfego.
+
+- Aplicativo que precisa inserir mensagens no SNS, forma mais segura para acesso de endpoints na mesma região.
+R: Private Link, pois é um tipo de VPC Endpoint e permite o trafego seguro dentro da VPC e na AWS sem sair para internet.
+    
+    "PRIVATE LINK É UM TIPO DE VPC ENDPOINT, PENSOU EM MANTER TRAFEGO DENTRO DA AWS, PRIVATE LINK TB É UMA OPÇÃO"
+    "PRIVATE LINK PERMITE QUE CONECTE SERVIÇOS DE UM VPC A OUTROS VPCs"
+
+    "NAT GATEWAY É USADO PARA PERMITIR ACESSO PARA INSTANCIAS EM SUBNETS A INTERNET"
+
+- Aplicativo em EC2 que requer baixa latencia de rede e alta taxa de transferência entre os nós.
+R: Placement Group "Cluster Placement", pois fornece baixa latência.
+
+    Placement Group em EC2 é um cluster lógico que controla a localização física das instâncias dentro da infraestrutura da AWS. 
+    - Cluster: Instâncias EC2 são colocadas próximas umas das outras dentro de uma única zona de disponibilidade.
+    - Spread: Instâncias EC2 são colocadas em hardware diferente para maior resiliência.
+    - Partition: Instâncias EC2 são distribuídas em várias partições para suportar cargas de trabalho de alto desempenho.
+
+- Um aplicativo dentro de um VPC precisa acessar um aplicativo ECS dentro de outro VPC.
+R: Criar um ELB em uma VPC e um Private Link para o ECS é a melhor opção.
+
+    O ELB fica na VPC do provedor (App ECS), e o Private Link na VPC do consumidor para permitir acesso da VPC origem para a destino.
+
+- Aplicação com camada web em subnet publica e camada sql server em subnet privada, quais configurações de security group
+R:
+    - Camada Web: trafego de entrada na 443 (https) da origem 0.0.0.0/0 (todos)
+    - Camada SQL Server: trafego de entrada na 1433 do grupo da camada web
