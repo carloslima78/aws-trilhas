@@ -229,4 +229,48 @@ R: Criar um ELB em uma VPC e um Private Link para o ECS é a melhor opção.
 - Aplicação com camada web em subnet publica e camada sql server em subnet privada, quais configurações de security group
 R:
     - Camada Web: trafego de entrada na 443 (https) da origem 0.0.0.0/0 (todos)
-    - Camada SQL Server: trafego de entrada na 1433 do grupo da camada web
+    - Camada SQL Server: trafego de entrada na 1433 (sql server) do grupo da camada web
+
+- Arquitetura híbrida altamente resiliente para conectar um data center local com a AWS com Direct Connect (DX).
+R: A melhor configuração é o Direct Connect em vários locais, pois foi solicitado resiliência.
+
+    "FALOU-SE EM NÚVEM HIBRIDA, REDUNDANCIA, RESILIENCIA NA CONEXÃO LOCAL <-> AWS, DIRECT CONNECT (DX) SEMPRE É UMA OPÇÃO"
+
+- Banco de dados distribuído executado por varias EC2, com dados replicados por todas EC2 para que se uma se perder, não a perda 
+dos dados. Necessita-se de um armazenamento de bloco com baixa latência e taxa de transferencia que suporta milhões de TPS.
+R: Instance Store é a opção correta, pois fornece armazenamento de bloco temporário com dados que mudam com frequencia, como buffer,
+cache, etc.
+
+- Maneira mais simples de solucionar problemas de desempenho e lentidão de consultas no RDS.
+R: Criar uma Read Replica e direcionar as consultas a ela, É A MANEIRA MAIS FÁCIL DE RESOLVER.
+
+- Gargalode velocidade em banco de dados temporários em um EC2 com um único volume gp2 do EBS de 100 GB.
+R: Mover o banco de dados temporário para o Instance Store.
+
+    "FALOU-SE EM ARMAZENAEMNTO DE DADOS TEMPORÁRIOS INSTANCE STORE PODE SER UMA SOLUÇÃO"
+
+- Como migrar uma conta AWS para outra organização.
+R: Migrar usando a Console do AWS Organizations.
+
+- Dados que devem ser analisados em um S3 durante 7 dias e após isso, devem estar DISPONÍVEIS IMEDIATAMENTE para acessos eventuais.
+R: Transição para "Standard-Infrequent Access (IA)" após 30 dias, pois essa configuração DEIXA OS OBJETOS DISPONÍVEIS IMEDIATAMENTE.
+
+    "ONE ZONE-IA É MAIS BARATO, MAS NÃO PERMITE QUE OS OBJETOS SEJAM DISPONÍVEIS IMEDIATEMENTE"
+
+- Para dados que precisam ser criptografados antes de serem carregados.
+R: Criptografia do lado cliente usando chave mestra armazenada no KMS.
+
+    "NÃO É POSSÍVEL CRIPTOGRAFIA DO LADO CLIENTE COM CHAVE GERENCIADA PELA AWS, SOMENTE COM CHAVE KMS"
+
+- Empresa que deseja conectar seu data center a várias contas AWS, de forma rápida, economica e pouca sobrecarga operacional.
+R: Transit Gateway entre as contas, e atribuir o Direct Connect ao Transit Gateway para rotear o trafego para o data center local.
+
+    O AWS Transit Gateway conecta VPCs e redes locais por meio de um hub central.
+    Permite adicionar rapidamente VPCs, contas da AWS, capacidade de VPN ou gateways do AWS Direct Connect para atender a 
+    uma demanda inesperada, sem ter que lidar com conexões complexas ou tabelas de roteamento massivas. 
+
+- Permitir que usuários de todo o mundo acessem stream de videos sob demanda em tempo real.
+R: CloudFront é a solução correta para transmitir vídeos para todo o mundo sob demanda e em tempo real via HTTP e em vários
+pontos de presença.
+
+    Global Accelerator seria uma maneira cara de aproximar o conteúdo dos usuários em comparação com o uso do CloudFront.
