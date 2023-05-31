@@ -11,7 +11,7 @@ sincronizar os dados do dispositivo NAS diretamente para o Amazon S3.
 - EC2: tornar indisponível em horário comercial para otimizar custos.
 R: Hibernar é a melhor solução.
 
-- IAM política de senha.
+- IAM política de senha para todos usuários em uma conta aws.
 R: A forma mais fácil é deinir uma política de senha para a conta inteira.
 
 - SQS com priorização de tipos de mensagem (Imagens gratuítas e pagas).
@@ -29,8 +29,8 @@ R:
     "Produção": "Instâncias reservadas" - Melhor opção para cargas de tabalho contínuas
 
 - Sistema que analisará dados por horas da noite 5 dias por semana.
-R: "Rerserva de capacidade sob demanda" - Sem compromisso de prazo, permite reserva de capacidade  por 
-qualquer duração.
+R: "Rerserva de capacidade sob demanda" - Sem compromisso de prazo, permite reserva de capacidade por 
+qualquer tempo de duração.
 
 - Problemas de armazenamento local de blocos e NFS.
 R: 
@@ -69,7 +69,8 @@ fortemente acoplados.
 Empresa de ecommerce com site estático que busca solução economica para reduzir latencia nos
 EUA, Canadá e Europa.
 R: 
-    CloudFront e definir classe de preço para usar somente EUA, Canadá e Europa.
+    Usar o CloudFront e definir classe de preço para usar somente EUA, Canadá e Europa.
+    
     "O CLOUDFRONT PERMITE DEFINIR CLASSES DE PREÇO PARA DEFINIR EM QUAIS PARTES DO MUNDO VAI 
     ARMAZENAR CACHE"
 
@@ -79,7 +80,6 @@ R: DataSync para transferência de dados online. Solução mais econômica.
 - Solução com api gateway para persistência de dados chave valor com dados que podem crescer.
 R: DynamoDB e Lambda
 
-
 - Melhor solução é dimensionar as instâncias da camada intermediária com
 ASG conforme profundidade do SQS.
 
@@ -88,8 +88,9 @@ ASG conforme profundidade do SQS.
 
 - Iniciar instâncias do EC2 em várias regiões atrás de um NLB e usar o AWS Global Accelerator" 
  é a resposta correta.
- Global Accelerator usa a vasta rede global da AWS sem congestionamento para rotear o tráfego TCP e UDP
-  para um endpoint de aplicativo íntegro na região da AWS mais próxima do usuário.
+
+    Global Accelerator usa a vasta rede global da AWS sem congestionamento para rotear o tráfego TCP e UDP
+    para um endpoint de aplicativo íntegro na região da AWS mais próxima do usuário.
 
 - Injestão ou processamento de dados em TEMPO REAL, é Kinesis.
 
@@ -111,7 +112,8 @@ e RDS multi az, é a opção mais disponível e simples.
 
 - O RDS cria um certificado SSL e instala na instância do banco de dados, então fazer o download
 do cerfificado e usar ao se conectar a instância RDS é a melhor opção para criptografia em trânsito.
-"NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
+
+    "NÃO É POSSÍVEL HABILITAR CRIPTOGRAFIA DE UM MASTER JÁ EM EXECUÇÃO"
 
 - Usar o CloudFront com origem personalizada apontando para servidores locais é a melhor opção.
 O Lambda@Edge não é usado para direcionar o tráfego para origens locais.
@@ -123,9 +125,9 @@ o conceito do mínimo privilegio.
 
 - SQS (Pulling) vs SNS (Push)
 
-    SQS é um serviço de fila de mensagens onde os consumidores (subscribers) "puxam" (pull) 
+    SQS é um serviço de fila de mensagens onde os consumidores "puxam" (pull) 
     as mensagens da fila quando estão prontos para processá-las.
-    Os consumidores verificam periodicamente a fila para obter mensagens disponíveis.
+    Os consumidores verificam periodicamente a fila para obter mensagens disponíveis (pooling).
 
     SNS é um serviço de notificação onde os produtores (publishers) "empurram" (push) mensagens 
     para tópicos. As mensagens são enviadas para todos os assinantes (subscribers) do tópico 
@@ -134,37 +136,39 @@ o conceito do mínimo privilegio.
     RESUMO:
     SQS, os consumidores controlam quando obtêm mensagens da fila
     SNS, as mensagens são enviadas para os assinantes assim que são publicadas.
+
 =======================================================================================================
 
 Simulado 2
 
 - Data Warehouse e RedShifit
-Quando se falar em data warehouse e consultas complexas, RedShifit é a melhor opção para todas 
+Quando se falar em data warehouse e consultas complexas, RedShifit é a melhor opção para TODAS 
 as situações. 
-Melhora o desemppenho de consultas repetidas armazenando em cache e suporta paineis de consulta BI.
 
-- Métricas CloudWatch em EC2
-NÃO EXISTE MÉTRICAS CLOUDWATCH PARA COLETA EM EC2
-A opção é usar o agente CloudWatch para coletar as métricas do sistema de log da EC2 ou instâncias 
-locais e depois enviadas ao CloudWatch.
+    Melhora o desemppenho de consultas repetidas armazenando em cache e suporta paineis de consulta BI.
+
+- Métricas CloudWatch em EC2.
+R: A opção é usar o agente CloudWatch para coletar as métricas do sistema de log da EC2 ou instâncias 
+locais e depois enviar ao CloudWatch.
+
+    "NÃO EXISTE MÉTRICAS CLOUDWATCH PARA COLETA EM EC2"
 
 - Dados armazenados em EBS (gp2) de 2.000 GB que precisa melhorar o desempenho.
 Migrar os dados no volume EBS para o SSD IOPS provisionado (io1), considerando que os dados já
 estão em um volume SSD (gp2).
 
-- Uma opção melhor para ser mais econômico é usar uma ação de rastreamento de destino que seja 
-acionada em um limite de CPU mais baixo.
-
-- Aplicativo ASG com 20 de dia e 2 de madrugada que é lento no inicio da manhã:
+- Aplicativo ASG com 20 EC2 de dia e 2 EC2 de madrugada que fica lento no inicio da manhã:
 R: Implementar ação de rastreamento de alvo em limite de CPU mais baixo é a melhor e mais economica 
 opção, pois vai se basear na CPU e não vai lançar as 20 instâncias, somente o necessário.
 
 https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html
 
 - Objetos acessados com frequencia por 30 dias, com menos frequencia até 90 dias e após isso expirar
-R: Transição para ONEZONE_IA após 30 dias e após 90 dias expierar é a opção correta.
+R: Transição para ONEZONE_IA após 30 dias e expirar após 90 dias é a opção correta.
 
-- Compartilhar VPC de serviços compartilhados para uso de outras VPC, permitindo acesso a somente uma
+    Se for para STANDARD_IA e após Glacier, vai incidir em custos, além de que, os objetos devem EXPIRAR.
+
+- Compartilhar VPC com serviços compartilhados para uso de outras VPC, permitindo acesso a somente uma
 instância específica dentro do VPC compartilhado.
 R: 
     - Balanceador NLB para expor os serviços compartilhados
@@ -172,7 +176,7 @@ R:
 
 - Garantir que usuários não burlem o CloudFront e acessem o ELB diretamente
 R: VPC secuirty group para o elb e lambda para atualizar a lista de Ips do CloudFront é a melhor opção,
-pois o é via SG que se garante verificação de intervalos de IPs.
+pois é pelo SG que se garante verificação de intervalos de IPs.
 
 - Tranferência de arquivos alto desempenho HPC.
 R: "FILE SERVER DE ALTO DESEMPENHO "HPC", SEMPRE PENSAR EM FSx FOR LUSTRE"
@@ -186,9 +190,11 @@ R: Réplica de leitura usando ElasticCache.
 - Site estático sem gerenciar infraestrutura com acesso via https e com domínio personalizado
 R: CloudFront com origem em um bucket S3 é a melhor opção, pois o CloudFront vincula o conteúdo
 do site estático ao https.
+
 "O SITE ESTÁTICO SOMENTE NO S3 OFERECE DOMÍNIO PERSONALIZADO MAS NÃO OFERECE HTTPS, SOMENTE HTTP"
 
 - Aplicativo atras de um elb que precisa de roteamento para a região mais próxima e failover automático
+e o tráfego deve atravessar a rede global.
 R: 
     Configurar o Global Accelerator e os ALBs como destino.
      
@@ -202,7 +208,7 @@ R: Criar um ALB na frente da camada web e habilitar o WAF.
 
     O WAF inspeciona possíveis scripts maliciosos.
     "O SHIELD NÃO PROTEGE CONTRA ATAQUES XSS, SOMENTE ATAQUES DDOS"
-    Ataque XSS = Insersção de scripts maliciosos executados no navegador.
+    Ataque XSS = Inserção de scripts maliciosos executados no navegador.
     Ataque DDos = Sobrecarga de servidores ou rede com uma quantidade excessiva de tráfego.
 
 - Aplicativo que precisa inserir mensagens no SNS, forma mais segura para acesso de endpoints na mesma região.
@@ -244,7 +250,7 @@ cache, etc.
 - Maneira mais simples de solucionar problemas de desempenho e lentidão de consultas no RDS.
 R: Criar uma Read Replica e direcionar as consultas a ela, É A MANEIRA MAIS FÁCIL DE RESOLVER.
 
-- Gargalode velocidade em banco de dados temporários em um EC2 com um único volume gp2 do EBS de 100 GB.
+- Gargalo de velocidade em banco de dados temporários em um EC2 com um único volume gp2 do EBS de 100 GB.
 R: Mover o banco de dados temporário para o Instance Store.
 
     "FALOU-SE EM ARMAZENAEMNTO DE DADOS TEMPORÁRIOS INSTANCE STORE PODE SER UMA SOLUÇÃO"
@@ -274,3 +280,61 @@ R: CloudFront é a solução correta para transmitir vídeos para todo o mundo s
 pontos de presença.
 
     Global Accelerator seria uma maneira cara de aproximar o conteúdo dos usuários em comparação com o uso do CloudFront.
+
+- Para dimensionar o desempenho de leitura de um RDS Multi AZ com alta disponibilidade e de forma econômica...
+R: Criar uma réplica de leitura como uma instância do banco multi az.
+
+    O RDS cria um stand by da replica em outra az para suporte a failover, essa réplica é independente do banco de dados origem.
+
+- Os dados devem ser criptografados no S3 usando chaves "geradas" e "gerenciadas" no local (No cliente).
+R: SSE-C, criptografia no lado servidor com chaves fornecidas pelo cliente.
+
+    O uso da criptografia do lado do servidor com chaves de criptografia fornecidas pelo cliente (SSE-C) 
+    permite que você defina suas próprias chaves de criptografia. 
+
+- RedShift vs DynamoDB
+
+    "REDSHIFT NÃO FORNECE RESPOSTA EM MILESSEGUNDOS, NESSE CASO É DYNAMO"
+
+- CloudFront OAI 
+
+    É um usuário especial do CloudFront que pode ser associado a distribuição.
+
+- Armazenamento com Durabilidade
+
+    - Sempre pensar em File Gateway, pois é um backup do S3 que é extremamente durável
+
+=======================================================================================================
+
+Simulado 3
+
+- Kinesis Shards
+
+    Aumentar o número de shards.
+
+- ASG Políticas 
+
+    - RASTREAEMNTO DE DESTINO SEMPRE QUE HOUVER UM PERCENTUAL DE CPU DESEJADO.
+    - ESCALONAMENTO AGENDADO SEMPRE QUE HOUVER PROBLEMAS COM DATAS.
+
+
+- Nat Gateway
+
+    "NAT GATEWAY PERMITE CONEXÃO DA INTERNET COM UMA SUBNET PRIVADA"
+
+- SQS FIFO GARANTE A ORDEM DA ENTREGA DAS MENSAENS
+
+- Estratégia de recuperação de desastres para failover com tempo de recuperação (RTO) de 10 minutos e um objetivo de ponto de 
+recuperação (RPO) de 5 minutos.
+R: Recriar o banco como Aurora Global com um cluster em cada região e uma lambda para promover o secundário.
+
+    "SEMPRE QUE TIVER PONTO DE RECUPERAÇÃO (RPO) E TEMPO DE RECUPERAÇÃO (RTO), AURORA GLOBAL"
+
+- Migrar grandes quantidades de dados do local para S3, já existe um Direct Connect.
+R: DataSync para o ambiente local e uma tarefa para conecta-lo ao vpc endpoint.
+
+    - O STORAGE GATEWAY É PARA CENÁRIO HÍBRIDOS ONDE SE NECESSITA DE ACESSO LOCAL AOS DADOS.
+    - O STORAGE GATEWAY NÃO ACELERA A REPLICAÇÃO DE DADOS
+
+- Para protocolo SMB, FSx é a solução
+
