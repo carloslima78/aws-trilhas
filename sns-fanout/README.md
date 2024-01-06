@@ -281,6 +281,7 @@ O comando abaixo, removerá todos os recursos criados na AWS.
 ```hcl
 # Destrói todos os recursos criados
 terraform destroy -auto-approve 
+```
 
 ## Conclusão
 
