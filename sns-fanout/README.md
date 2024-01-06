@@ -1,4 +1,4 @@
-# Trilhando o Padrão Fanout com Amazon SNS e SQS
+# Padrão Fanout: Disbribuindo e filtrando mensagens com SNS (Pub), SQS (Sub) e Terraform (IaaC)
 
 O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
 
@@ -45,7 +45,6 @@ Ao implementar o padrão Fanout com o SNS e SQS, é possível configurar tópico
 Utilizando filtros, as mensagens são direcionadas com precisão para aos assinantes apropriadas, evitando distribuições desnecessárias. 
 
 As filas SQS, por sua vez, agem como assinantes desses tópicos, recebendo e processando as mensagens de acordo com as necessidades específicas de cada consumidor.
-
 
 ## Aplicando na Prática
 
@@ -250,6 +249,21 @@ output "queue_name_boleto" {
 output "queue_name_contabil" {
   value = aws_sqs_queue.pagamento_contabil.name
 }
+```
+
+### Criando os recursos
+
+Após criar o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
+
+```hcl
+# Inicia o Terraform e instala os componentes de acordo com os recursos declarados que serão criados
+terraform init 
+
+# Apresenta o plano dos recursos que serão criados de acordo com a receita Terraform
+terraform plan
+
+# Aplica a criação dos recursos conforme o planejamento apresentado no "terraform plan", porém, sem solicitar confirmação
+terraform apply -auto-approve
 ```
 
 ## Conclusão
