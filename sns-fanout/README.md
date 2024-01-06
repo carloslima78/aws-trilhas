@@ -46,7 +46,15 @@ Utilizando filtros, as mensagens são direcionadas com precisão para aos assina
 
 As filas SQS, por sua vez, agem como assinantes desses tópicos, recebendo e processando as mensagens de acordo com as necessidades específicas de cada consumidor.
 
-## Aplicando na Prática
+## Terraform (IaaC)
+
+O Terraform incorpora o conceito de Infraestrutura como Código (IaaC). Sua função é definir e provisionar recursos em núvem (Neste caso na AWS), como tópicos SNS, filas SQS e permissões, utilizando código declarativo. 
+
+Ao adotar a abordagem IaaC, a infraestrutura torna-se facilmente gerenciável e escalável, permitindo uma implementação consistente e eficiente da arquitetura de mensageria na AWS. 
+
+Essa prática não apenas agiliza o ciclo de vida dos recursos, mas também proporciona flexibilidade e facilita futuras atualizações na infraestrutura de forma padronizada.
+
+## Mão na Massa: Aplicando na Prática
 
 O código Terraform apresentado logo abaixo, representa a implementação do padrão Fanout com filtro de mensagens, utilizando o Amazon Simple Notification Service (SNS) como Publisher e o Simple Queue Service (SQS) como Subscribler. 
 
@@ -265,6 +273,14 @@ terraform plan
 # Aplica a criação dos recursos conforme o planejamento apresentado no "terraform plan", porém, sem solicitar confirmação
 terraform apply -auto-approve
 ```
+
+Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados.
+
+O comando abaixo, removerá todos os recursos criados na AWS.
+
+```hcl
+# Destrói todos os recursos criados
+terraform destroy -auto-approve 
 
 ## Conclusão
 
