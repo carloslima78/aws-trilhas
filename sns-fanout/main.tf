@@ -23,7 +23,7 @@ resource "aws_sqs_queue" "pagamento_contabil" {
   name = "pagamento-contabil"
 }
 
-# Adicionando permissões para o tópico SNS escrever na fila
+# Adicionando permissões para o tópico SNS escrever na fila para o meio de pagamento pix
 resource "aws_sqs_queue_policy" "permissao_pagamento_pix" {
   queue_url = aws_sqs_queue.pagamento_pix.id
   policy    = <<EOF
@@ -52,7 +52,7 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_pix" {
 EOF
 }
 
-# Adicionando permissões para o tópico SNS escrever na fila
+# AAdicionando permissões para o tópico SNS escrever na fila para o meio de pagamento boleto
 resource "aws_sqs_queue_policy" "permissao_pagamento_boleto" {
   queue_url = aws_sqs_queue.pagamento_boleto.id
   policy    = <<EOF
@@ -81,7 +81,7 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_boleto" {
 EOF
 }
 
-# Adicionando permissões para o tópico SNS escrever na fila
+# Adicionando permissões para o tópico SNS escrever na fila para o fluxo contábil
 resource "aws_sqs_queue_policy" "permissao_pagamento_contabil" {
   queue_url = aws_sqs_queue.pagamento_contabil.id
   policy    = <<EOF

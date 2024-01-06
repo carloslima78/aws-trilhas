@@ -1,4 +1,4 @@
-# Trilhando o Padrão Fanout com Amazon SNS e SQS: Ampliando a Distribuição de Mensagens
+# Trilhando o Padrão Fanout com Amazon SNS e SQS
 
 O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
 
@@ -47,17 +47,11 @@ Utilizando filtros, as mensagens são direcionadas com precisão para aos assina
 As filas SQS, por sua vez, agem como assinantes desses tópicos, recebendo e processando as mensagens de acordo com as necessidades específicas de cada consumidor.
 
 
-## Eficiência na Distribuição de Mensagens
-
-O padrão Fanout, quando implementado com Amazon SNS e SQS, oferece uma solução escalável e eficiente para a distribuição de mensagens em sistemas distribuídos. 
-
-O uso do filtro de mensagens do SNS garante que as mensagens relevantes sejam entregues a cada consumidor específico, minimizando a sobrecarga e maximizando a eficiência operacional. 
-
-Essa abordagem não apenas simplifica a arquitetura, mas também contribui para um melhor desempenho e gerenciamento de recursos em ambientes complexos e dinâmicos.
-
 ## Aplicando na Prática
 
 O código Terraform apresentado logo abaixo, representa a implementação do padrão Fanout com filtro de mensagens, utilizando o Amazon Simple Notification Service (SNS) como Publisher e o Simple Queue Service (SQS) como Subscribler. 
+
+Partindo do princípio de que todo o código apresentado está sendo escrito em um arquivo "main.tf":
 
 ### Definindo o Provedor AWS
 
@@ -103,7 +97,7 @@ resource "aws_sqs_queue" "pagamento_contabil" {
 A permissão para que o tópico SNS escreva nas filas SQS é estabelecida utilizando os recursos aws_sqs_queue_policy. 
 
 ```hcl
-# Adicionando permissões para o tópico SNS escrever na fila
+# Adicionando permissões para o tópico SNS escrever na fila para o meio de pagamento pix
 resource "aws_sqs_queue_policy" "permissao_pagamento_pix" {
   queue_url = aws_sqs_queue.pagamento_pix.id
   policy    = <<EOF
@@ -132,7 +126,7 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_pix" {
 EOF
 }
 
-# Adicionando permissões para o tópico SNS escrever na fila
+# AAdicionando permissões para o tópico SNS escrever na fila para o meio de pagamento boleto
 resource "aws_sqs_queue_policy" "permissao_pagamento_boleto" {
   queue_url = aws_sqs_queue.pagamento_boleto.id
   policy    = <<EOF
@@ -161,7 +155,7 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_boleto" {
 EOF
 }
 
-# Adicionando permissões para o tópico SNS escrever na fila
+# Adicionando permissões para o tópico SNS escrever na fila para o fluxo contábil
 resource "aws_sqs_queue_policy" "permissao_pagamento_contabil" {
   queue_url = aws_sqs_queue.pagamento_contabil.id
   policy    = <<EOF
@@ -186,19 +180,6 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_contabil" {
       }
     }
   ]
-}
-EOF
-}
-
-# Criando a assinatura da fila "pagamento-pix" no tópico "pagamento-efetuado" com filtro
-resource "aws_sns_topic_subscription" "assinatura_pix" {
-  topic_arn = aws_sns_topic.pagamento_efetuado.arn
-  protocol  = "sqs"
-  endpoint  = aws_sqs_queue.pagamento_pix.arn
-
-  filter_policy = <<EOF
-{
-  "tipo": ["pix"]
 }
 EOF
 }
@@ -271,7 +252,15 @@ output "queue_name_contabil" {
 }
 ```
 
-O código Terraform apresentado acima, proporciona uma base para a criação e configuração automatizada de recursos SNS e SQS na AWS, facilitando a implementação de padrões como Fanout para distribuição eficiente de mensagens em sistemas distribuídos.
+## Conclusão
+
+O padrão Fanout, quando implementado com Amazon SNS e SQS, oferece uma solução escalável e eficiente para a distribuição de mensagens em sistemas distribuídos. 
+
+O uso do filtro de mensagens do SNS garante que as mensagens relevantes sejam entregues a cada consumidor específico, minimizando a sobrecarga e maximizando a eficiência operacional. 
+
+Essa abordagem não apenas simplifica a arquitetura, mas também contribui para um melhor desempenho e gerenciamento de recursos em ambientes complexos e dinâmicos.
+
+O código Terraform apresentado, proporciona uma base para a criação e configuração automatizada de recursos SNS e SQS na AWS, facilitando a implementação de padrões como Fanout para distribuição eficiente de mensagens em sistemas distribuídos.
 
 
 
