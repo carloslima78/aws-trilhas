@@ -69,3 +69,4 @@ Neste artigo vamos explorar o Amazon Elastic Container Service (ECS), um serviç
 O Amazon ECS emerge como uma poderosa solução para orquestração de contêineres na AWS. Seja utilizando EC2 para controle granular ou optando pela simplicidade do Fargate.
 
 Oferece flexibilidade e escalabilidade para atender às demandas variadas das aplicações modernas. Ao compreender a estrutura e os recursos do ECS, os desenvolvedores podem otimizar suas implementações e impulsionar o desempenho de suas aplicações na nuvem.
+
