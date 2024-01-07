@@ -64,6 +64,8 @@ Imaginemos um ambiente financeiro na nuvem, onde as mensagens de pagamento desem
 
 No centro desse ambiente está o Tópico SNS denominado "Pagamento Efetuado". Este tópico funciona como o canal central que anuncia a ocorrência de pagamentos, sendo o ponto focal para distribuição de mensagens.
 
+![Diagrama](diagramas/caso-de-uso.png)
+
 ### Três Destinos Estratégicos - Filas SQS:
 
 1. Fila PIX - Filtrando Transações Instantâneas:
