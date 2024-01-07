@@ -340,17 +340,18 @@ Após a execução com sucesso dos comandos acima, espera-se que os recursos def
 
 ![Diagrama](diagramas/sqs-filas.png)
 
-#### Assinataura da fila via PIX com tópico Pagamento Efetuado e o filtro
+#### Assinatauras das filas SQS com o tópico Pagamento Efetuado
 
-![Diagrama](diagramas/assintatura-pix.png)
+![Diagrama](diagramas/assintaturas.png)
 
-#### Assinataura da fila via boleto com tópico Pagamento Efetuado e o filtro
+#### Filtro da assinatura da fila pix para mensagens de pagamento realizados com este meio de pagamento
 
-![Diagrama](diagramas/assintatura-boleto.png)
+![Diagrama](diagramas/filtro-pix.png)
 
-#### Assinataura da fila contábil com tópico Pagamento Efetuado 
+#### Filtro da assinatura da fila boleto para mensagens de pagamento realizados com este meio de pagamento
 
-![Diagrama](diagramas/assintatura-boleto.png)
+![Diagrama](diagramas/filtro-boleto.png)
+
 
 O comando abaixo, removerá todos os recursos criados na AWS.
 
