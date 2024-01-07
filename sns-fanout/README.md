@@ -4,6 +4,8 @@ O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensage
 
 Nesse contexto, a Amazon Simple Notification Service (SNS) se destaca como uma ferramenta robusta para a implementação desse padrão, especialmente quando combinada com as Filas de Mensagens do Amazon Simple Queue Service (SQS).
 
+!(carloslima78/aws-trilhas/tree/main/sns-fanout/diagramas/fanout.png)
+
 ## Distribuição Eficiente de Mensagens
 
 O padrão Fanout é frequentemente utilizado em arquiteturas de microsserviços e sistemas distribuídos para alcançar a escalabilidade e a flexibilidade na distribuição de mensagens. 
@@ -54,7 +56,35 @@ Ao adotar a abordagem IaaC, a infraestrutura torna-se facilmente gerenciável e 
 
 Essa prática não apenas agiliza o ciclo de vida dos recursos, mas também proporciona flexibilidade e facilita futuras atualizações na infraestrutura de forma padronizada.
 
-## Mão na Massa: Aplicando na Prática
+## Caso de Uso: Arquitetura de Mensageria Financeira na Nuvem - PIX, Boleto e Contábil
+
+Imaginemos um ambiente financeiro na nuvem, onde as mensagens de pagamento desempenham um papel vital. Vamos explorar um cenário onde um tópico SNS representa eventos de pagamentos efetuados e três filas SQS consumidoras desempenham funções distintas.
+
+### O Banco Eletrônico - Tópico SNS:
+
+No centro desse ambiente está o Tópico SNS denominado "Pagamento Efetuado". Este tópico funciona como o canal central que anuncia a ocorrência de pagamentos, sendo o ponto focal para distribuição de mensagens.
+
+### Três Destinos Estratégicos - Filas SQS:
+
+1. Fila PIX - Filtrando Transações Instantâneas:
+
+- A Fila PIX é configurada para receber exclusivamente mensagens relacionadas aos pagamentos via o meio de pagamento PIX. Utiliza-se um filtro para direcionar apenas mensagens PIX para essa fila, otimizando o processamento específico dessas transações instantâneas.
+
+2. Fila Boleto - Foco em Pagamentos Tradicionais:
+
+- A Fila Boleto é designada para mensagens vinculadas a pagamentos realizados por boletos bancários. Semelhante à Fila PIX, ela emprega um filtro para concentrar-se exclusivamente em mensagens associadas a pagamentos via boleto.
+
+3. Fila Contábil - Recebendo Todas as Mensagens:
+
+- Contrariamente às filas anteriores, a Fila Contábil não utiliza filtros. Ela serve como um destino inclusivo, recebendo todas as mensagens de pagamentos efetuados, independentemente do método (PIX, boleto, entre outros). Este destino é estratégico para processos contábeis gerais.
+
+### Conclusão - Eficiência e Especificidade:
+
+Cada fila SQS estabelece uma assinatura com o tópico SNS, delineando suas preferências de filtro conforme o meio de pagamento ou ausência dela. Essas assinaturas são cruciais para direcionar eficientemente as mensagens para os destinos desejados.
+
+Nesse contexto, a arquitetura proposta permite uma distribuição eficiente de mensagens financeiras, atendendo às necessidades específicas de cada componente. PIX, boletos e processos contábeis coexistem harmoniosamente, proporcionando uma abordagem estruturada e eficaz na manipulação de dados financeiros na nuvem.
+
+## Definindo a infraestrutura IaaC
 
 O código Terraform apresentado logo abaixo, representa a implementação do padrão Fanout com filtro de mensagens, utilizando o Amazon Simple Notification Service (SNS) como Publisher e o Simple Queue Service (SQS) como Subscribler. 
 
