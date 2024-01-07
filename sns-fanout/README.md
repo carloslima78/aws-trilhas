@@ -1,4 +1,4 @@
-# Padrão Fanout: Disbribuindo e filtrando mensagens com SNS (Pub), SQS (Sub) e Terraform (IaaC)
+# Padrão Fanout: Distribuição e Filtros de Mensagens com SNS, SQS e Infra Terraform na AWS
 
 O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
 
