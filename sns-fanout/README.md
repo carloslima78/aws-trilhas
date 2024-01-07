@@ -4,7 +4,7 @@ O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensage
 
 Nesse contexto, a Amazon Simple Notification Service (SNS) se destaca como uma ferramenta robusta para a implementação desse padrão, especialmente quando combinada com as Filas de Mensagens do Amazon Simple Queue Service (SQS).
 
-!(sns-fanout/diagramas/fanout.png)
+![Diagrama](diagramas/fanout.png)
 
 ## Distribuição Eficiente de Mensagens
 
