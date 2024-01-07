@@ -363,6 +363,43 @@ Após a execução com sucesso dos comandos acima, espera-se que os recursos def
 
 
 
+### Testando a arquitetura
+
+- Produzindo uma mensagem de pagamento efetuado via pix utilizando o filtro com o atributo "tipo" e valor "pix".
+
+
+![Diagrama](diagramas/sns-evento-pagamento-efetuado-pix.png)
+
+
+- Produzindo uma mensagem de pagamento efetuado via boleto utilizando o filtro com o atributo "tipo" e valor "boleto".
+
+
+![Diagrama](diagramas/sns-evento-pagamento-efetuado-boleto.png)
+
+
+- Consumindo a mensagem de pagamento efetuado via pix a fila SQS pagamento-via-pix. Note que existe apenas a mensagem específica a este meio de pagamento de acordo com o filtro.
+
+
+![Diagrama](diagramas/sqs-pagamento-efetuado-pix.png)
+
+![Diagrama](diagramas/sqs-pagamento-efetuado-pix.mensagem.png)
+
+
+- Consumindo a mensagem de pagamento efetuado via boleto a fila SQS pagamento-via-boleto. Note que existe apenas a mensagem específica a este meio de pagamento de acordo com o filtro.
+
+
+![Diagrama](diagramas/sqs-pagamento-efetuado-boleto.png)
+
+
+![Diagrama](diagramas/sqs-pagamento-efetuado-boleto.mensagem.png)
+
+
+- Consumindo todas as mensagens na fila SQS pagamento-contabil. Note que existem as duas mensagens tanto pix quanto boleto, pois neste caso não houve filtro.
+
+
+![Diagrama](diagramas/sqs-pagamento-efetuado-todos.png)
+
+
 O comando abaixo, removerá todos os recursos criados na AWS.
 
 ```hcl
