@@ -53,7 +53,7 @@ Age como um "empurrador" ativo, enviando mensagens diretamente aos consumidores 
 
 O Amazon SQS, por outro lado, é um serviço de fila de mensagens que opera no modelo "puxe", armazenando as mensagens em filas e aguardando que os consumidores as solicitem. 
 
-O SQS fornece uma camada de desacoplamento entre produtores e consumidores, garantindo que as mensagens sejam processadas na ordem correta e evitando perda de dados.
+Fornece uma camada de desacoplamento entre produtores e consumidores, garantindo que as mensagens sejam processadas na ordem correta e evitando perda de dados.
 
 ### Combinação Eficiente para Garantir a Entrega: SNS + SQS
 
