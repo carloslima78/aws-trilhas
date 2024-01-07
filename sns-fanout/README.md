@@ -104,7 +104,7 @@ No centro desse ambiente está o Tópico SNS denominado "Pagamento Efetuado". Es
 
 - Contrariamente às filas anteriores, a Fila Contábil não utiliza filtros. Ela serve como um destino inclusivo, recebendo todas as mensagens de pagamentos efetuados, independentemente do método (PIX, boleto, entre outros). Este destino é estratégico para processos contábeis gerais.
 
-### Conclusão - Eficiência e Especificidade:
+### Eficiência e Especificidade:
 
 Cada fila SQS estabelece uma assinatura com o tópico SNS, delineando suas preferências de filtro conforme o meio de pagamento ou ausência dela. Essas assinaturas são cruciais para direcionar eficientemente as mensagens para os destinos desejados.
 
@@ -330,7 +330,7 @@ terraform plan
 ```
 
 ```hcl
-# Aplica a criação dos recursos conforme o planejamento apresentado no "terraform plan", porém, sem solicitar confirmação
+# Aplica a criação dos recursos conforme o planejamento acima, porém, sem solicitar confirmação
 terraform apply -auto-approve
 ```
 
