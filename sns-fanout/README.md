@@ -40,13 +40,37 @@ O Amazon SQS, por sua vez, é um serviço de fila totalmente gerenciado que ofer
 
 Ao conectar o SNS a filas SQS, é possível garantir que as mensagens sejam eficientemente encaminhadas para os consumidores finais, mantendo a ordem e a consistência.
 
-## Implementação: SNS e SQS em Harmonia
+## SNS vs SQS
+
+
+### SNS - Serviço de Notificação Proativo 
+
+O Amazon SNS é um serviço de mensageria ativo, projetado para notificar e distribuir mensagens para um ou mais consumidores, como endpoints de aplicativos, filas SQS, e-mails, SMS, Push, etc. 
+
+Ele age como um "empurrador" ativo, enviando mensagens diretamente aos consumidores interessados, eliminando a necessidade de eles buscarem proativamente as informações.
+
+### SQS - Serviço de Filas Reativo
+
+O Amazon SQS, por outro lado, é um serviço de fila de mensagens que opera no modelo "puxe". 
+
+Ele armazena mensagens em filas, aguardando que os consumidores as solicitem. 
+
+SQS fornece uma camada de desacoplamento entre produtores e consumidores, garantindo que as mensagens sejam processadas na ordem correta e evitando perda de dados.
+
+### Combinação Eficiente para Garantir a Entrega: SNS + SQS
+
+Ao combinar o SNS com o SQS, estabelecemos uma estratégia poderosa para garantir a entrega confiável de mensagens. 
+
+O SNS serve como o iniciador ativo, transmitindo mensagens diretamente aos SQS, enquanto o SQS atua como um buffer resiliente, armazenando as mensagens até que os consumidores estejam prontos para processá-las. Essa abordagem oferece flexibilidade, escalabilidade e robustez na entrega de mensagens em ambientes distribuídos.
+
+## Implementação do Padrão Fanout: SNS e SQS em Harmonia
 
 Ao implementar o padrão Fanout com o SNS e SQS, é possível configurar tópicos no SNS para categorias específicas de mensagens. 
 
 Utilizando filtros, as mensagens são direcionadas com precisão para aos assinantes apropriadas, evitando distribuições desnecessárias. 
 
 As filas SQS, por sua vez, agem como assinantes desses tópicos, recebendo e processando as mensagens de acordo com as necessidades específicas de cada consumidor.
+
 
 ## Terraform (IaaC)
 
@@ -306,7 +330,27 @@ terraform plan
 terraform apply -auto-approve
 ```
 
-Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados.
+Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados conforme imagens abaixo:
+
+#### Tópico SNS - Pagamento Efetuado
+
+![Diagrama](diagramas/sns-pagamento-efetuado.png)
+
+#### Filas SQS - Pagamentos via PIX, Boleto e Contábil
+
+![Diagrama](diagramas/sqs-filas.png)
+
+#### Assinataura da fila via PIX com tópico Pagamento Efetuado e o filtro
+
+![Diagrama](diagramas/assintatura-pix.png)
+
+#### Assinataura da fila via boleto com tópico Pagamento Efetuado e o filtro
+
+![Diagrama](diagramas/assintatura-boleto.png)
+
+#### Assinataura da fila contábil com tópico Pagamento Efetuado 
+
+![Diagrama](diagramas/assintatura-boleto.png)
 
 O comando abaixo, removerá todos os recursos criados na AWS.
 
