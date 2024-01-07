@@ -47,15 +47,13 @@ Ao conectar o SNS a filas SQS, é possível garantir que as mensagens sejam efic
 
 O Amazon SNS é um serviço de mensageria ativo, projetado para notificar e distribuir mensagens para um ou mais consumidores, como endpoints de aplicativos, filas SQS, e-mails, SMS, Push, etc. 
 
-Ele age como um "empurrador" ativo, enviando mensagens diretamente aos consumidores interessados, eliminando a necessidade de eles buscarem proativamente as informações.
+Age como um "empurrador" ativo, enviando mensagens diretamente aos consumidores interessados, eliminando a necessidade de eles buscarem proativamente as informações.
 
 ### SQS - Serviço de Filas Reativo
 
-O Amazon SQS, por outro lado, é um serviço de fila de mensagens que opera no modelo "puxe". 
+O Amazon SQS, por outro lado, é um serviço de fila de mensagens que opera no modelo "puxe", armazenando as mensagens em filas e aguardando que os consumidores as solicitem. 
 
-Ele armazena mensagens em filas, aguardando que os consumidores as solicitem. 
-
-SQS fornece uma camada de desacoplamento entre produtores e consumidores, garantindo que as mensagens sejam processadas na ordem correta e evitando perda de dados.
+O SQS fornece uma camada de desacoplamento entre produtores e consumidores, garantindo que as mensagens sejam processadas na ordem correta e evitando perda de dados.
 
 ### Combinação Eficiente para Garantir a Entrega: SNS + SQS
 
