@@ -60,11 +60,11 @@ Essa prática não apenas agiliza o ciclo de vida dos recursos, mas também prop
 
 Imaginemos um ambiente financeiro na nuvem, onde as mensagens de pagamento desempenham um papel vital. Vamos explorar um cenário onde um tópico SNS representa eventos de pagamentos efetuados e três filas SQS consumidoras desempenham funções distintas.
 
+![Diagrama](diagramas/caso-de-uso.png)
+
 ### O Banco Eletrônico - Tópico SNS:
 
 No centro desse ambiente está o Tópico SNS denominado "Pagamento Efetuado". Este tópico funciona como o canal central que anuncia a ocorrência de pagamentos, sendo o ponto focal para distribuição de mensagens.
-
-![Diagrama](diagramas/caso-de-uso.png)
 
 ### Três Destinos Estratégicos - Filas SQS:
 
