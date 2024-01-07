@@ -332,25 +332,35 @@ terraform apply -auto-approve
 
 Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados conforme imagens abaixo:
 
-#### Tópico SNS - Pagamento Efetuado
+- Tópico SNS - Representa o evento para Pagamento Efetuado
+
 
 ![Diagrama](diagramas/sns-pagamento-efetuado.png)
 
-#### Filas SQS - Pagamentos via PIX, Boleto e Contábil
+
+- Filas SQS - Representam os assinantes do tópico Pagamento Efetuado que receberão as mensagens correspondentes aos meios de pagamento pix e boleto, além do fluxo contábil que receberá todas as mensagens.
+
 
 ![Diagrama](diagramas/sqs-filas.png)
 
-#### Assinatauras das filas SQS com o tópico Pagamento Efetuado
 
-![Diagrama](diagramas/assintaturas.png)
+- Assinatauras das filas SQS com o tópico SNS "pagamento-efeturado".
 
-#### Filtro da assinatura da fila pix para mensagens de pagamento realizados com este meio de pagamento
+
+![Diagrama](diagramas/assinaturas.png)
+
+
+- Filtro incluído na assinatura da fila SQS "pagamento-pix" para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
+
 
 ![Diagrama](diagramas/filtro-pix.png)
 
-#### Filtro da assinatura da fila boleto para mensagens de pagamento realizados com este meio de pagamento
+
+- Filtro incluído na assinatura da fila SQS "pagamento-boleto" para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
+
 
 ![Diagrama](diagramas/filtro-boleto.png)
+
 
 
 O comando abaixo, removerá todos os recursos criados na AWS.
