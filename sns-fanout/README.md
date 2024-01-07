@@ -322,10 +322,14 @@ Após criar o código acima, executar os comandos Terraform abaixo para iniciar,
 ```hcl
 # Inicia o Terraform e instala os componentes de acordo com os recursos declarados que serão criados
 terraform init 
+```
 
+```hcl
 # Apresenta o plano dos recursos que serão criados de acordo com a receita Terraform
 terraform plan
+```
 
+```hcl
 # Aplica a criação dos recursos conforme o planejamento apresentado no "terraform plan", porém, sem solicitar confirmação
 terraform apply -auto-approve
 ```
