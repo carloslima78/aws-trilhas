@@ -1,4 +1,4 @@
-# Padrão Fanout: Distribuição e Filtros de Mensagens com SNS, SQS e Infra Terraform na AWS
+# Padrão Fanout: Distribuição e Filtro de Mensagens com SNS, SQS e Infra Terraform na AWS
 
 O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
 
@@ -187,7 +187,7 @@ resource "aws_sqs_queue_policy" "permissao_pagamento_pix" {
 EOF
 }
 
-# AAdicionando permissões para o tópico SNS escrever na fila para o meio de pagamento boleto
+# Adicionando permissões para o tópico SNS escrever na fila para o meio de pagamento boleto
 resource "aws_sqs_queue_policy" "permissao_pagamento_boleto" {
   queue_url = aws_sqs_queue.pagamento_boleto.id
   policy    = <<EOF
