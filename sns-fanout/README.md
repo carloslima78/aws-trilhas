@@ -317,6 +317,10 @@ output "queue_name_contabil" {
 
 Após criar o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
 
+**Observação:** Execute os comandos via terminal dentro da pasta onde o arquivo Terraform *main.tf* se encontra.
+
+![Diagrama](diagramas/comando-terraform-terminal.png)
+
 ```hcl
 # Inicia o Terraform e instala os componentes de acordo com os recursos declarados que serão criados
 terraform init 
