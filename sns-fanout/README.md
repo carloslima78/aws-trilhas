@@ -1,8 +1,8 @@
 # Padrão Fanout: Distribuição e Filtro de Mensagens com SNS, SQS e Infra Terraform na AWS
 
-O padrão Fanout é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
+O padrão **Fanout** é uma estratégia eficaz quando se trata de distribuir mensagens para vários consumidores sem a necessidade de modificar a lógica de produção de mensagens. 
 
-Nesse contexto, a Amazon Simple Notification Service (SNS) se destaca como uma ferramenta robusta para a implementação desse padrão, especialmente quando combinada com as Filas de Mensagens do Amazon Simple Queue Service (SQS).
+Nesse contexto, a **Amazon Simple Notification Service (SNS)** se destaca como uma ferramenta robusta para a implementação desse padrão, especialmente quando combinada com as Filas de Mensagens do **Amazon Simple Queue Service (SQS)**.
 
 ![Diagrama](diagramas/fanout.png)
 
