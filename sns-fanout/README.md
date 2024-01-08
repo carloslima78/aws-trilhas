@@ -313,7 +313,7 @@ output "queue_name_contabil" {
 }
 ```
 
-### Criando os recursos
+## Criando os recursos na AWS
 
 Após criar o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
 
@@ -365,7 +365,7 @@ Após a execução com sucesso dos comandos acima, espera-se que os recursos def
 
 
 
-### Testando a arquitetura
+## Testando a arquitetura criada na AWS
 
 - Produzindo uma mensagem de pagamento efetuado via pix utilizando o filtro com o atributo "tipo" e valor "pix".
 
