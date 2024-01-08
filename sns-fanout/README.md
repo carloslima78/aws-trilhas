@@ -370,9 +370,11 @@ Após a execução com sucesso dos comandos acima, espera-se que os recursos def
 ![Diagrama](diagramas/filtro-boleto.png)
 
 
+
 ## Testando a arquitetura criada na AWS
 
 Após o provisionamento dos recursos com sucesso na AWS, vamos testar a arquietura.
+
 
 - Produzindo uma mensagem de pagamento efetuado via pix utilizando o filtro com o atributo "tipo" e valor "pix".
 
