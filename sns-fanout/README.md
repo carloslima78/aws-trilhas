@@ -84,7 +84,7 @@ Imaginemos um ambiente financeiro na nuvem, onde as mensagens de pagamento desem
 
 ![Diagrama](diagramas/caso-de-uso.png)
 
-### O Banco Eletrônico - Tópico SNS:
+### Notificação de Pagamento Efetuado - Tópico SNS:
 
 No centro desse ambiente está o Tópico SNS denominado "Pagamento Efetuado". Este tópico funciona como o canal central que anuncia a ocorrência de pagamentos, sendo o ponto focal para distribuição de mensagens.
 
