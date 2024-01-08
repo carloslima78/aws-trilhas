@@ -4,6 +4,11 @@ O padrão **Fanout** é uma estratégia eficaz quando se trata de distribuir men
 
 Nesse contexto, a **Amazon Simple Notification Service (SNS)** se destaca como uma ferramenta robusta para a implementação desse padrão, especialmente quando combinada com as Filas de Mensagens do **Amazon Simple Queue Service (SQS)**.
 
+Com o **Terraform**, tem o relevate papel de automatizar o provisionamento de toda a infraestrutura necessária para implementar o padrão Fanout, incluindo tópicos do SNS, filas do SQS e filtros de mensagens.
+
+Isso facilita o gerenciamento da infraestrutura e garante que ela esteja sempre atualizada e consistente.
+
+
 ![Diagrama](diagramas/fanout.png)
 
 ## Distribuição Eficiente de Mensagens
