@@ -116,6 +116,7 @@ resource "aws_sns_topic_subscription" "assinatura_pix" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.pagamento_pix.arn
 
+# Adicionando o filtro com o atributo tipo e valor pix
   filter_policy = <<EOF
 {
   "tipo": ["pix"]
@@ -129,6 +130,7 @@ resource "aws_sns_topic_subscription" "assinatura_boleto" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.pagamento_boleto.arn
 
+# Adicionando o filtro com o atributo tipo e valor boleto
   filter_policy = <<EOF
 {
   "tipo": ["boleto"]

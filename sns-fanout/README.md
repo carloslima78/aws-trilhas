@@ -65,7 +65,7 @@ O SNS serve como o iniciador ativo, transmitindo mensagens diretamente aos SQS, 
 
 Ao implementar o padrão Fanout com o SNS e SQS, é possível configurar tópicos no SNS para categorias específicas de mensagens. 
 
-Utilizando filtros, as mensagens são direcionadas com precisão para aos assinantes apropriadas, evitando distribuições desnecessárias. 
+Utilizando filtros, as mensagens são direcionadas com precisão para aos assinantes apropriados, evitando distribuições desnecessárias. 
 
 As filas SQS, por sua vez, agem como assinantes desses tópicos, recebendo e processando as mensagens de acordo com as necessidades específicas de cada consumidor.
 
@@ -112,7 +112,7 @@ Nesse contexto, a arquitetura proposta permite uma distribuição eficiente de m
 
 O código Terraform apresentado logo abaixo, representa a implementação do padrão Fanout com filtro de mensagens, utilizando o Amazon Simple Notification Service (SNS) como Publisher e o Simple Queue Service (SQS) como Subscribler. 
 
-Partindo do princípio de que todo o código apresentado está sendo escrito em um arquivo "main.tf":
+Partindo do princípio de que todo o código apresentado está sendo escrito em um arquivo **main.tf**:
 
 ### Definindo o Provedor AWS
 
@@ -259,6 +259,7 @@ resource "aws_sns_topic_subscription" "assinatura_pix" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.pagamento_pix.arn
 
+# Adicionando o filtro com o atributo tipo e valor pix
   filter_policy = <<EOF
 {
   "tipo": ["pix"]
@@ -272,6 +273,7 @@ resource "aws_sns_topic_subscription" "assinatura_boleto" {
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.pagamento_boleto.arn
 
+# Adicionando o filtro com o atributo tipo e valor boleto
   filter_policy = <<EOF
 {
   "tipo": ["boleto"]
@@ -289,7 +291,7 @@ resource "aws_sns_topic_subscription" "assinatura_contabil" {
 
 ### Outputs para Informações Adicionais
 
-Por fim, são definidos outputs para imprimir informações sobre os recursos provisionados na AWS após a execução do Terraform, como o nome do tópico e o nome das filas.
+Por fim, são definidos outputs para imprimir informações sobre os principais recursos provisionados na AWS após a execução do Terraform, como o nome do tópico e o nome das filas.
 
 ```hcl
 # Output para imprimir o nome do tópico
@@ -315,7 +317,7 @@ output "queue_name_contabil" {
 
 ## Criando os recursos na AWS
 
-Após criar o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
+Após concluir o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
 
 **Observação:** Execute os comandos via terminal dentro da pasta onde o arquivo Terraform *main.tf* se encontra.
 
@@ -344,25 +346,25 @@ Após a execução com sucesso dos comandos acima, espera-se que os recursos def
 ![Diagrama](diagramas/sns-pagamento-efetuado.png)
 
 
-- Filas SQS - Representam os assinantes do tópico Pagamento Efetuado que receberão as mensagens correspondentes aos meios de pagamento pix e boleto, além do fluxo contábil que receberá todas as mensagens.
+- Filas SQS - Representam os assinantes do tópico **pagamento-efetuado** que receberão as mensagens correspondentes aos meios de pagamento pix e boleto, além do fluxo contábil que receberá todas as mensagens.
 
 
 ![Diagrama](diagramas/sqs-filas.png)
 
 
-- Assinatauras das filas SQS com o tópico SNS "pagamento-efeturado".
+- Assinatauras das filas SQS com o tópico SNS **pagamento-efetuado**.
 
 
 ![Diagrama](diagramas/assinaturas.png)
 
 
-- Filtro incluído na assinatura da fila SQS "pagamento-pix" para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
+- Filtro incluído na assinatura da fila SQS **pagamento-pix** para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
 
 
 ![Diagrama](diagramas/filtro-pix.png)
 
 
-- Filtro incluído na assinatura da fila SQS "pagamento-boleto" para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
+- Filtro incluído na assinatura da fila SQS **pagamento-boleto** para recepção das mensagens específicas de pagamentos realizados com este meio de pagamento
 
 
 ![Diagrama](diagramas/filtro-boleto.png)
