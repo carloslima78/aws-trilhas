@@ -24,23 +24,53 @@ Tratam-se data centers fisicamente separados, mas interconectados, dentro de uma
 
 Estratégicamente localizadas a uma distância significativa, até 100 km, essas zonas são separadas estrategicamente para garantir backups seguros e oferecer resiliência contra desastres, aproveitando a separação física para assegurar redundância e aumentar a confiabilidade da infraestrutura na nuvem.
 
+
 ## VPC - Virtual Privte Cloud
 
 - Uma VPC está sempre vinculada a uma region.
 - Uma region suporta até 5 VPCs.
 
+
 ## Subnet
 
 Toda subnet é vinculada a uma VPC
 
+
 ### Subnet Pública
+
 
 ### Subnet Privada
 
 Não possui acesso externo
 Cluster ECS, bancos de dados
 
+
 ## Seurity Group
 
+
 ## Analogia (Cidade)
+
+
+## Criando os recursos na AWS
+
+Após concluir o código acima, executar os comandos Terraform abaixo para iniciar, planejar e aplicar os recursos declarados:
+
+**Observação:** Execute os comandos via terminal dentro da pasta onde o arquivo Terraform *main.tf* se encontra.
+
+![Diagrama](diagramas/comando-terraform-terminal.png)
+
+```hcl
+# Inicia o Terraform e instala os componentes de acordo com os recursos declarados que serão criados
+terraform init 
+```
+
+```hcl
+# Apresenta o plano dos recursos que serão criados de acordo com a receita Terraform
+terraform plan
+```
+
+```hcl
+# Aplica a criação dos recursos conforme o planejamento acima, porém, sem solicitar confirmação
+terraform apply -auto-approve
+```
 
