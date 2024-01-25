@@ -27,13 +27,20 @@ Estratégicamente localizadas a uma distância significativa, até 100 km, essas
 
 ## VPC - Virtual Privte Cloud
 
-- Uma VPC está sempre vinculada a uma region.
-- Uma region suporta até 5 VPCs.
+Uma Virtual Private Cloud (VPC) na AWS é um ambiente de rede isolado na nuvem que permite o provisionamento de recursos, como instâncias EC2, bancos de dados RDS, etc. 
+
+As VPCs possibilitam a definição de políticas de segurança, roteamento e controle de acesso, fornecendo uma infraestrutura personalizada e segura para implantação de aplicações na nuvem.
+
+Vale lembrar que uma VPC está sempre vinculada a uma região específica da AWS, e cada região suporta até 5 VPCs, proporcionando flexibilidade e controle sobre sua infraestrutura na nuvem.
 
 
 ## Subnet
 
-Toda subnet é vinculada a uma VPC
+Uma subnet na AWS é uma subdivisão de uma Virtual Private Cloud (VPC), permitindo a segmentação de recursos em diferentes redes. 
+
+Cada subnet está associada a uma zona de disponibilidade e pode ser configurada como pública ou privada, determinando sua acessibilidade direta pela internet. 
+
+Toda subnet é vinculada a uma VPC, proporcionando um contexto isolado dentro da infraestrutura na nuvem.
 
 
 ### Subnet Pública
@@ -74,4 +81,4 @@ terraform plan
 terraform apply -auto-approve
 ```
 
-Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados
+Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados.
