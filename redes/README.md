@@ -74,3 +74,4 @@ terraform plan
 terraform apply -auto-approve
 ```
 
+Após a execução com sucesso dos comandos acima, espera-se que os recursos definidos nessa trilha tenham sido provisionados
