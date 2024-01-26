@@ -45,11 +45,32 @@ Toda subnet é vinculada a uma VPC, proporcionando um contexto isolado dentro da
 
 ### Subnet Pública
 
+Uma subnet pública é uma parte de uma rede na nuvem configurada para ter acesso direto à internet. Geralmente, é usada para hospedar recursos que precisam ser acessíveis publicamente, como servidores web. 
+
+Essas subnets são configuradas para permitir que instâncias associadas recebam IPs públicos automaticamente, facilitando a comunicação com a internet.
+
 
 ### Subnet Privada
 
-Não possui acesso externo
-Cluster ECS, bancos de dados
+Uma subnet privada é um segmento isolado de uma rede em nuvem que não possui acesso direto à internet. É projetada para hospedar recursos que não precisam ser acessíveis publicamente, como bancos de dados ou servidores de aplicativos internos. 
+
+As instâncias em uma subnet privada podem se comunicar com a internet por meio de um serviço intermediário, como um NAT (Network Address Translation), garantindo maior segurança para dados sensíveis.
+
+
+## Internet Gateway (IGW)
+
+O *Internet Gateway (IGW)* é um componente VPC que permite que instâncias com IPs públicos acessem a internet diretamente, possibilitando interações bidirecionais com recursos externos. 
+
+Isso significa que as instâncias na subnet pública podem servir conteúdo para usuários da internet e também buscar informações ou atualizações diretamente da web, tornando-as ideais para aplicativos web públicos.
+
+
+## NAT Gateway (NGW)
+
+O *NAT Gateway (NGW)* é um serviço gerenciado de Network Address Translation (NAT) e desempenha um papel crucial, permitindo que instâncias sem IPs públicos acessem a internet de forma segura, mantendo suas informações de identificação internas protegidas contra exposição direta. 
+
+O NAT Gateway faz algo semelhante ao Internet Gateway (IGW), mas só funciona de uma maneira, as instâncias em uma sub-rede privada podem se conectar a serviços fora da VPC, mas os serviços externos não podem iniciar uma conexão com essas instâncias.
+
+Isso é especialmente útil para manter ambientes corporativos seguros, onde as operações internas podem ocorrer sem a necessidade de exposição direta à internet.
 
 
 ## Seurity Group
