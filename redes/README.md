@@ -59,6 +59,64 @@ As instâncias em uma subnet privada podem se comunicar com a internet por meio 
 
 ### CIDR Block
 
+*CIDR (Classless Inter-Domain Routing)* é uma forma de representar e especificar ranges de endereços IP. É comumente usado para definir o tamanho de uma rede. 
+
+Vamos pegar um exemplo simples:
+
+Endereço IP: 192.168.0.0
+CIDR: 192.168.0.0/24
+
+No exemplo acima, o "192.168.0.0" é o endereço inicial da sua rede e "/24" indica que os primeiros 24 bits são a parte da rede (o que deixa 8 bits para endereços individuais dentro da rede). 
+
+Em termos simples, isso significa que temos 256 endereços disponíveis para dispositivos em nossa rede porque **2^8 = 256**.
+
+Então, se tivermos um dispositivo com o endereço IP "192.168.0.1" e outro com "192.168.0.2", eles fazem parte da mesma rede porque compartilham os primeiros 24 bits do endereço IP. 
+
+O CIDR ajuda a definir esses limites de forma clara e eficiente, permitindo um gerenciamento eficaz dos endereços IP em uma rede.
+
+Se tivermos um CIDR de /16, isso significa que os primeiros 16 bits do endereço IP são reservados para identificar a rede, e os restantes 16 bits são deixados para endereços individuais dentro dessa rede.
+
+Por exemplo:
+
+Endereço IP: 192.168.0.0
+CIDR: 192.168.0.0/16
+
+Nesse caso, teriamos um espaço de endereçamento muito maior do que o exemplo anterior. Com /16, teremos **2^16 = 65.536** endereços disponíveis para dispositivos dentro da sua rede (porque há 32 bits em um endereço IP e 32 - 16 = 16 bits restantes para endereços individuais).
+
+Então, se tiver um dispositivo com o endereço IP "192.168.1.1" e outro com "192.168.1.2", eles ainda fazem parte da mesma rede porque compartilham os primeiros 16 bits do endereço IP. O CIDR /16 permite uma grande quantidade de endereços, adequando-se a redes maiores.
+
+O número após a barra (/) indica a quantidade de bits usados para identificar a rede.
+
+Alguns exemplos comuns incluem:
+
+/32: Usado para identificar um endereço IP específico.
+/24: Muito comum para redes locais, permitindo até 256 endereços.
+/16: Usado para redes de médio porte, permitindo até 65.536 endereços.
+/8: Reservado para redes muito grandes, permitindo até 16.777.216 endereços.
+
+O cálculo pode ser obtido conforme abaixo:
+
+Para CIDR /8:
+
+\[2^{32-8} = 2^{24} = 16.777.216\]
+\[2^{32-8} = 2^{24} = 2×2×2×…×2 (24 vezes) = 16.777.216\]
+
+Para CIDR /16:
+
+\[2^{32-16} = 2^{16} = 65.536\]
+\[2^{32-16} = 2^{16} = 2×2×2×…×2 (16 vezes) = 65.536\]
+
+Para CIDR /24:
+
+\[2^{32-24} = 2^{8} = 256\]
+\[2^{32-24} = 2^{8} = 2×2×2×…×2 (8 vezes) = 256\]
+
+Isso significa que um bloco de CIDR /8 tem 16.777.216 endereços IP, um bloco de CIDR /16 tem 65.536 endereços IP, e um bloco de CIDR /24 tem 256 endereços IP. 
+
+O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula \(2^{32 - x}\) mostra quantos endereços IP isso representa. 
+
+Quanto menor o número após a barra (/), maior é o bloco de endereços IP.
+
 
 ## Internet Gateway (IGW)
 
