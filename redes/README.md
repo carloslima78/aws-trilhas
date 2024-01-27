@@ -57,16 +57,19 @@ Uma subnet privada é um segmento isolado de uma rede em nuvem que não possui a
 As instâncias em uma subnet privada podem se comunicar com a internet por meio de um serviço intermediário, como um NAT (Network Address Translation), garantindo maior segurança para dados sensíveis.
 
 
+### CIDR Block
+
+
 ## Internet Gateway (IGW)
 
-O *Internet Gateway (IGW)* é um componente VPC que permite que instâncias com IPs públicos acessem a internet diretamente, possibilitando interações bidirecionais com recursos externos. 
+O *Internet Gateway (IGW)* é um componente VPC que permite que instâncias com IPs públicos acessem a internet diretamente **entrada e saída (Inbound e Outbound)**, possibilitando interações bidirecionais com recursos externos. 
 
 Isso significa que as instâncias na subnet pública podem servir conteúdo para usuários da internet e também buscar informações ou atualizações diretamente da web, tornando-as ideais para aplicativos web públicos.
 
 
 ## NAT Gateway (NGW)
 
-O *NAT Gateway (NGW)* é um serviço gerenciado de Network Address Translation (NAT) e desempenha um papel crucial, permitindo que instâncias sem IPs públicos acessem a internet de forma segura, mantendo suas informações de identificação internas protegidas contra exposição direta. 
+O *NAT Gateway (NGW)* é um serviço gerenciado de Network Address Translation (NAT) e desempenha um papel crucial, permitindo que instâncias sem IPs públicos acessem a internet de forma segura **somente saída (Outbound)**, mantendo suas informações de identificação internas protegidas contra exposição direta. 
 
 O NAT Gateway faz algo semelhante ao Internet Gateway (IGW), mas só funciona de uma maneira, as instâncias em uma sub-rede privada podem se conectar a serviços fora da VPC, mas os serviços externos não podem iniciar uma conexão com essas instâncias.
 
