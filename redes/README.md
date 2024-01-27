@@ -145,6 +145,8 @@ Por exemplo:
 - Subnet 2: "10.0.1.128/25"
 - Subnet 3: "10.0.2.0/25"
 
+Se tivermos uma VPC com CIDR 10.0.0.0/16 e criarmos subnets com CIDR 10.0.0.0/24, a diferença nos bits de host entre o CIDR da VPC e o das subnets é 8 bits (24 - 16). Isso significa que poderemos criar 2^8 subnets, ou seja, 256 subnets e cada uma dessas subnets terá 256 endereços IP disponíveis para alocação.
+
 Portanto, o tamanho do bloco CIDR influencia indiretamente na quantidade de subnets, pois determina a quantidade total de endereços IP disponíveis para a VPC, e você precisa decidir como subdividir esse espaço para criar suas subnets.
 
 ### Atribuindo IPs conforme range
