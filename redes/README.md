@@ -96,24 +96,24 @@ Alguns exemplos comuns incluem:
 
 O cálculo pode ser obtido conforme abaixo:
 
-Para CIDR /8:
+**Para CIDR /8:**
 
-\[2^{32-8} = 2^{24} = 16.777.216\]
-\[2^{32-8} = 2^{24} = 2×2×2×…×2 (24 vezes) = 16.777.216\]
+2^32-8 = 2^24 = 16.777.216
+2^32-8 = 2^24 = 2×2×2×…×2 (24 vezes) = 16.777.216
 
-Para CIDR /16:
+**Para CIDR /16:**
 
-\[2^{32-16} = 2^{16} = 65.536\]
-\[2^{32-16} = 2^{16} = 2×2×2×…×2 (16 vezes) = 65.536\]
+2^32-16 = 2^16 = 65.536
+2^32-16 = 2^16 = 2×2×2×…×2 (16 vezes) = 65.536
 
-Para CIDR /24:
+**Para CIDR /24:**
 
-\[2^{32-24} = 2^{8} = 256\]
-\[2^{32-24} = 2^{8} = 2×2×2×…×2 (8 vezes) = 256\]
+2^32-24 = 2^8 = 256
+2^32-24 = 2^8 = 2×2×2×…×2 (8 vezes) = 256
 
 Isso significa que um bloco de CIDR /8 tem 16.777.216 endereços IP, um bloco de CIDR /16 tem 65.536 endereços IP, e um bloco de CIDR /24 tem 256 endereços IP. 
 
-O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula \(2^{32 - x}\) mostra quantos endereços IP isso representa. 
+O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula **2^32 - x**  mostra quantos endereços IP isso representa. 
 
 Quanto menor o número após a barra (/), maior é o bloco de endereços IP.
 
