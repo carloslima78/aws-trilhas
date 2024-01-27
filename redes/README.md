@@ -78,8 +78,8 @@ Se tivermos um CIDR de /16, isso significa que os primeiros 16 bits do endereço
 
 Por exemplo:
 
-Endereço IP: 192.168.0.0
-CIDR: 192.168.0.0/16
+- Endereço IP: 192.168.0.0
+- CIDR: 192.168.0.0/16
 
 Nesse caso, teriamos um espaço de endereçamento muito maior do que o exemplo anterior. Com /16, teremos **2^16 = 65.536** endereços disponíveis para dispositivos dentro da sua rede (porque há 32 bits em um endereço IP e 32 - 16 = 16 bits restantes para endereços individuais).
 
@@ -89,10 +89,10 @@ O número após a barra (/) indica a quantidade de bits usados para identificar 
 
 Alguns exemplos comuns incluem:
 
-/32: Usado para identificar um endereço IP específico.
-/24: Muito comum para redes locais, permitindo até 256 endereços.
-/16: Usado para redes de médio porte, permitindo até 65.536 endereços.
-/8: Reservado para redes muito grandes, permitindo até 16.777.216 endereços.
+- /32: Usado para identificar um endereço IP específico.
+- /24: Muito comum para redes locais, permitindo até 256 endereços.
+- /16: Usado para redes de médio porte, permitindo até 65.536 endereços.
+- /8: Reservado para redes muito grandes, permitindo até 16.777.216 endereços.
 
 O cálculo pode ser obtido conforme abaixo:
 
@@ -113,7 +113,7 @@ O cálculo pode ser obtido conforme abaixo:
 
 Isso significa que um bloco de CIDR /8 tem 16.777.216 endereços IP, um bloco de CIDR /16 tem 65.536 endereços IP, e um bloco de CIDR /24 tem 256 endereços IP. 
 
-O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula **2^32 - x**  mostra quantos endereços IP isso representa. 
+O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula **2^32-x**  mostra quantos endereços IP isso representa. 
 
 Quanto menor o número após a barra (/), maior é o bloco de endereços IP.
 
