@@ -63,8 +63,8 @@ As instâncias em uma subnet privada podem se comunicar com a internet por meio 
 
 Vamos pegar um exemplo simples:
 
-Endereço IP: 192.168.0.0
-CIDR: 192.168.0.0/24
+- Endereço IP: 192.168.0.0
+- CIDR: 192.168.0.0/24
 
 No exemplo acima, o "192.168.0.0" é o endereço inicial da sua rede e "/24" indica que os primeiros 24 bits são a parte da rede (o que deixa 8 bits para endereços individuais dentro da rede). 
 
@@ -87,6 +87,8 @@ Então, se tiver um dispositivo com o endereço IP "192.168.1.1" e outro com "19
 
 O número após a barra (/) indica a quantidade de bits usados para identificar a rede.
 
+## O Cálculo
+
 Alguns exemplos comuns incluem:
 
 - /32: Usado para identificar um endereço IP específico.
@@ -98,13 +100,13 @@ O cálculo pode ser obtido conforme abaixo:
 
 **Para CIDR /8:**
 
-2^32-8 = 2^24 = 16.777.216
-2^32-8 = 2^24 = 2×2×2×…×2 (24 vezes) = 16.777.216
+- 2^32-8 = 2^24 = 16.777.216
+- 2^32-8 = 2^24 = 2×2×2×…×2 (24 vezes) = 16.777.216
 
 **Para CIDR /16:**
 
-2^32-16 = 2^16 = 65.536
-2^32-16 = 2^16 = 2×2×2×…×2 (16 vezes) = 65.536
+- 2^32-16 = 2^16 = 65.536
+- 2^32-16 = 2^16 = 2×2×2×…×2 (16 vezes) = 65.536
 
 **Para CIDR /24:**
 
@@ -116,6 +118,48 @@ Isso significa que um bloco de CIDR /8 tem 16.777.216 endereços IP, um bloco de
 O número após a barra (/) representa quantos bits são usados para identificar a rede, e a fórmula **2^32-x**  mostra quantos endereços IP isso representa. 
 
 Quanto menor o número após a barra (/), maior é o bloco de endereços IP.
+
+### Dividindo as subnets
+
+O tamanho do bloco CIDR influencia na quantidade de subnets que se pode criar, pois determina a quantidade total de endereços IP disponíveis para uma VPC e, por consequentemente, para as subnets. 
+
+Entender como subdividir esse espaço de endereços é fundamental para decidir o número e o tamanho das subnets.
+
+Vamos usar um exemplo para ilustrar, suponhamos que tenhamos uma VPC com CIDR "10.0.0.0/16", o que nos dá 65.536 endereços IP disponíveis.
+
+Agora, decidimos criar subnets dentro dessa VPC, sendo que cada subnet terá seu próprio bloco CIDR dentro do bloco principal da VPC. Se criarmos subnets com CIDR /24, cada uma dessas subnets terá 256 endereços IP disponíveis.
+
+Por exemplo:
+
+- Subnet 1: "10.0.1.0/24"
+- Subnet 2: "10.0.2.0/24"
+- Subnet 3: "10.0.3.0/24"
+
+Se optarmos por subnets menores com CIDR /25, cada subnet terá 128 endereços IP disponíveis.
+
+Por exemplo:
+
+- Subnet 1: "10.0.1.0/25"
+- Subnet 2: "10.0.1.128/25"
+- Subnet 3: "10.0.2.0/25"
+
+Portanto, o tamanho do bloco CIDR influencia indiretamente na quantidade de subnets, pois determina a quantidade total de endereços IP disponíveis para a VPC, e você precisa decidir como subdividir esse espaço para criar suas subnets.
+
+### Atribuindo IPs conforme range
+
+Caso tenhamos uma VPC com um CIDR "192.168.0.0/16" e uma subnet específica com CIDR "192.168.1.0/24", aqui está um exemplo de como os endereços IP para a uma aplicação ECS e a uma instânia EC2 na mesma rede poderiam ser atribuídos:
+
+- **ECS**: "192.168.1.1"
+- **EC2**: "192.168.1.2"
+
+Ambos os endereços compartilham os primeiros 24 bits ("192.168.1") devido à configuração da subnet, e os últimos 8 bits são usados para diferenciar os hosts na subnet.
+
+Vale lembrar que devemos garantir que os endereços IP atribuídos sejam únicos dentro da subnet. Se houver mais dispositivos ou serviços, os últimos bits variarão para cada um, mantendo a consistência com o CIDR da subnet. Por exemplo:
+
+**Outro dispositivo**: "192.168.1.3"
+**Outro serviço**: "192.168.1.4"
+
+Esses endereços ainda compartilham a parte de rede "192.168.1", mas os últimos bits são diferentes para garantir unicidade dentro da subnet.
 
 
 ## Internet Gateway (IGW)
@@ -137,7 +181,19 @@ Isso é especialmente útil para manter ambientes corporativos seguros, onde as 
 ## Seurity Group
 
 
-## Analogia (Cidade)
+## Descomplicando a Estrutura de Rede na AWS 
+
+Podemos pensar na AWS como o local onde está situada uma agência bancária moderna, sendo a VPC equivalente à própria agência. 
+
+Dentro desse espaço, as subnets públicas são como os balcões de atendimento ao cliente e caixas, acessíveis ao público, enquanto as subnets privadas representam áreas mais restritas, como a tesouraria e informações confidenciais.
+
+A Route Table atua como um guia interno, direcionando o tráfego de informações entre essas áreas. O Internet Gateway funciona como a entrada principal, permitindo que os clientes acessem serviços bancários online de maneira segura e conveniente. 
+
+Similar a uma agência bancária, o NAT Gateway age como um canal seguro para comunicações sensíveis entre os setores internos e o ambiente externo.
+
+Podemos considerar as regions como diferentes cidades as agências estão situadas, e cada zona de disponibilidade (AZ) dentro de uma region é como um bairro independente. 
+
+Por exemplo, a agência na "region" de São Paulo tem suas subnets distribuídas nas "zonas de disponibilidade" como sendo bairros distintos.
 
 
 ## Criando os recursos na AWS
