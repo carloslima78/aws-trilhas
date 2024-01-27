@@ -87,7 +87,9 @@ Então, se tiver um dispositivo com o endereço IP "192.168.1.1" e outro com "19
 
 O número após a barra (/) indica a quantidade de bits usados para identificar a rede.
 
-## O Cálculo
+### Entendendo o Cálculo
+
+O cálculo CIDR envolve a determinação do número de bits reservados para identificar a rede em uma notação como /8, indicando a quantidade de endereços disponíveis. Por exemplo, em CIDR 8, 2^32-8 revela 16.777.216 endereços IP.
 
 Alguns exemplos comuns incluem:
 
