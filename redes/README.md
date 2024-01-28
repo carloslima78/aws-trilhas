@@ -151,7 +151,7 @@ Portanto, o tamanho do bloco CIDR influencia indiretamente na quantidade de subn
 
 ### Atribuindo IPs conforme range
 
-Caso tenhamos uma VPC com um CIDR "192.168.0.0/16" e uma subnet específica com CIDR "192.168.1.0/24", aqui está um exemplo de como os endereços IP para a uma aplicação ECS e a uma instânia EC2 na mesma rede poderiam ser atribuídos:
+Caso tenhamos uma VPC com um CIDR "192.168.0.0/16" e uma subnet específica com CIDR "192.168.1.0/24", aqui está um exemplo de como os endereços IP para a uma aplicação ECS e a uma instância EC2 na mesma rede poderiam ser atribuídos:
 
 - **ECS**: "192.168.1.1"
 - **EC2**: "192.168.1.2"
