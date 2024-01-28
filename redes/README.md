@@ -112,8 +112,8 @@ O cálculo pode ser obtido conforme abaixo:
 
 **Para CIDR /24:**
 
-2^32-24 = 2^8 = 256
-2^32-24 = 2^8 = 2×2×2×…×2 (8 vezes) = 256
+- 2^32-24 = 2^8 = 256
+- 2^32-24 = 2^8 = 2×2×2×…×2 (8 vezes) = 256
 
 Isso significa que um bloco de CIDR /8 tem 16.777.216 endereços IP, um bloco de CIDR /16 tem 65.536 endereços IP, e um bloco de CIDR /24 tem 256 endereços IP. 
 
