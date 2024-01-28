@@ -91,6 +91,23 @@ O número após a barra (/) indica a quantidade de bits usados para identificar 
 
 O cálculo CIDR envolve a determinação do número de bits reservados para identificar a rede em uma notação como /8, indicando a quantidade de endereços disponíveis. Por exemplo, em CIDR 8, 2^32-8 revela 16.777.216 endereços IP.
 
+A base do cálculo ser 32 está relacionada ao formato padrão de endereço IP na internet, que utiliza 32 bits para representar cada endereço IP.
+
+- Um endereço IP é como uma etiqueta única para identificar um dispositivo na rede.
+- Essa etiqueta é composta por 32 bits, que podem ser 0s ou 1s, formando combinações binárias.
+
+Quando usamos a notação CIDR (/), estamos especificando quantos bits são reservados para identificar a rede. Vamos usar CIDR /16 como exemplo:
+
+- Se tivermos um endereço IP como 192.168.0.1, ele seria representado em binário como 11000000.10101000.00000000.00000001.
+- Agora, se usarmos CIDR /16, estamos reservando os primeiros 16 bits para identificar a rede, e o restante (32 - 16 = 16 bits) para identificar dispositivos naquela rede específica.
+
+Aqui está o ponto-chave:
+
+- Ao usar CIDR /16, você reserva 16 bits para a rede, deixando 16 bits para dispositivos.
+- A fórmula 2^(32 - 16) é usada para calcular quantas combinações diferentes de 16 bits estão disponíveis para dispositivos naquela rede.
+
+Portanto, 2^(32 - 16) = 2^16, o que significa que teremos 2 elevado à 16ª potência, ou seja, 65.536 combinações diferentes de endereços IP possíveis para dispositivos dentro daquela rede.
+
 Alguns exemplos comuns incluem:
 
 - /32: Usado para identificar um endereço IP específico.
