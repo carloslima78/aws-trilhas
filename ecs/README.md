@@ -37,6 +37,22 @@ Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um servi�
 - Possibilidade de escalar via **Auto Scaling** horizontalmente adicionando ou removendo instâncias EC2 ou usando o serviço Fargate.
 - Oferece flexibilidade para lidar com variações de carga via **Load Banlancer** e garantir que a aplicação permaneça disponível e elástica.
 
+## ECS Agent
+
+O ECS Agent é um componente essencial no Amazon ECS (Elastic Container Service), sendo responsável por se comunicar com o serviço ECS da AWS e gerenciar os contêineres em uma instância EC2 ou em um ambiente Fargate.
+
+O papel do ECS Agent é fundamental para o funcionamento adequado do ECS, pois ele permite que as instâncias EC2 e tarefas Fargate sejam registradas e gerenciadas pelo serviço ECS. 
+
+O ECS Agent executa várias funções-chave, incluindo:
+
+- **Registro de Instância**: O ECS Agent registra a instância EC2 com o serviço ECS, permitindo que ela seja incluída em um cluster ECS. Isso permite que o ECS coloque tarefas em instâncias EC2 e monitore sua saúde.
+
+- **Gerenciamento de Tarefas**: O ECS Agent é responsável por iniciar, parar e monitorar os contêineres que compõem as tarefas do ECS. Ele executa essas ações com base nas definições de tarefa fornecidas pelo usuário e nas instruções recebidas do serviço ECS.
+
+- **Comunicação com o Serviço ECS**: O ECS Agent mantém uma comunicação contínua com o serviço ECS para receber instruções, relatar o estado da instância e fornecer atualizações sobre a execução das tarefas.
+
+Em resumo, o ECS Agent desempenha um papel importante na integração entre as instâncias EC2 (ou ambiente Fargate) e o serviço ECS, garantindo que os contêineres sejam gerenciados de forma eficiente e confiável dentro do ambiente ECS.
+
 ## ECS Fargate: Simplificando a Execução de Contêineres
 
 - **Infraestrutura Serverless (sem servidor)**:
