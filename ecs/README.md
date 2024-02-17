@@ -87,6 +87,8 @@ Vamos comparar as possiblidades de infraestrutura suportadas pelo ECS.
   - Elimina a necessidade de gerenciar instâncias EC2, simplificando significativamente a operação e manutenção do ambiente.
 - **Recomendado quando há escalas pontuais e necessidade de maior elasticidade**:
   - Ideal para cargas de trabalho com picos de demanda, onde a capacidade de escalar rapidamente e de forma automática é essencial.
+- **Recomendado para microserviços, workers de mensageria**:
+  - Fargate é especialmente indicado para a execução de microserviços e workers de mensageria, onde a abstração da infraestrutura e a escalabilidade automática são altamente vantajosas."
 
   ![Diagrama](diagramas/ecs-fargate.png)
 
@@ -94,7 +96,7 @@ Vamos comparar as possiblidades de infraestrutura suportadas pelo ECS.
 
 - **Utilizando Instâncias Spot**:
   - Integração que aproveita as instâncias Spot para proporcionar economias significativas de custos.
-  - As instâncias Spot são disponibilizadas a preços mais baixos, mas podem ser interrompidas a qualquer momento com aviso prévio.
+  - As instâncias Spot são disponibilizadas a preços mais baixos, mas podem ser interrompidas a qualquer momento sem aviso prévio.
 - **Considerações de Tolerância a Interrupções**:
   - Adequado para cargas de trabalho tolerantes a interrupções devido à natureza das instâncias Spot, como testes, protótipos, etc.
   - É importante projetar aplicações para lidar com a interrupção e reinicialização de instâncias Spot de forma transparente e sem impacto significativo na operação.
