@@ -34,7 +34,7 @@ Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um servi�
 
 ### Escalabilidade:
 
-- Possibilidade de escalar via **Auto Scaling** horizontalmente adicionando ou removendo instâncias EC2 ou usando o serviço Fargate.
+- Possibilidade de escalar horizontalmente via **Auto Scaling** adicionando ou removendo instâncias EC2 ou usando o serviço Fargate.
 - Oferece flexibilidade para lidar com variações de carga via **Load Banlancer** e garantir que a aplicação permaneça disponível e elástica.
 
 ## ECS Agent
