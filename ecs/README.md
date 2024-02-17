@@ -66,7 +66,7 @@ Em resumo, o ECS Agent desempenha um papel importante na integração entre as i
   - Reduz a complexidade operacional e garante que os recursos sejam provisionados de forma dinâmica de acordo com a demanda da aplicação.
 
 ## ECS EC2 vs ECS Fargate
-Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
+Vamos comparar as possiblidades de infraestrutura suportadas pelo ECS.
 
 ### ECS EC2
 
@@ -90,6 +90,15 @@ Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
 
   ![Diagrama](diagramas/ecs-fargate.png)
 
+  ### ECS Spot: Economia de Custos com Instâncias Spot
+
+- **Utilizando Instâncias Spot**:
+  - Integração que aproveita as instâncias Spot para proporcionar economias significativas de custos.
+  - As instâncias Spot são disponibilizadas a preços mais baixos, mas podem ser interrompidas a qualquer momento com aviso prévio.
+- **Considerações de Tolerância a Interrupções**:
+  - Adequado para cargas de trabalho tolerantes a interrupções devido à natureza das instâncias Spot, como testes, protótipos, etc.
+  - É importante projetar aplicações para lidar com a interrupção e reinicialização de instâncias Spot de forma transparente e sem impacto significativo na operação.
+
 ### Matriz de Decisão
 A matriz de decisão abaixo pode ajudar arquitetos e desenvolvedores a avaliar os prós e contras de cada opção (ECS com EC2 e ECS Fargate) com base nos critérios relevantes para o seu caso de uso específico.
 
@@ -100,16 +109,6 @@ A matriz de decisão abaixo pode ajudar arquitetos e desenvolvedores a avaliar o
 | Gestão de instâncias | Necessária, incluindo monitoramento e manutenção | Não é necessário, AWS gerencia a infraestrutura | Gerenciada pela AWS, incluindo lidar com instâncias Spot |
 | Custos | Depende do tipo e número de instâncias EC2 utilizadas | Baseado no consumo de recursos, sem custos de instâncias EC2 | Potencialmente mais econômico ao utilizar instâncias Spot |
 | Complexidade | Mais complexo de configurar e gerenciar | Mais simples de configurar e gerenciar | Menos complexo em comparação com ECS com instâncias on-demand |
-
-
-### ECS Spot: Economia de Custos com Instâncias Spot
-
-- **Utilizando Instâncias Spot**:
-  - Integração que aproveita as instâncias Spot para proporcionar economias significativas de custos.
-  - As instâncias Spot são disponibilizadas a preços mais baixos, mas podem ser interrompidas a qualquer momento com aviso prévio.
-- **Considerações de Tolerância a Interrupções**:
-  - Adequado para cargas de trabalho tolerantes a interrupções devido à natureza das instâncias Spot, como testes, protótipos, etc.
-  - É importante projetar aplicações para lidar com a interrupção e reinicialização de instâncias Spot de forma transparente e sem impacto significativo na operação.
 
 ## Estrutura de Rede Recomendada
 Ao utilizar o ECS com EC2 ou Fargate, é importante configurar uma estrutura de rede adequada para garantir segurança e eficiência. Algumas práticas recomendadas incluem:
