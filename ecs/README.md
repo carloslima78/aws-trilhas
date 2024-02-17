@@ -62,8 +62,8 @@ Em resumo, o ECS Agent desempenha um papel importante na integração entre as i
 
 - **Escalabilidade Automática**:
 
-- Escala automaticamente com base nas necessidades dos contêineres, oferecendo simplicidade e eficiência.
-- Reduz a complexidade operacional e garante que os recursos sejam provisionados de forma dinâmica de acordo com a demanda da aplicação.
+  - Escala automaticamente com base nas necessidades dos contêineres, oferecendo simplicidade e eficiência.
+  - Reduz a complexidade operacional e garante que os recursos sejam provisionados de forma dinâmica de acordo com a demanda da aplicação.
 
 ## ECS EC2 vs ECS Fargate
 Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
