@@ -2,7 +2,7 @@
 
 A orquestração eficiente de contêineres Docker é essencial para maximizar a escalabilidade e a flexibilidade das aplicações hospedadas em ambiente de nuvem. 
 
-Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um serviço robusto da AWS para orquestração contêineres que simplifica a implantação e o gerenciamento.
+Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um serviço robusto da AWS para orquestração de contêineres que simplifica a implantação e o gerenciamento.
 
 ## Infraestrutura do ECS
 
