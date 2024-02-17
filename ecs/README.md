@@ -88,7 +88,7 @@ Vamos comparar as possiblidades de infraestrutura suportadas pelo ECS.
 - **Recomendado quando há escalas pontuais e necessidade de maior elasticidade**:
   - Ideal para cargas de trabalho com picos de demanda, onde a capacidade de escalar rapidamente e de forma automática é essencial.
 - **Recomendado para microserviços, workers de mensageria**:
-  - Fargate é especialmente indicado para a execução de microserviços e workers de mensageria, onde a abstração da infraestrutura e a escalabilidade automática são altamente vantajosas."
+  - Fargate é especialmente indicado para a execução de microserviços e workers de mensageria, onde a abstração da infraestrutura e a escalabilidade automática são altamente vantajosas.
 
   ![Diagrama](diagramas/ecs-fargate.png)
 
