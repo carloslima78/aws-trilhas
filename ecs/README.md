@@ -63,7 +63,7 @@ Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
   - Mais adequado para cargas de trabalho com demanda estável e previsível, onde a personalização e o controle granular são prioritários.
   - Indicado para cargas de trabalho com requisitos específicos de hardware ou que demandem configurações personalizadas.
 
-  ![Diagrama](diagramas/diagramas-ecs ec2.png)
+  ![Diagrama](diagramas/ecs-ec2.png)
 
 ### ECS Fargate (Serveless)
 
@@ -72,7 +72,7 @@ Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
 - **Recomendado quando há escalas pontuais e necessidade de maior elasticidade**:
   - Ideal para cargas de trabalho com picos de demanda, onde a capacidade de escalar rapidamente e de forma automática é essencial.
 
-  ![Diagrama](diagramas/diagramas-ecs fargate.png)
+  ![Diagrama](diagramas/ecs-fargate.png)
 
 ### Matriz de Decisão
 A matriz de decisão abaixo pode ajudar arquitetos e desenvolvedores a avaliar os prós e contras de cada opção (ECS com EC2 e ECS Fargate) com base nos critérios relevantes para o seu caso de uso específico.
