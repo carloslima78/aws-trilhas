@@ -25,7 +25,7 @@ Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um servi�
 
 - Instâncias individuais de definições de tarefa, cada uma executando um ou mais contêineres.
 - Podem ser consideradas unidades básicas de execução no ECS, com cada tarefa representando uma única execução de um grupo de contêineres.
-- Podemos fazer um paralelo com os PODs do Kubernetes.
+- *Podemos fazer um paralelo das Tasks ECS com os PODs do Kubernetes*.
 
 ## Serviços (Services)
 
@@ -34,8 +34,8 @@ Neste estudo, vamos explorar o Amazon Elastic Container Service (ECS), um servi�
 
 ### Escalabilidade:
 
-  - Possibilita a escala horizontal adicionando ou removendo instâncias EC2 ou usando o serviço Fargate.
-  - Oferece flexibilidade para lidar com variações de carga e garantir que a aplicação permaneça disponível e elástica.
+- Possibilidade de escalar via **Auto Scaling** horizontalmente adicionando ou removendo instâncias EC2 ou usando o serviço Fargate.
+- Oferece flexibilidade para lidar com variações de carga via **Load Banlancer** e garantir que a aplicação permaneça disponível e elástica.
 
 ## ECS Fargate: Simplificando a Execução de Contêineres
 
@@ -54,34 +54,84 @@ Vamos comparar as duas possiblidades de infraestrutura suportadas pelo ECS.
 
 ### ECS EC2
 
-- Necessita de gerenciamento manual de recursos.
-- Necessita de escolha de perfil de máquina.
-- Recomendado para execuções contínuas.
+- **Necessita de gerenciamento manual de recursos**:
+  - Oferece mais controle sobre a infraestrutura, permitindo ajustes específicos de acordo com as necessidades da aplicação.
+  - Requer configuração e gerenciamento de instâncias EC2, incluindo provisionamento, monitoramento e manutenção.
+- **Necessita de escolha de perfil de máquina**:
+  - É necessário selecionar o tipo de instância EC2 mais adequado para a carga de trabalho, levando em consideração requisitos de CPU, memória, armazenamento e rede.
+- **Recomendado para execuções contínuas**:
+  - Mais adequado para cargas de trabalho com demanda estável e previsível, onde a personalização e o controle granular são prioritários.
+  - Indicado para cargas de trabalho com requisitos específicos de hardware ou que demandem configurações personalizadas.
 
-### ECS Fargate
+  ![Diagrama](diagramas/diagramas-ecs ec2.png)
 
-- Exige menor gerenciamento de recursos em realação ao EC2.
-- Recomendado quando de têm escalas pontuais e necessita-se de maior elasticidade, aplicações workers, etc.
+### ECS Fargate (Serveless)
 
-## ECS Spot Fleet: Economia de Custos com Instâncias Spot
+- **Exige menor gerenciamento de recursos em relação ao EC2**:
+  - Elimina a necessidade de gerenciar instâncias EC2, simplificando significativamente a operação e manutenção do ambiente.
+- **Recomendado quando há escalas pontuais e necessidade de maior elasticidade**:
+  - Ideal para cargas de trabalho com picos de demanda, onde a capacidade de escalar rapidamente e de forma automática é essencial.
 
-- Utilizando Instâncias Spot:
+  ![Diagrama](diagramas/diagramas-ecs fargate.png)
 
+### Matriz de Decisão
+A matriz de decisão abaixo pode ajudar arquitetos e desenvolvedores a avaliar os prós e contras de cada opção (ECS com EC2 e ECS Fargate) com base nos critérios relevantes para o seu caso de uso específico.
+
+| Aspecto | ECS com EC2 | ECS Fargate | ECS Spot |
+|---------|-------------|-------------|----------|
+| Controle sobre a infraestrutura | Alto controle, instâncias EC2 gerenciadas diretamente | Baixo controle, AWS gerencia a infraestrutura | Alto controle, uso de instâncias Spot |
+| Escalabilidade | Horizontalmente, adicionando ou removendo instâncias EC2 | Automática, gerenciada pela AWS | Automática, aproveitando instâncias Spot |
+| Gestão de instâncias | Necessária, incluindo monitoramento e manutenção | Não é necessário, AWS gerencia a infraestrutura | Gerenciada pela AWS, incluindo lidar com instâncias Spot |
+| Custos | Depende do tipo e número de instâncias EC2 utilizadas | Baseado no consumo de recursos, sem custos de instâncias EC2 | Potencialmente mais econômico ao utilizar instâncias Spot |
+| Complexidade | Mais complexo de configurar e gerenciar | Mais simples de configurar e gerenciar | Menos complexo em comparação com ECS com instâncias on-demand |
+
+
+### ECS Spot: Economia de Custos com Instâncias Spot
+
+- **Utilizando Instâncias Spot**:
   - Integração que aproveita as instâncias Spot para proporcionar economias significativas de custos.
+  - As instâncias Spot são disponibilizadas a preços mais baixos, mas podem ser interrompidas a qualquer momento com aviso prévio.
+- **Considerações de Tolerância a Interrupções**:
+  - Adequado para cargas de trabalho tolerantes a interrupções devido à natureza das instâncias Spot, como testes, protótipos, etc.
+  - É importante projetar aplicações para lidar com a interrupção e reinicialização de instâncias Spot de forma transparente e sem impacto significativo na operação.
 
-- Considerações de Tolerância a Interrupções:
+## Estrutura de Rede Recomendada
+Ao utilizar o ECS com EC2 ou Fargate, é importante configurar uma estrutura de rede adequada para garantir segurança e eficiência. Algumas práticas recomendadas incluem:
 
-  - Adequado para cargas de trabalho tolerantes a interrupções devido à natureza das instâncias Spot, como por exemplo, testes, protótipos, etc.
+- **VPC e Subnets**:
+  - Configure uma VPC e subnets para ambas as opções.
+  - Utilize subnets públicas e privadas para segmentar recursos e garantir isolamento de rede.
 
-## Comparação: ECS com EC2 vs. ECS Fargate
+- **Internet Gateway (para EC2)**:
+  - Associe um Internet Gateway para instâncias EC2 em subnets públicas, permitindo comunicação com a internet.
 
-- ECS com EC2:
+ - **Nat Gateway (para EC2)**:
+  - Utilize NAT Gateway em subnets privadas para permitir que instâncias EC2 em subnets privadas acessem a internet de forma segura, sem expor seus endereços IP privados diretamente à internet.
 
-  - Mais controle sobre a infraestrutura, ideal para ajustes específicos.
+- **Route Tables (para EC2)**:
+  - Configure tabelas de rotas para direcionar o tráfego adequadamente dentro da VPC.
+  - Em uma subnet pública, defina uma rota padrão que aponte para o Internet Gateway, permitindo que instâncias EC2 na subnet acessem a internet.
+  - Em uma subnet privada, defina uma rota padrão que aponte para o NAT Gateway, permitindo que instâncias EC2 na subnet acessem a internet de forma segura.
 
-- ECS Fargate:
+- **Security Groups**:
+  - Configure Security Groups para controlar tráfego de entrada e saída, garantindo segurança em ambos os casos.
+  - Defina regras de segurança para permitir apenas o tráfego necessário para a aplicação e restringir acessos não autorizados.
 
-  - Maior simplicidade, adequado para quem busca abstração da infraestrutura.
+- **Load Balancer**:
+  - Integre ALB (balanceamento sobre aplicação) ou NLB (balanceamento sobre a rede) conforme necessário para distribuir tráfego de forma eficiente e garantir alta disponibilidade da aplicação.
+  - Utilize Load Balancers para distribuir o tráfego entre as instâncias EC2 ou tarefas do Fargate, garantindo escalabilidade e resiliência.
+
+- **Comunicação entre EC2 e Fargate**:
+  - Configure regras de segurança para permitir comunicação se estiverem na mesma VPC.
+  - Utilize VPC Peering ou AWS PrivateLink se for necessário comunicação entre VPCs ou serviços AWS.
+
+### Configurar Componentes de Rede no ECS Fargate: Entenda se é Necessário ou Desnecessário
+
+Vale observar que componentes de rede como Internet Gateway, NAT Gateway e tabelas de rotas se aplicam apenas para instâncias EC2 e não para tarefas Fargate no Amazon ECS.
+
+Esses componentes de rede são específicos para instâncias EC2 em uma VPC da AWS e são utilizados para controlar o tráfego de rede dentro e fora da VPC. No entanto, o Fargate é um serviço "sem servidor" que executa tarefas em contêineres Docker gerenciados pela AWS, sem exigir uma gestão direta às instâncias EC2.
+
+Quando se utiliza o Fargate no Amazon ECS, a AWS gerencia a infraestrutura subjacente, incluindo a alocação de recursos, a escalabilidade e o gerenciamento da rede. Como resultado, não há a necessidade de configurar ou gerenciar componentes como Internet Gateway, NAT Gateway ou tabelas de rotas, pois isso é tratado automaticamente pelo serviço Fargate. Isso permite a concentação apenas na definição e execução das tarefas em contêineres.
 
 ## Conclusão
 
