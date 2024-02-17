@@ -148,11 +148,11 @@ Vale observar que componentes de rede como Internet Gateway, NAT Gateway e tabel
 
 Esses componentes de rede são específicos para instâncias EC2 em uma VPC da AWS e são utilizados para controlar o tráfego de rede dentro e fora da VPC. No entanto, o Fargate é um serviço "sem servidor" que executa tarefas em contêineres Docker gerenciados pela AWS, sem exigir uma gestão direta às instâncias EC2.
 
-Quando se utiliza o Fargate no Amazon ECS, a AWS gerencia a infraestrutura subjacente, incluindo a alocação de recursos, a escalabilidade e o gerenciamento da rede. Como resultado, não há a necessidade de configurar ou gerenciar componentes como Internet Gateway, NAT Gateway ou tabelas de rotas, pois isso é tratado automaticamente pelo serviço Fargate. Isso permite a concentação apenas na definição e execução das tarefas em contêineres.
+Quando se utiliza o Fargate no Amazon ECS, a AWS gerencia a infraestrutura subjacente, incluindo a alocação de recursos, a escalabilidade e o gerenciamento da rede. Como resultado, não há a necessidade de configurar ou gerenciar componentes como Internet Gateway, NAT Gateway ou tabelas de rotas, pois isso é tratado automaticamente pelo serviço Fargate, permitindo a concentação apenas na definição e execução das tarefas em contêineres.
 
 ## Conclusão
 
-O Amazon ECS emerge como uma poderosa solução para orquestração de contêineres na AWS. Seja utilizando EC2 para controle granular ou optando pela simplicidade do Fargate.
+O Amazon ECS emerge como uma poderosa solução para orquestração de contêineres na AWSm seja utilizando EC2 para controle granular ou optando pela simplicidade do Fargate.
 
 Oferece flexibilidade e escalabilidade para atender às demandas variadas das aplicações modernas. Ao compreender a estrutura e os recursos do ECS, os desenvolvedores podem otimizar suas implementações e impulsionar o desempenho de suas aplicações na nuvem.
 
