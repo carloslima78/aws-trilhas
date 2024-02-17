@@ -152,7 +152,7 @@ Quando se utiliza o Fargate no Amazon ECS, a AWS gerencia a infraestrutura subja
 
 ## Conclusão
 
-O Amazon ECS emerge como uma poderosa solução para orquestração de contêineres na AWSm seja utilizando EC2 para controle granular ou optando pela simplicidade do Fargate.
+O Amazon ECS emerge como uma poderosa solução para orquestração de contêineres na AWS, seja utilizando EC2 para controle granular ou optando pela simplicidade do Fargate. Oferece flexibilidade e escalabilidade para atender às demandas variadas das aplicações modernas. 
 
-Oferece flexibilidade e escalabilidade para atender às demandas variadas das aplicações modernas. Ao compreender a estrutura e os recursos do ECS, os desenvolvedores podem otimizar suas implementações e impulsionar o desempenho de suas aplicações na nuvem.
+Ao compreender a estrutura e os recursos do ECS, os desenvolvedores podem otimizar suas implementações e impulsionar o desempenho das aplicações na nuvem.
 
