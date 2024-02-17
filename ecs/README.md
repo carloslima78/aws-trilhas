@@ -122,7 +122,7 @@ Ao utilizar o ECS com EC2 ou Fargate, é importante configurar uma estrutura de 
 - **Internet Gateway (para EC2)**:
   - Associe um Internet Gateway para instâncias EC2 em subnets públicas, permitindo comunicação com a internet.
 
- - **Nat Gateway (para EC2)**:
+- **Nat Gateway (para EC2)**:
   - Utilize NAT Gateway em subnets privadas para permitir que instâncias EC2 em subnets privadas acessem a internet de forma segura, sem expor seus endereços IP privados diretamente à internet.
 
 - **Route Tables (para EC2)**:
